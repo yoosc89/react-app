@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.title{
+  font-style : italic;
+}
+
+.blink{
+  background-color: burlywood;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 20px;
+
+}
+.border{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid black;
+}
