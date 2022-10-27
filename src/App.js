@@ -1,11 +1,10 @@
 import "./App.css";
-import Orders from "./1/order_list";
-import Dashboard from "./1/dashbord";
+import Page_table from "./2/table";
 
 function App() {
   return (
     <div>
-      <div class="border">{Dashboard()}</div>
+      <div>{Page_table()}</div>
     </div>
   );
 }
