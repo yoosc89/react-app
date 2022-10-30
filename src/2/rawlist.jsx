@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHead,
@@ -13,36 +14,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-function list_item(id, subject, write, date) {
-  return { id, subject, write, date };
-}
-
-const Table1 = [
-  list_item(1, "그냥저냥", "홍길동", "2022/01/01"),
-  list_item(2, "테스트", "홍길동", "2022/01/01"),
-  list_item(3, "그", "홍길동", "2022/01/01"),
-  list_item(4, "그냥저냥ㅇㄹㅇㄹㅇ", "홍길동", "2022/01/01"),
-  list_item(5, "그냥저ㄴㄴㄴㄴㄴㄴ냥", "홍길동", "2022/01/01"),
-  list_item(6, "그냥ㄹㄹㄹㄹㄹㄹㄹㅇ저냥", "홍길동", "2022/01/01"),
-  list_item(7, "그냥ㄴㅇㄹㄹㄹㄹㄹㄹㄹ저냥", "홍길동", "2022/01/01"),
-  list_item(8, "그ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ냥저냥", "홍길동", "2022/01/01"),
-  list_item(9, "그냥저ㄴㅇㄹㄴㅇㄹㅇㄹㅇㄹㅇㄹ냥", "홍길동", "2022/01/01"),
-  list_item(10, "그냥232222323저냥", "홍길동", "2022/01/01"),
-];
-
-const Table2 = [
-  list_item(1, "그저냥", "강남", "2022/02/01"),
-  list_item(2, "테트", "서구", "2022/02/01"),
-  list_item(3, "그", "길동", "2022/02/01"),
-  list_item(4, "ㅇㄹㅇㄹㅇ", "홍", "2022/02/01"),
-  list_item(5, "그냥저냥", "홍동", "2022/02/01"),
-  list_item(6, "그냥ㄹㄹㄹㄹㄹㄹㅇ저냥", "길동", "2022/03/01"),
-  list_item(7, "그냥ㄴㄹㄹㄹㄹㄹㄹ저냥", "동", "2022/04/01"),
-  list_item(8, "그ㄴㄴㄴㄴㄴ냥저냥", "금", "2022/05/01"),
-  list_item(9, "그냥저ㄴㄴㅇㄹㅇㄹㅇㄹㅇㄹ냥", "은", "2022/06/01"),
-  list_item(10, "그냥23222323저냥", "홍길동", "2022/04/01"),
-];
-
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -51,23 +22,36 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function TableMain(Page_table) {
-  return Page_table.map((row) => (
+function Test(page) {
+  const [data, setdata] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/select/${page}`)
+      .then((res) => setdata(res.data))
+      .catch((err) => console.log(err));
+  }, [page]);
+  return data;
+}
+
+function Items(data) {
+  console.log(data);
+  return data.map((row) => (
     <TableRow>
       <TableCell>{row.id}</TableCell>
       <TableCell align="left">
         <Link color="black" underline="none" href={row.id}>
-          {row.subject}
+          {row.title}
         </Link>
       </TableCell>
-      <TableCell>{row.write}</TableCell>
+      <TableCell>{row.writer}</TableCell>
       <TableCell>{row.date}</TableCell>
     </TableRow>
   ));
 }
 
-function Pagetable() {
-  let [page, pageSet] = useState(Table1);
+export default function RawList() {
+  const [page, setpage] = useState(0);
+  /* setinputData(inputData.concat(temp)); */
   return (
     <React.Fragment>
       <Grid container spacing={1} sx={{ pt: 8, color: "secondary" }}>
@@ -82,7 +66,7 @@ function Pagetable() {
             <ListItemButton>
               <ListItemText
                 onClick={() => {
-                  pageSet(Table1);
+                  setpage(1);
                 }}
               >
                 Table1
@@ -91,23 +75,47 @@ function Pagetable() {
             <ListItemButton>
               <ListItemText
                 onClick={() => {
-                  pageSet(Table2);
+                  setpage(2);
                 }}
               >
                 Table2
               </ListItemText>
             </ListItemButton>
             <ListItemButton>
-              <ListItemText>Table2</ListItemText>
+              <ListItemText
+                onClick={() => {
+                  setpage(3);
+                }}
+              >
+                Table2
+              </ListItemText>
             </ListItemButton>
             <ListItemButton>
-              <ListItemText>Table3</ListItemText>
+              <ListItemText
+                onClick={() => {
+                  setpage(4);
+                }}
+              >
+                Table3
+              </ListItemText>
             </ListItemButton>
             <ListItemButton>
-              <ListItemText>Table4</ListItemText>
+              <ListItemText
+                onClick={() => {
+                  setpage(5);
+                }}
+              >
+                Table4
+              </ListItemText>
             </ListItemButton>
             <ListItemButton>
-              <ListItemText>Table5</ListItemText>
+              <ListItemText
+                onClick={() => {
+                  setpage(6);
+                }}
+              >
+                Table5
+              </ListItemText>
             </ListItemButton>
           </Item>
         </Grid>
@@ -122,7 +130,7 @@ function Pagetable() {
                   <TableCell>글 생성날짜</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{TableMain(page)}</TableBody>
+              <TableBody>{Items(Test(page))}</TableBody>
             </Table>
           </Item>
         </Grid>
@@ -131,5 +139,3 @@ function Pagetable() {
     </React.Fragment>
   );
 }
-
-export default Pagetable;

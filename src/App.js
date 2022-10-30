@@ -1,10 +1,12 @@
 import "./App.css";
-import Page_table from "./2/table";
+import Pagetable from "./2/table";
+import RawList from "./2/rawlist";
 
 function App() {
   return (
     <div>
-      <div>{Page_table()}</div>
+      <div>{Pagetable()}</div>
+      <div>{RawList()}</div>
     </div>
   );
 }
