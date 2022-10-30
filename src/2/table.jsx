@@ -13,8 +13,6 @@ import {
   Link,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { display } from "@mui/system";
-import DatePicker, { registerLocale } from "react-datepicker";
 
 function list_item(id, subject, write, date) {
   return { id, subject, write, date };
