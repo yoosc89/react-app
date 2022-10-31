@@ -10,7 +10,12 @@ import {
 
 import Card from "@mui/material/Card";
 
-const cards = [1, 2, 3];
+const cards = [
+  "https://picsum.photos/920",
+  "https://picsum.photos/921",
+  "https://picsum.photos/922",
+  "https://picsum.photos/923",
+];
 
 function imageCard() {
   return (
@@ -24,7 +29,7 @@ function imageCard() {
               <CardMedia
                 component="img"
                 sx={{ pt: "0%" }}
-                image="https://source.unsplash.com/random"
+                image={card}
                 alt="random"
               />
               <CardContent sx={{ flexGrow: 1 }}>

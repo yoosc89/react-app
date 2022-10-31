@@ -2,7 +2,10 @@ import { Grid, CardMedia, Container, CardActionArea } from "@mui/material/";
 
 import Card from "@mui/material/Card";
 
-const cards = [1, 2, 3, 4, 5, 6, 7];
+let cards = [];
+for (let i = 0; i < 8; i++) {
+  cards.push("https://picsum.photos/80" + i);
+}
 
 function thumNail() {
   return (
@@ -17,7 +20,7 @@ function thumNail() {
                 <CardMedia
                   height="250"
                   component="img"
-                  image="https://source.unsplash.com/random"
+                  image={card}
                   alignItems="center"
                   alt="random"
                 />
