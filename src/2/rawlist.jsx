@@ -28,13 +28,12 @@ function Test(page) {
     axios
       .get(`http://localhost:8000/select/${page}`)
       .then((res) => setdata(res.data))
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   }, [page]);
   return data;
 }
 
 function Items(data) {
-  console.log(data);
   return data.map((row) => (
     <TableRow>
       <TableCell>{row.id}</TableCell>
