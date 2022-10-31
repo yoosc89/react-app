@@ -6,18 +6,22 @@ import Writer from "./2/write";
 import imageCard from "./1/image_card";
 import LoginPage from "./1/login_name";
 import thumNail from "./1/thumnail_card";
+import useScrollSnap from "react-use-scroll-snap";
+import React, { useRef } from "react";
 
 function App() {
+  const scrollRef = useRef(null);
+  useScrollSnap({ ref: scrollRef, duration: 200, delay: 100 });
   return (
     <div>
-      <div>{thumNail()}</div>
-      <div>{imageCard()}</div>
+      <div ref={scrollRef}>{thumNail()}</div>
+      <div ref={scrollRef}>{imageCard()}</div>
 
-      <div>{slidePage()}</div>
-      <Pagetable sx={{ pt: 8 }} />
-      <RawList sx={{ pt: 8 }} />
-      <Writer sx={{ pt: 8 }} />
-      <LoginPage sx={{ pt: 8 }} />
+      <div ref={scrollRef}>{slidePage()}</div>
+      <Pagetable ref={scrollRef} sx={{ pt: 8 }} />
+      <RawList ref={scrollRef} sx={{ pt: 8 }} />
+      <Writer ref={scrollRef} sx={{ pt: 8 }} />
+      <LoginPage ref={scrollRef} sx={{ pt: 8 }} />
     </div>
   );
 }
