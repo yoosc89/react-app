@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 
 const cards = [1, 2, 3, 4, 5, 6, 7];
 
-function thumnail() {
+function thumNail() {
   return (
     <Container sx={{ py: 20 }} maxWidth="xl">
       <Grid container spacing={2}>
@@ -30,4 +30,4 @@ function thumnail() {
   );
 }
 
-export default thumnail;
+export default thumNail;

@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { TextField, Grid, Button, Typography } from "@mui/material";
+import { TextField, Grid, Button, Typography, Textarea } from "@mui/material";
 import axios from "axios";
 
 function handleSumit(e) {
   e.preventDefault();
   const title = e.target.title.value;
   const writer = e.target.writer.value;
-  inputData(title, writer);
+  const content = e.target.content.value;
+  inputData(title, writer, content);
   alert([
     `POST 요청 입력값 확인용 알림창\ntitle : ${title}\nwriter :  ${writer}`,
   ]);
   document.getElementById("title").value = "";
   document.getElementById("writer").value = "";
+  document.getElementById("content").value = "";
 }
 
 function inputData(title1, writer1) {
@@ -46,6 +48,7 @@ function FormData1() {
             fullWidth
             sx={{ boxShadow: 4 }}
             required={true}
+            autoFocus
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -56,6 +59,21 @@ function FormData1() {
             fullWidth
             sx={{ boxShadow: 4 }}
             required={true}
+            autoFocus
+          />
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <TextField
+            id="content"
+            label="content"
+            size="large"
+            fullWidth
+            sx={{ boxShadow: 4 }}
+            required={true}
+            autoFocus
+            multiline={true}
+            contentEditable={true}
+            maxRows={10}
           />
         </Grid>
         <Grid item xs={12} sx={{ borderRadius: 2 }}>
