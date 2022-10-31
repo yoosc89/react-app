@@ -9,16 +9,20 @@ function handleSumit(e) {
   const content = e.target.content.value;
   inputData(title, writer, content);
   alert([
-    `POST 요청 입력값 확인용 알림창\ntitle : ${title}\nwriter :  ${writer}`,
+    `POST 요청 입력값 확인용 알림창\ntitle : ${title}\nwriter :  ${writer}\ncontent : ${content}`,
   ]);
   document.getElementById("title").value = "";
   document.getElementById("writer").value = "";
   document.getElementById("content").value = "";
 }
 
-function inputData(title1, writer1) {
+function inputData(title, writer, content) {
   axios
-    .post("http://localhost:8000/post", { title: title1, writer: writer1 })
+    .post("http://localhost:8000/post", {
+      title: title,
+      writer: writer,
+      content: content,
+    })
     .then((res) => {})
     .catch(() => {})
     .then(() => {});
@@ -48,7 +52,7 @@ function FormData1() {
             fullWidth
             sx={{ boxShadow: 4 }}
             required={true}
-            autoFocus
+            autofocus
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -59,7 +63,7 @@ function FormData1() {
             fullWidth
             sx={{ boxShadow: 4 }}
             required={true}
-            autoFocus
+            autofocus
           />
         </Grid>
         <Grid item xs={12} md={12}>
@@ -70,7 +74,7 @@ function FormData1() {
             fullWidth
             sx={{ boxShadow: 4 }}
             required={true}
-            autoFocus
+            autofocus
             multiline={true}
             contentEditable={true}
             maxRows={10}
