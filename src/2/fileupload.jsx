@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Grid, Card, CardMedia } from "@mui/material";
+import { Button, Grid, Card, CardMedia, Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import axios from "axios";
 
 export default function FileUpload1() {
@@ -18,26 +19,28 @@ export default function FileUpload1() {
 
   const previewImage = (e) => {
     return (
-      <Grid item sx={{ m: 4 }}>
-        <Card sx={{ maxWidth: 500, alignContent: "center", boxShadow: 8 }}>
-          <CardMedia
-            component="img"
-            height="500"
-            image={e}
-            alt="previewImage"
-          />
-        </Card>
-      </Grid>
+      <Card
+        sx={{
+          maxWidth: 500,
+          boxShadow: 8,
+        }}
+      >
+        <CardMedia component="img" height="500" image={e} alt="" />
+      </Card>
     );
   };
 
   return (
     <React.Fragment>
-      <Grid container xs={12} md={12} sx={{ m: 2, pt: 8 }}>
-        <Grid item xs={12} md={12}>
+      <Box sx={{ m: 3 }}>
+        <Box
+          xs={12}
+          md={12}
+          sx={{ boxShadow: 8, display: "block", alignContent: "center", mb: 2 }}
+        >
           {previewImage(upImage)}
-        </Grid>
-        <Grid item alignContent="center" xs={12} md={12}>
+        </Box>
+        <Box alignContent="center" xs={12} md={12}>
           <Button variant="contained" component="label" size="large" fullWidth>
             Auto_File_Upload && previewImage
             <input
@@ -49,8 +52,8 @@ export default function FileUpload1() {
               name="file"
             />
           </Button>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </React.Fragment>
   );
 }
