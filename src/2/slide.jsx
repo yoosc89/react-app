@@ -1,8 +1,6 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button, Grid } from "@mui/material";
-
-import { textAlign } from "@mui/system";
+import { Grid } from "@mui/material";
 
 export default function slidePage() {
   const items = [

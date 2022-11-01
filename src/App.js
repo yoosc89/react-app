@@ -8,6 +8,7 @@ import LoginPage from "./1/login_name";
 import thumNail from "./1/thumnail_card";
 import useScrollSnap from "react-use-scroll-snap";
 import React, { useRef } from "react";
+import FileUpload1 from "./2/fileupload";
 
 function App() {
   const scrollRef = useRef(null);
@@ -21,6 +22,7 @@ function App() {
       <Pagetable ref={scrollRef} sx={{ pt: 8 }} />
       <RawList ref={scrollRef} sx={{ pt: 8 }} />
       <Writer ref={scrollRef} sx={{ pt: 8 }} />
+      <div>{FileUpload1()}</div>
       <LoginPage ref={scrollRef} sx={{ pt: 8 }} />
     </div>
   );

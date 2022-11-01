@@ -1,10 +1,12 @@
-from django.template import Origin
-from fastapi import FastAPI
+
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
 import json
 import pymysql
+import uuid
+import os
 
 with open("mysql_info.json") as f:
     mysql_info = json.load(f)
@@ -46,5 +48,17 @@ async def create_title(item: Item):
     item_dict = item.dict()
 
     item_dict['date'] = datetime.now().strftime("%Y%m%d%H%M%S")
-    print(item_dict)
+
     return item_dict
+
+
+@app.post('/files')
+async def create_files(file: UploadFile):
+    UPLOAD_DIR = './photo'
+    content = await file.read()
+    filetype = file.content_type.split('/')[1]
+    filename = f'{str(uuid.uuid4())}.{filetype}'
+
+    with open(os.path.join(UPLOAD_DIR, filename), 'wb') as f:
+        f.write(content)
+    return {'filename': filename}
