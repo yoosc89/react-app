@@ -26,7 +26,7 @@ function Data(load) {
 }
 
 function TableLoad() {
-  const reload = useSelector((state) => state.reload);
+  const reload = useSelector((state) => state.TableReload.reload);
   return (
     <Box sx={{ height: 500, width: "100%" }}>
       <DataGrid

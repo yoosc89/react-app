@@ -29,8 +29,12 @@ async def select(id: int):
     if id == 'undefined':
         return None
 
+    cursor.execute('select id from test_table order by id desc limit 1')
+    lastid = cursor.fetchall()[0][0]
+    print(lastid)
+
     cursor.execute(
-        'select * from test_table where id> %s and id <= %s;', [id*10-1, (id+1)*10-1])
+        'select * from test_table  where id<= %s and id > %s order by id desc;', [lastid-(id*10-1), lastid-((id+1)*10-1)])
     output = cursor.fetchall()
     list = []
     for i in output:
@@ -40,7 +44,7 @@ async def select(id: int):
     return list
 
 
-@app.get('/allselect')
+@ app.get('/allselect')
 async def allselect():
     cursor.execute('select * from test_table order by id desc;')
     output = cursor.fetchall()
@@ -57,7 +61,7 @@ class Item(BaseModel):
     content: str
 
 
-@app.post('/post')
+@ app.post('/post')
 async def create_title(item: Item):
     item_dict = item.dict()
 

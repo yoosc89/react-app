@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, Grid, Button, Typography } from "@mui/material";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, batch } from "react-redux";
 
 function inputData(e) {
   e.preventDefault();
@@ -27,10 +27,11 @@ function FormData1() {
   return (
     <form
       onSubmit={(e) => {
-        dispatch({ type: "write_false" });
         inputData(e);
-        dispatch({ type: 0 });
-        dispatch({ type: "table_reload" });
+        batch(() => {
+          dispatch({ type: "Treload" });
+          dispatch({ type: "WRclose" });
+        }).then(() => {});
       }}
       method="post"
     >

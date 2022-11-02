@@ -27,13 +27,14 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function Test(page) {
+  const load = useSelector((state) => state.TableReload.reload);
   const [data, setdata] = useState([]);
   useEffect(() => {
     axios
       .get(`http://localhost:8000/select/${page}`)
       .then((res) => setdata(res.data))
       .catch((err) => {});
-  }, [page]);
+  }, [page, load]);
 
   return data;
 }
@@ -54,12 +55,14 @@ export function Items(data) {
 }
 
 function BodyNumber() {
-  const number = useSelector((state) => state.number);
+  const number = useSelector((state) => state.PageNumber.number);
+
   return <TableBody>{Items(Test(number))}</TableBody>;
 }
 
 function BodyButton() {
   const dispatch = useDispatch();
+
   return (
     <>
       <ListItemButton>
@@ -121,7 +124,7 @@ function BodyButton() {
 }
 
 function WriteDrawer() {
-  const bool = useSelector((state) => state.bool);
+  const bool = useSelector((state) => state.WriteLoadButton.bool);
   const dispatch = useDispatch();
 
   return (
@@ -130,9 +133,9 @@ function WriteDrawer() {
         anchor="bottom"
         open={bool}
         onClose={() => {
-          dispatch({ type: false });
+          dispatch({ type: "WRclose" });
         }}
-        onOpen={() => dispatch({ type: "write_true" })}
+        onOpen={() => dispatch({ type: "WRload" })}
       >
         {bool && Writer()}
       </SwipeableDrawer>
@@ -150,7 +153,7 @@ function WriteButton() {
         size="large"
         sx={{ m: 2, boxShadow: 8 }}
         onClick={() => {
-          dispatch({ type: "write_true" });
+          dispatch({ type: "WRload" });
         }}
       >
         write

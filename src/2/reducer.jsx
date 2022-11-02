@@ -1,21 +1,47 @@
-export default function reducer(state, action) {
-  if (state === undefined) {
-    return {};
-  }
+import { combineReducers } from "redux";
 
-  if (action.type === "write_true") {
-    return { bool: true };
+export function PageNumber(state, action) {
+  if (state === undefined) {
+    return { number: 0 };
   }
-  if (action.type === "wirte_false") {
-    return { bool: false };
-  }
-  if (action.type >= 0 && action.type <= 20) {
+  if (action.type >= 0) {
     return { number: action.type };
   }
-  if (action.type === "table_reload") {
+
+  const newState = { ...state };
+  return newState;
+}
+
+export function WriteLoadButton(state, action) {
+  if (state === undefined) {
+    return { bool: false };
+  }
+  if (action.type === "WRload") {
+    return { bool: true };
+  }
+  if (action.type === "WRclose") {
+    return { bool: false };
+  }
+  const newState = { ...state };
+  return newState;
+}
+
+export function TableReload(state, action) {
+  if (state === undefined) {
+    return { bool: false };
+  }
+  if (action.type === "Treload") {
     return { reload: Math.random() };
   }
 
   const newState = { ...state };
   return newState;
 }
+
+const Reducers = combineReducers({
+  PageNumber: PageNumber,
+  WriteLoadButton: WriteLoadButton,
+  TableReload: TableReload,
+});
+
+export default Reducers;
