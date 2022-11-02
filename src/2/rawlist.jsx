@@ -34,6 +34,7 @@ export function Test(page) {
       .then((res) => setdata(res.data))
       .catch((err) => {});
   }, [page]);
+
   return data;
 }
 
@@ -131,9 +132,6 @@ function WriteDrawer() {
         onClose={() => {
           dispatch({ type: "write_false" });
         }}
-        onOpen={() => {
-          dispatch({ type: "write_true" });
-        }}
       >
         {bool && Writer()}
       </SwipeableDrawer>
@@ -144,19 +142,17 @@ function WriteDrawer() {
 function WriteButton() {
   const dispatch = useDispatch();
   return (
-    <>
-      <Button
-        variant="contained"
-        fullWidth
-        size="large"
-        sx={{ m: 2, boxShadow: 8 }}
-        onClick={() => {
-          dispatch({ type: "write_true" });
-        }}
-      >
-        write
-      </Button>
-    </>
+    <Button
+      variant="contained"
+      fullWidth
+      size="large"
+      sx={{ m: 2, boxShadow: 8 }}
+      onClick={() => {
+        dispatch({ type: "write_true" });
+      }}
+    >
+      write
+    </Button>
   );
 }
 

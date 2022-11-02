@@ -84,7 +84,7 @@ function FormData1() {
             variant="contained"
             type="submit"
             onClick={() => {
-              dispatch({ type: false });
+              dispatch({ type: "write_false" });
               dispatch({ type: 0 });
             }}
           >
