@@ -26,6 +26,9 @@ app.add_middleware(CORSMiddleware, allow_origins=origins,
 
 @app.get('/select/{id}')
 async def select(id: int):
+    if id == 'undefined':
+        return None
+
     cursor.execute(
         'select * from test_table where id> %s and id <= %s;', [id*10-1, (id+1)*10-1])
     output = cursor.fetchall()
