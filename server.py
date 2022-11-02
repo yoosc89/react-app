@@ -49,6 +49,7 @@ async def create_title(item: Item):
 
     item_dict['date'] = datetime.now().strftime("%Y%m%d%H%M%S")
 
+    print(item_dict)
     return item_dict
 
 

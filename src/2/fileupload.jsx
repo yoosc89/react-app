@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Button, Grid, Card, CardMedia, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Button, Card, CardMedia, Box } from "@mui/material";
 import axios from "axios";
 
 export default function FileUpload1() {
@@ -23,6 +22,7 @@ export default function FileUpload1() {
         sx={{
           maxWidth: 500,
           boxShadow: 8,
+          m: 4,
         }}
       >
         <CardMedia component="img" height="500" image={e} alt="" />
@@ -36,7 +36,7 @@ export default function FileUpload1() {
         <Box
           xs={12}
           md={12}
-          sx={{ boxShadow: 8, display: "block", alignContent: "center", mb: 2 }}
+          sx={{ display: "block", alignContent: "center", mb: 2 }}
         >
           {previewImage(upImage)}
         </Box>
