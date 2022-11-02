@@ -1,12 +1,18 @@
 export default function reducer(state, action) {
   if (state === undefined) {
     return {};
-  } else if (action.type === "write_true") {
+  }
+
+  if (action.type === "write_true") {
     return { bool: true };
-  } else if (action.type === "write_false") {
+  }
+  if (action.type === "wirte_false") {
     return { bool: false };
-  } else if (action.type >= 0 && action.type <= 20) {
+  }
+  if (action.type >= 0 && action.type <= 20) {
     return { number: action.type };
   }
-  return;
+
+  const newState = { ...state };
+  return newState;
 }

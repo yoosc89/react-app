@@ -14,9 +14,9 @@ function inputData(e) {
     .then((res) => {})
     .catch(() => {})
     .then(() => {});
-  alert(
+  /*   alert(
     `POST 요청 입력값 확인용 알림창\ntitle : ${e.target.title.value}\nwriter :  ${e.target.writer.value}\ncontent : ${e.target.content.value}`
-  );
+  ); */
   document.getElementById("title").value = "";
   document.getElementById("writer").value = "";
   document.getElementById("content").value = "";
@@ -25,7 +25,14 @@ function inputData(e) {
 function FormData1() {
   const dispatch = useDispatch();
   return (
-    <form onSubmit={inputData} method="post">
+    <form
+      onSubmit={(e) => {
+        dispatch({ type: "write_false" });
+        inputData(e);
+        dispatch({ type: 0 });
+      }}
+      method="post"
+    >
       <Grid
         container
         spacing={2}
@@ -83,10 +90,7 @@ function FormData1() {
             sx={{ boxShadow: 4, height: 50 }}
             variant="contained"
             type="submit"
-            onClick={() => {
-              dispatch({ type: "write_false" });
-              dispatch({ type: 0 });
-            }}
+            onClick={() => {}}
           >
             보내기
           </Button>

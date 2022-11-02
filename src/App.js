@@ -12,20 +12,18 @@ import { Provider } from "react-redux";
 import store from "./2/store";
 
 function App() {
-  const scrollRef = useRef(null);
-  useScrollSnap({ ref: scrollRef, duration: 200, delay: 100 });
   return (
     <Provider store={store}>
       <div>
-        <div ref={scrollRef}>{thumNail()}</div>
-        <div ref={scrollRef}>{imageCard()}</div>
+        <div>{thumNail()}</div>
+        <div>{imageCard()}</div>
 
-        <div ref={scrollRef}>{slidePage()}</div>
-        <Pagetable ref={scrollRef} sx={{ pt: 8 }} />
+        <div>{slidePage()}</div>
+        <Pagetable sx={{ pt: 8 }} />
         <>{RawList()}</>
 
         <div>{FileUpload1()}</div>
-        <LoginPage ref={scrollRef} sx={{ pt: 8 }} />
+        <LoginPage sx={{ pt: 8 }} />
       </div>
     </Provider>
   );
