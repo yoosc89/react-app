@@ -30,6 +30,7 @@ function FormData1() {
         dispatch({ type: "write_false" });
         inputData(e);
         dispatch({ type: 0 });
+        dispatch({ type: "table_reload" });
       }}
       method="post"
     >

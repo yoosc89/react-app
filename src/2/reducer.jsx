@@ -12,6 +12,9 @@ export default function reducer(state, action) {
   if (action.type >= 0 && action.type <= 20) {
     return { number: action.type };
   }
+  if (action.type === "table_reload") {
+    return { reload: Math.random() };
+  }
 
   const newState = { ...state };
   return newState;

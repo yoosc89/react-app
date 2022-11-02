@@ -1,6 +1,7 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
 import { Grid } from "@mui/material";
+import { WindowSharp } from "@mui/icons-material";
 
 export default function slidePage() {
   const items = [
@@ -11,13 +12,9 @@ export default function slidePage() {
   ];
 
   return (
-    <Grid container sx={{ pt: 8, borderRadius: 10 }}>
-      <Grid item xs={12} sx={{ m: 2, boxShadow: 10, borderRadius: 3 }}>
-        <Carousel
-          sx={{ borderRadius: 3 }}
-          style={{ height: 550 }}
-          interval={50000}
-        >
+    <Grid container xs={12} md={12} sx={{ pt: 8 }}>
+      <Grid item xs={12} md={12}>
+        <Carousel sx={{ height: 550 }} interval={1000}>
           {items.map((item) => {
             return (
               <div

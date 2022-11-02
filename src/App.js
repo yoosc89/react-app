@@ -5,26 +5,28 @@ import slidePage from "./2/slide";
 import imageCard from "./1/image_card";
 import LoginPage from "./1/login_name";
 import thumNail from "./1/thumnail_card";
-import useScrollSnap from "react-use-scroll-snap";
+
 import React, { useRef } from "react";
 import FileUpload1 from "./2/fileupload";
 import { Provider } from "react-redux";
 import store from "./2/store";
+import TableGrid from "./2/datagrid";
 
 function App() {
   return (
     <Provider store={store}>
-      <div>
-        <div>{thumNail()}</div>
-        <div>{imageCard()}</div>
+      <>
+        <>{thumNail()}</>
+        <>{imageCard()}</>
 
-        <div>{slidePage()}</div>
-        <Pagetable sx={{ pt: 8 }} />
+        <>{slidePage()}</>
+
         <>{RawList()}</>
+        <TableGrid></TableGrid>
 
-        <div>{FileUpload1()}</div>
+        <>{FileUpload1()}</>
         <LoginPage sx={{ pt: 8 }} />
-      </div>
+      </>
     </Provider>
   );
 }

@@ -40,6 +40,17 @@ async def select(id: int):
     return list
 
 
+@app.get('/allselect')
+async def allselect():
+    cursor.execute('select * from test_table order by id desc;')
+    output = cursor.fetchall()
+    list = []
+    for i in output:
+        arrr = {'id': i[0], 'title': i[1], 'writer': i[2], 'date': i[3]}
+        list.append(arrr)
+    return list
+
+
 class Item(BaseModel):
     title: str
     writer: str
@@ -51,12 +62,14 @@ async def create_title(item: Item):
     item_dict = item.dict()
 
     item_dict['date'] = datetime.now().strftime("%Y%m%d%H%M%S")
-
-    print(item_dict)
+    print(item_dict.values())
+    cursor.executemany(
+        'insert into test_table(subject_title, subject_writer, content, subject_date) values (%s,%s,%s,%s);', [list(item_dict.values())])
+    conn.commit()
     return item_dict
 
 
-@app.post('/files')
+@ app.post('/files')
 async def create_files(file: UploadFile):
     UPLOAD_DIR = './photo'
     content = await file.read()
