@@ -40,13 +40,12 @@ function FormData() {
   const ModifyWrite = useSelector((state) => state.ModifyWrite);
 
   return (
-    <Grid container spacing={2} xs={11} md={11} sx={{ m: 2, pt: 2, rowGap: 1 }}>
-      <Grid item xs={12}>
-        <Typography align="center" variant="h3">
-          POST TEST
-        </Typography>
-      </Grid>
-
+    <Grid
+      container
+      columnSpacing={1}
+      rowSpacing={4}
+      sx={{ mt: 2, width: "100%", p: 2 }}
+    >
       <Grid item xs={12} md={8}>
         <TextField
           id="title"
@@ -58,6 +57,7 @@ function FormData() {
           autofocus
           defaultValue={data.title}
           multiline
+          rows={2}
           maxRows={1}
         />
       </Grid>
@@ -67,36 +67,38 @@ function FormData() {
           label="writer"
           size="medium"
           fullWidth
-          sx={{ boxShadow: 4 }}
+          sx={{ boxShadow: 8 }}
           required={true}
           autofocus
           defaultValue={data.writer}
           multiline
+          rows={2}
           maxRows={1}
           disabled={data.disablewriter}
         />
       </Grid>
-      <Grid item xs={12} md={12}>
+      <Grid item sx={{ width: "100%" }}>
         <TextField
           id="content"
           label="content"
           size="large"
           fullWidth
-          sx={{ boxShadow: 4 }}
           required={true}
           autofocus
           multiline={true}
+          rows={4}
           maxRows={10}
           defaultValue={data.content}
+          sx={{ boxShadow: 8 }}
         />
       </Grid>
-      <Grid item xs={12} sx={{ borderRadius: 2 }}>
+      <Grid item sx={{ borderRadius: 2, width: "100%" }}>
         <Button
           label="save"
           color="primary"
           fullWidth
           children
-          sx={{ boxShadow: 4, height: 50 }}
+          sx={{ boxShadow: 8, height: 50 }}
           variant="contained"
           type="submit"
           onClick={() => {}}

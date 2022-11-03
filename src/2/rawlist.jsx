@@ -13,6 +13,7 @@ import {
   Button,
   SwipeableDrawer,
   Typography,
+  Pagination,
 } from "@mui/material";
 import Writer from "./write";
 import { batch, useSelector, useDispatch } from "react-redux";
@@ -186,7 +187,7 @@ function WriteButton() {
         variant="contained"
         fullWidth
         size="large"
-        sx={{ m: 2, boxShadow: 8 }}
+        sx={{ boxShadow: 8, mb: 2 }}
         onClick={() => {
           batch(() => {
             dispatch({ type: "WRload" });
@@ -200,6 +201,23 @@ function WriteButton() {
   );
 }
 
+const PagiNation = () => {
+  return (
+    <Pagination
+      size="large"
+      variant="outlined"
+      shape="rounded"
+      defaultPage={1}
+      count={1000}
+      page={5}
+      sx={{
+        m: 2,
+      }}
+      showFirstButton={true}
+      showLastButton={true}
+    ></Pagination>
+  );
+};
 export default function RawList() {
   return (
     <React.Fragment>
@@ -228,11 +246,11 @@ export default function RawList() {
               </TableHead>
               <BodyNumber />
             </Table>
+            <PagiNation textAlign="center" />
+            <WriteDrawer />
+            <WriteButton />
           </Item>
         </Grid>
-        <WriteButton />
-        <Grid item xs={12} md={12}></Grid>
-        <WriteDrawer />
       </Grid>
     </React.Fragment>
   );

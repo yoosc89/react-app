@@ -18,12 +18,10 @@ function App() {
       <>
         <>{thumNail()}</>
         <>{imageCard()}</>
-
         <>{slidePage()}</>
-
         <>{RawList()}</>
-        <TableGrid></TableGrid>
 
+        {/* <TableGrid /> */}
         <>{FileUpload1()}</>
         <LoginPage sx={{ pt: 8 }} />
       </>
