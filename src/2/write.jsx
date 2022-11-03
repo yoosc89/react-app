@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { TextField, Grid, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useDispatch, batch, useSelector } from "react-redux";
@@ -22,21 +22,22 @@ function inputData(e) {
   document.getElementById("content").value = "";
 }
 
-export function Loadcontent(id) {
-  const [data, setdata] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/content/${id}`)
-      .then((res) => setdata(res.data))
-      .catch((err) => {});
-  }, [id]);
-
-  return data;
+function ModifyData(e, id) {
+  axios
+    .post("http://localhost:8000/content/modify", {
+      id: id,
+      title: e.target.title.value,
+      writer: e.target.writer.value,
+      content: e.target.content.value,
+    })
+    .then((res) => {})
+    .catch(() => {})
+    .then(() => {});
 }
 
-function FormData({ text }) {
+function FormData() {
   const data = useSelector((state) => state.DefaultContent);
+  const ModifyWrite = useSelector((state) => state.ModifyWrite);
 
   return (
     <Grid container spacing={2} xs={11} md={11} sx={{ m: 2, pt: 2, rowGap: 1 }}>
@@ -100,27 +101,34 @@ function FormData({ text }) {
           type="submit"
           onClick={() => {}}
         >
-          보내기
+          {ModifyWrite.modifyname}
         </Button>
       </Grid>
     </Grid>
   );
 }
 
-export default function Writer() {
+export default function Writer(id) {
   const dispatch = useDispatch();
+  console.log(id);
   return (
     <form
       onSubmit={(e) => {
-        inputData(e);
+        if (id === undefined) {
+          inputData(e);
+        } else if (id >= 0) {
+          ModifyData(e, id);
+        }
+
         batch(() => {
+          dispatch({ type: "MWrite" });
           dispatch({ type: "Treload" });
           dispatch({ type: "WRclose" });
-        }).then(() => {});
+        });
       }}
       method="post"
     >
-      <FormData text="1050" />
+      <FormData />
     </form>
   );
 }

@@ -25,7 +25,6 @@ app.add_middleware(CORSMiddleware, allow_origins=origins,
 
 
 def convert_list_to_dict(tuple: tuple):
-    print(tuple)
     dict = []
     for i in tuple:
         arrr = {'id': i[0], 'title': i[1],
@@ -87,6 +86,13 @@ async def create_files(file: UploadFile):
     return {'filename': filename}
 
 
+class ContentItem(BaseModel):
+    id: int
+    title: str
+    writer: str
+    content: str
+
+
 @app.get('/content/{id}')
 async def content_search(id: int):
     cursor.execute('select * from test_table where id = %s;', id)
@@ -94,3 +100,13 @@ async def content_search(id: int):
     dict = convert_list_to_dict(output)
     dict[0]['disablewriter'] = 'true'
     return dict
+
+
+@app.post('/content/modify')
+async def modify_content(item: ContentItem):
+    item_dict = item.dict()
+
+    cursor.execute(
+        "update test_table set subject_title = %s, subject_writer =%s, content =%s where id= %s ", [item_dict['title'], item_dict['writer'], item_dict['content'], item_dict['id'], ])
+    conn.commit()
+    return item_dict

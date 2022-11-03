@@ -10,12 +10,13 @@ import {
   ListItemText,
   ListItemButton,
   Paper,
-  Link,
   Button,
   SwipeableDrawer,
+  Typography,
 } from "@mui/material";
 import Writer from "./write";
-import { useSelector, useDispatch } from "react-redux";
+import { batch, useSelector, useDispatch } from "react-redux";
+
 import { styled } from "@mui/material/styles";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -39,20 +40,44 @@ export function Test(page) {
   return data;
 }
 
+export function Loadcontent(id) {
+  const load = useSelector((state) => state.TableReload.reload);
+  const [data, setdata] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/content/${id}`)
+      .then((res) => setdata(res.data))
+      .catch((err) => {});
+  }, [id, load]);
+
+  return { type: data[0] };
+}
+
+export function Ttitle({ text_id, text_title }) {
+  const dispatch = useDispatch();
+  const data = Loadcontent(text_id);
+  return (
+    <Typography
+      onClick={() => {
+        batch(() => {
+          dispatch({ type: "WRload" });
+          dispatch({ type: "MModify" });
+          dispatch(data);
+        });
+      }}
+    >
+      {text_title}
+    </Typography>
+  );
+}
 export function Items(data) {
   return data.map((row) => (
     <>
       <TableRow>
         <TableCell>{row.id}</TableCell>
-        <TableCell
-          align="left"
-          onClick={() => {
-            return;
-          }}
-        >
-          <Link color="black" underline="none">
-            {row.title}
-          </Link>
+        <TableCell>
+          <Ttitle text_id={row.id} text_title={row.title} />
         </TableCell>
         <TableCell>{row.writer}</TableCell>
         <TableCell>{row.date}</TableCell>
@@ -132,6 +157,8 @@ function BodyButton() {
 
 function WriteDrawer() {
   const bool = useSelector((state) => state.WriteLoadButton.bool);
+  const id = useSelector((state) => state.DefaultContent.id);
+
   const dispatch = useDispatch();
 
   return (
@@ -144,27 +171,15 @@ function WriteDrawer() {
         }}
         onOpen={() => dispatch({ type: "WRload" })}
       >
-        {bool && Writer()}
+        {bool && Writer(id)}
       </SwipeableDrawer>
     </>
   );
 }
-export function Loadcontent(id) {
-  const [data, setdata] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/content/${id}`)
-      .then((res) => setdata(res.data))
-      .catch((err) => {});
-  }, [id]);
-
-  return { type: data[0] };
-}
-
-function WriteButton({ text }) {
+function WriteButton() {
   const dispatch = useDispatch();
-  const data = Loadcontent(text);
+
   return (
     <>
       <Button
@@ -173,8 +188,10 @@ function WriteButton({ text }) {
         size="large"
         sx={{ m: 2, boxShadow: 8 }}
         onClick={() => {
-          dispatch({ type: "WRload" });
-          dispatch(data);
+          batch(() => {
+            dispatch({ type: "WRload" });
+            dispatch({ type: "MWrite" });
+          });
         }}
       >
         write
