@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Grid, Button, Typography } from "@mui/material";
 import axios from "axios";
-import { useDispatch, batch } from "react-redux";
+import { useDispatch, batch, useSelector } from "react-redux";
 
 function inputData(e) {
   e.preventDefault();
@@ -22,7 +22,92 @@ function inputData(e) {
   document.getElementById("content").value = "";
 }
 
-function FormData1() {
+export function Loadcontent(id) {
+  const [data, setdata] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/content/${id}`)
+      .then((res) => setdata(res.data))
+      .catch((err) => {});
+  }, [id]);
+
+  return data;
+}
+
+function FormData({ text }) {
+  const data = useSelector((state) => state.DefaultContent);
+
+  return (
+    <Grid container spacing={2} xs={11} md={11} sx={{ m: 2, pt: 2, rowGap: 1 }}>
+      <Grid item xs={12}>
+        <Typography align="center" variant="h3">
+          POST TEST
+        </Typography>
+      </Grid>
+
+      <Grid item xs={12} md={8}>
+        <TextField
+          id="title"
+          label="title"
+          size="medium"
+          fullWidth
+          sx={{ boxShadow: 4 }}
+          required={true}
+          autofocus
+          defaultValue={data.title}
+          multiline
+          maxRows={1}
+        />
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <TextField
+          id="writer"
+          label="writer"
+          size="medium"
+          fullWidth
+          sx={{ boxShadow: 4 }}
+          required={true}
+          autofocus
+          defaultValue={data.writer}
+          multiline
+          maxRows={1}
+          disabled={data.disablewriter}
+        />
+      </Grid>
+      <Grid item xs={12} md={12}>
+        <TextField
+          id="content"
+          label="content"
+          size="large"
+          fullWidth
+          sx={{ boxShadow: 4 }}
+          required={true}
+          autofocus
+          multiline={true}
+          maxRows={10}
+          defaultValue={data.content}
+        />
+      </Grid>
+      <Grid item xs={12} sx={{ borderRadius: 2 }}>
+        <Button
+          label="save"
+          color="primary"
+          fullWidth
+          children
+          sx={{ boxShadow: 4, height: 50 }}
+          variant="contained"
+          type="submit"
+          onClick={() => {}}
+        >
+          보내기
+        </Button>
+      </Grid>
+    </Grid>
+  );
+}
+
+export default function Writer() {
   const dispatch = useDispatch();
   return (
     <form
@@ -35,73 +120,7 @@ function FormData1() {
       }}
       method="post"
     >
-      <Grid
-        container
-        spacing={2}
-        xs={11}
-        md={11}
-        sx={{ m: 2, pt: 2, rowGap: 1 }}
-      >
-        <Grid item xs={12}>
-          <Typography align="center" variant="h3">
-            POST TEST
-          </Typography>
-        </Grid>
-
-        <Grid item xs={12} md={8}>
-          <TextField
-            id="title"
-            label="title"
-            size="medium"
-            fullWidth
-            sx={{ boxShadow: 4 }}
-            required={true}
-            autofocus
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <TextField
-            id="writer"
-            label="writer"
-            size="medium"
-            fullWidth
-            sx={{ boxShadow: 4 }}
-            required={true}
-            autofocus
-          />
-        </Grid>
-        <Grid item xs={12} md={12}>
-          <TextField
-            id="content"
-            label="content"
-            size="large"
-            fullWidth
-            sx={{ boxShadow: 4 }}
-            required={true}
-            autofocus
-            multiline={true}
-            maxRows={10}
-          />
-        </Grid>
-        <Grid item xs={12} sx={{ borderRadius: 2 }}>
-          <Button
-            label="save"
-            color="primary"
-            fullWidth
-            children
-            sx={{ boxShadow: 4, height: 50 }}
-            variant="contained"
-            type="submit"
-            onClick={() => {}}
-          >
-            보내기
-          </Button>
-        </Grid>
-      </Grid>
+      <FormData text="1050" />
     </form>
   );
-}
-
-export default function Writer() {
-  return <FormData1></FormData1>;
 }

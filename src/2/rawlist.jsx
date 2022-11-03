@@ -41,16 +41,23 @@ export function Test(page) {
 
 export function Items(data) {
   return data.map((row) => (
-    <TableRow>
-      <TableCell>{row.id}</TableCell>
-      <TableCell align="left">
-        <Link color="black" underline="none" href={row.id}>
-          {row.title}
-        </Link>
-      </TableCell>
-      <TableCell>{row.writer}</TableCell>
-      <TableCell>{row.date}</TableCell>
-    </TableRow>
+    <>
+      <TableRow>
+        <TableCell>{row.id}</TableCell>
+        <TableCell
+          align="left"
+          onClick={() => {
+            return;
+          }}
+        >
+          <Link color="black" underline="none">
+            {row.title}
+          </Link>
+        </TableCell>
+        <TableCell>{row.writer}</TableCell>
+        <TableCell>{row.date}</TableCell>
+      </TableRow>
+    </>
   ));
 }
 
@@ -142,9 +149,22 @@ function WriteDrawer() {
     </>
   );
 }
+export function Loadcontent(id) {
+  const [data, setdata] = useState([]);
 
-function WriteButton() {
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/content/${id}`)
+      .then((res) => setdata(res.data))
+      .catch((err) => {});
+  }, [id]);
+
+  return { type: data[0] };
+}
+
+function WriteButton({ text }) {
   const dispatch = useDispatch();
+  const data = Loadcontent(text);
   return (
     <>
       <Button
@@ -154,6 +174,7 @@ function WriteButton() {
         sx={{ m: 2, boxShadow: 8 }}
         onClick={() => {
           dispatch({ type: "WRload" });
+          dispatch(data);
         }}
       >
         write

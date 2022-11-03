@@ -38,10 +38,21 @@ export function TableReload(state, action) {
   return newState;
 }
 
+export function DefaultContent(state, action) {
+  if (action.type !== undefined) {
+    return {
+      title: action.type.title,
+      writer: action.type.writer,
+      content: action.type.content,
+      disablewriter: action.type.disablewriter,
+    };
+  }
+}
 const Reducers = combineReducers({
   PageNumber: PageNumber,
   WriteLoadButton: WriteLoadButton,
   TableReload: TableReload,
+  DefaultContent: DefaultContent,
 });
 
 export default Reducers;

@@ -24,6 +24,16 @@ app.add_middleware(CORSMiddleware, allow_origins=origins,
                    allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
 
 
+def convert_list_to_dict(tuple: tuple):
+    print(tuple)
+    dict = []
+    for i in tuple:
+        arrr = {'id': i[0], 'title': i[1],
+                'writer': i[2], 'content': i[4], 'date': i[3]}
+        dict.append(arrr)
+    return dict
+
+
 @app.get('/select/{id}')
 async def select(id: int):
     if id == 'undefined':
@@ -31,28 +41,20 @@ async def select(id: int):
 
     cursor.execute('select id from test_table order by id desc limit 1')
     lastid = cursor.fetchall()[0][0]
-    print(lastid)
 
     cursor.execute(
-        'select * from test_table  where id<= %s and id > %s order by id desc;', [lastid-(id*10-1), lastid-((id+1)*10-1)])
+        'select * from test_table  where id<= %s and id > %s order by id desc;', [lastid-(id*10), lastid-((id+1)*10)])
     output = cursor.fetchall()
-    list = []
-    for i in output:
-        arrr = {'id': i[0], 'title': i[1], 'writer': i[2], 'date': i[3]}
-        list.append(arrr)
 
-    return list
+    return convert_list_to_dict(output)
 
 
 @ app.get('/allselect')
 async def allselect():
     cursor.execute('select * from test_table order by id desc;')
     output = cursor.fetchall()
-    list = []
-    for i in output:
-        arrr = {'id': i[0], 'title': i[1], 'writer': i[2], 'date': i[3]}
-        list.append(arrr)
-    return list
+
+    return convert_list_to_dict(output)
 
 
 class Item(BaseModel):
@@ -66,7 +68,7 @@ async def create_title(item: Item):
     item_dict = item.dict()
 
     item_dict['date'] = datetime.now().strftime("%Y%m%d%H%M%S")
-    print(item_dict.values())
+
     cursor.executemany(
         'insert into test_table(subject_title, subject_writer, content, subject_date) values (%s,%s,%s,%s);', [list(item_dict.values())])
     conn.commit()
@@ -83,3 +85,12 @@ async def create_files(file: UploadFile):
     with open(os.path.join(UPLOAD_DIR, filename), 'wb') as f:
         f.write(content)
     return {'filename': filename}
+
+
+@app.get('/content/{id}')
+async def content_search(id: int):
+    cursor.execute('select * from test_table where id = %s;', id)
+    output = cursor.fetchall()
+    dict = convert_list_to_dict(output)
+    dict[0]['disablewriter'] = 'true'
+    return dict
