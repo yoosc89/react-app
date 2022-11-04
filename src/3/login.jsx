@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 import "animate.css";
+import { FloatingInput } from "./style";
 
 const Loginsystem = (e) => {
   alert(e.target.id.value);
@@ -27,34 +28,22 @@ const LoginPage = () => {
           action="/"
           method="post"
         >
-          <div class="form-floating">
-            <input
-              id="id"
-              name="id"
-              className="id"
-              type="text"
-              class="form-control shadow form-control-lg "
-              placeholder="id"
-              value={input.id}
-              onChange={onChange}
-              required
-            />
-            <label for="id">ID</label>
-          </div>
-          <div class="form-floating">
-            <input
-              id="pwd"
-              name="pwd"
-              className="pwd"
-              type="password"
-              class="form-control shadow form-control-lg"
-              placeholder="pwd"
-              value={input.pwd}
-              onChange={onChange}
-              required
-            />
-            <label for="pwd">Password</label>
-          </div>
+          <FloatingInput
+            name="id"
+            value={input.id}
+            onChange={onChange}
+            required={true}
+            label="ID"
+            type="text"
+          />
+          <FloatingInput
+            name="pwd"
+            value={input.pwd}
+            onChange={onChange}
+            required={true}
+            label="Password"
+            type="password"
+          />
           <button class="shadow btn btn-outline-primary btn-lg" type="summit">
             로그인
           </button>
