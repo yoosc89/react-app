@@ -7,6 +7,7 @@ import json
 import pymysql
 import uuid
 import os
+import jwt
 
 with open("mysql_info.json") as f:
     mysql_info = json.load(f)

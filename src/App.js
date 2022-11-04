@@ -1,31 +1,29 @@
 import "./App.css";
-
-import RawList from "./2/rawlist";
-import slidePage from "./2/slide";
-import imageCard from "./1/image_card";
-import LoginPage from "./1/login_name";
-import thumNail from "./1/thumnail_card";
-
-import React from "react";
-import FileUpload1 from "./2/fileupload";
-import { Provider } from "react-redux";
-import store from "./2/store";
-import TableGrid from "./2/datagrid";
+import LoginPage from "./3/login";
+import MainPage from "./3/mainpage";
+import NewAccount from "./3/newaccount";
+import SearchAccoute from "./3/searchaccount";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <Provider store={store}>
-      <>
-        <>{thumNail()}</>
-        <>{imageCard()}</>
-        <>{slidePage()}</>
-        <>{RawList()}</>
-
-        {/* <TableGrid /> */}
-        <>{FileUpload1()}</>
-        <LoginPage sx={{ pt: 8 }} />
-      </>
-    </Provider>
+    <>
+      <Routes>
+        <Route caseSensitive path="/login" element={<LoginPage />}></Route>
+        <Route
+          exact
+          caseSensitive
+          path="/newaccount"
+          element={<NewAccount />}
+        ></Route>
+        <Route
+          caseSensitive
+          path="/searchaccoute"
+          element={<SearchAccoute />}
+        ></Route>
+        <Route caseSensitive exact path="/" element={<MainPage />}></Route>
+      </Routes>
+    </>
   );
 }
 
