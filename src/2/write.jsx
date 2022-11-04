@@ -6,7 +6,7 @@ import { useDispatch, batch, useSelector } from "react-redux";
 function inputData(e) {
   e.preventDefault();
   axios
-    .post("http://localhost:8000/post", {
+    .post("http://192.168.0.43:8000/post", {
       title: e.target.title.value,
       writer: e.target.writer.value,
       content: e.target.content.value,
@@ -24,7 +24,7 @@ function inputData(e) {
 
 function ModifyData(e, id) {
   axios
-    .post("http://localhost:8000/content/modify", {
+    .post("http://192.168.0.43:8000/content/modify", {
       id: id,
       title: e.target.title.value,
       writer: e.target.writer.value,

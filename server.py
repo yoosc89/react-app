@@ -17,9 +17,8 @@ cursor = conn.cursor()
 
 app = FastAPI()
 
-origins = ['http://localhost:8000',
-           'http://localhost:3000',
-           'http://localhost']
+origins = ['http://192.168.0.43:8000',
+           'http://192.168.0.43', 'http://192.168.0.43:3000', 'http://192.168.0.43:80', 'http://localhost', 'http://localhost:3000', 'http://localhost:8000']
 app.add_middleware(CORSMiddleware, allow_origins=origins,
                    allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
 

@@ -33,7 +33,7 @@ export function Test(page) {
   const [data, setdata] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/select/${page}`)
+      .get(`http://192.168.0.43:8000/select/${page}`)
       .then((res) => setdata(res.data))
       .catch((err) => {});
   }, [page, load]);
@@ -47,7 +47,7 @@ export function Loadcontent(id) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/content/${id}`)
+      .get(`http://192.168.0.43:8000/content/${id}`)
       .then((res) => setdata(res.data))
       .catch((err) => {});
   }, [id, load]);
