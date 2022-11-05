@@ -23,7 +23,10 @@ yarn-debug.log*
 yarn-error.log*
 src/2/db.jsx
 src/2/server.js
-__pycache__/server.cpython-310.pyc
+
 mysql_info.json
 /photo
 /__pycache__/
+server/new_server.py
+server/__pycache__/
+.gitignore
