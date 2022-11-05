@@ -34,8 +34,16 @@ def convert_list_to_dict(tuple: tuple):
     return dict
 
 
+@app.get('/contents/lastnumber')
+async def lastnumber():
+    cursor.execute('select id from test_table order by id desc limit 1')
+    lastid = cursor.fetchall()[0][0]
+    return lastid
+
+
 @app.get('/contents/{id}')
 async def select(id: int):
+    id -= 1
     if id == 'undefined':
         return None
 
