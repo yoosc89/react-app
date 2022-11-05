@@ -29,6 +29,7 @@ function App() {
             element={<SearchAccoute />}
           ></Route>
           <Route
+            exact
             caseSensitive
             path={`/contents/:id`}
             element={<ContentsPage />}

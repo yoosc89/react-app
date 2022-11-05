@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { Usb } from "@mui/icons-material";
 
 const CRowData = ({ data }) => {
   return data.map((row) => (
@@ -48,8 +47,8 @@ const CBody = ({ page }) => {
         <tr>
           <th>번호</th>
           <th class="w-50">게시글</th>
-          <th class="w-10">작성자</th>
-          <th class="w-25">작성시간</th>
+          <th class="w-25">작성자</th>
+          <th class="">작성시간</th>
         </tr>
       </thead>
       <tbody>
@@ -60,20 +59,13 @@ const CBody = ({ page }) => {
 };
 
 const Pagination = () => {
-  const { id } = useParams();
-  const lastid = LastPageNumber();
-  const pages = [
-    Number(id) - 5,
-    Number(id) - 3,
-    Number(id) - 1,
-    Number(id),
-    Number(id) + 1,
-    Number(id) + 3,
-    Number(id) + 5,
-  ];
+  let { id } = useParams();
+  id = Number(id);
+  const lastid = Number(LastPageNumber());
 
-  const pageSize =
-    Number(lastid) % 10 > 0 ? Number(lastid) / 10 : Number(lastid) / 10 - 1;
+  const pages = [id - 9, id - 4, id - 1, id, id + 1, id + 4, id + 9];
+
+  const pageSize = lastid % 10 > 0 ? lastid / 10 : lastid / 10 - 1;
 
   return (
     <nav aria-label="navigation ">
@@ -81,7 +73,7 @@ const Pagination = () => {
         <li class="page-item">
           <a class="page-link">
             <Link
-              to={`/contents/${Number(id) === 1 ? Number(id) : Number(id) - 1}`}
+              to={`/contents/${id === 1 ? id : id - 1}`}
               class="text-decoration-none"
             >
               Previous
@@ -92,10 +84,8 @@ const Pagination = () => {
           .filter((number) => number > 0 && number <= pageSize + 1)
           .map((number) => (
             <li class="page-item">
-              {number === Number(id) ? (
-                <Link class="page-link active" to={`/contents/${number}`}>
-                  {number}
-                </Link>
+              {number === id ? (
+                <a class="page-link active">{number}</a>
               ) : (
                 <Link class="page-link" to={`/contents/${number}`}>
                   {number}
@@ -107,9 +97,7 @@ const Pagination = () => {
         <li class="page-item">
           <a class="page-link">
             <Link
-              to={`/contents/${
-                Number(id) <= pageSize ? Number(id) + 1 : Number(id)
-              }`}
+              to={`/contents/${id <= pageSize ? id + 1 : id}`}
               class="text-decoration-none"
             >
               Next
