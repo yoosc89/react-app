@@ -63,13 +63,13 @@ const Pagination = () => {
   const { id } = useParams();
   const lastid = LastPageNumber();
   const pages = [
-    Number(id) - 10,
-    Number(id) - 2,
+    Number(id) - 5,
+    Number(id) - 3,
     Number(id) - 1,
     Number(id),
     Number(id) + 1,
-    Number(id) + 2,
-    Number(id) + 10,
+    Number(id) + 3,
+    Number(id) + 5,
   ];
 
   const pageSize =
@@ -77,7 +77,7 @@ const Pagination = () => {
 
   return (
     <nav aria-label="navigation ">
-      <ul class="pagination">
+      <ul class="pagination justify-content-center">
         <li class="page-item">
           <a class="page-link">
             <Link
@@ -92,9 +92,15 @@ const Pagination = () => {
           .filter((number) => number > 0 && number <= pageSize + 1)
           .map((number) => (
             <li class="page-item">
-              <Link class="page-link" to={`/contents/${number}`}>
-                {number}
-              </Link>
+              {number === Number(id) ? (
+                <Link class="page-link active" to={`/contents/${number}`}>
+                  {number}
+                </Link>
+              ) : (
+                <Link class="page-link" to={`/contents/${number}`}>
+                  {number}
+                </Link>
+              )}
             </li>
           ))}
 
@@ -123,7 +129,7 @@ const ContentsPage = () => {
       <div>
         <CBody page={id} />
       </div>
-      <div>
+      <div class="position-relative">
         <Pagination id={id} />
       </div>
     </div>
