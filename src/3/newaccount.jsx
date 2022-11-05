@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import DaumPostcode from "react-daum-postcode";
 import { FloatingInput } from "./style";
 

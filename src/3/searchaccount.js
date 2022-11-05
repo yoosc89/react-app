@@ -15,7 +15,7 @@ const SearchTitle = () => {
 const SearchAccoute = () => {
   const [text, setText] = useState({
     title: "이것은 비밀번호 찾기 페이지다.",
-    context: "왜냐하면 이것은 비밀번호를 찾기 때문이다.",
+    context: "왜냐하면 이것은 비밀번호를 찾기 때문이다(끄덕)",
   });
   return (
     <>

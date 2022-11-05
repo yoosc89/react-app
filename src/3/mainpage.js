@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -15,7 +14,7 @@ const LoginState = () => {
 const MainBody = () => {
   const [text, setText] = useState({
     title: "이것은 메인 페이지다.",
-    context: "왜냐하면 이것은 메인 페이지이기 때문이다.",
+    context: "왜냐하면 이것은 메인 페이지이기 때문이다.(끄덕)",
   });
   return (
     <>
@@ -33,7 +32,11 @@ const MainBody = () => {
 };
 
 const MainPage = () => {
-  return <MainBody />;
+  return (
+    <div>
+      <MainBody />
+    </div>
+  );
 };
 
 export default MainPage;

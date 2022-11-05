@@ -1,6 +1,7 @@
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2AuthorizationCodeBearer
 from pydantic import BaseModel
 from datetime import datetime
 import json
@@ -33,7 +34,7 @@ def convert_list_to_dict(tuple: tuple):
     return dict
 
 
-@app.get('/select/{id}')
+@app.get('/contents/{id}')
 async def select(id: int):
     if id == 'undefined':
         return None
@@ -48,7 +49,7 @@ async def select(id: int):
     return convert_list_to_dict(output)
 
 
-@ app.get('/allselect')
+@app.get('/allselect')
 async def allselect():
     cursor.execute('select * from test_table order by id desc;')
     output = cursor.fetchall()
@@ -62,7 +63,7 @@ class Item(BaseModel):
     content: str
 
 
-@ app.post('/post')
+@app.post('/post')
 async def create_title(item: Item):
     item_dict = item.dict()
 
@@ -74,7 +75,7 @@ async def create_title(item: Item):
     return item_dict
 
 
-@ app.post('/files')
+@app.post('/files')
 async def create_files(file: UploadFile):
     UPLOAD_DIR = './photo'
     content = await file.read()

@@ -1,7 +1,5 @@
 import React, { Fragment, useState } from "react";
-import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
-import "animate.css";
 import { FloatingInput } from "./style";
 
 const Loginsystem = (e) => {
@@ -53,7 +51,7 @@ const LoginPage = () => {
           to="/searchaccoute"
         >
           <button class="shadow btn btn-outline-primary btn-lg">
-            비밀번호를 잊어 버렸는가? 이것은 비밀번호 찾기다
+            비밀번호를 잊어 버렸는가? 이것은 비밀번호 찾기다 (끄덕)
           </button>
         </Link>
         <Link
