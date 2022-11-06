@@ -1,86 +1,71 @@
-const ModalContent = () => {
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
+const GetData = (num) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/question/list/detail/${num}`)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {});
+  }, [num]);
+  return data;
+};
+
+const Detail = ({ num }) => {
+  const [newData, setNewData] = useState({ subject: "", content: "" });
+  const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
+
+  const data = GetData(num);
+
   return (
-    <>
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-        data-bs-whatever="@mdo"
-      >
-        Open modal for @mdo
-      </button>
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-        data-bs-whatever="@fat"
-      >
-        Open modal for @fat
-      </button>
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-        data-bs-whatever="@getbootstrap"
-      >
-        Open modal for @getbootstrap
-      </button>
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                New message
-              </h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="mb-3">
-                  <label for="recipient-name" class="col-form-label">
-                    Recipient:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Message:
-                  </label>
-                  <textarea class="form-control" id="message-text"></textarea>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">
-                Send message
-              </button>
-            </div>
-          </div>
-        </div>
+    <div>
+      <div class="mb-3">
+        <label for="Input1" class="form-label">
+          제목 :
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="Input1"
+          placeholder="Subject"
+          defaultValue={data.subject}
+          disabled={writeSet}
+          onChange={(e) => {
+            setNewData({ subject: e.target.value });
+          }}
+        ></input>
       </div>
-    </>
+      <div class="mb-3">
+        <label for="Textarea1" class="form-label">
+          본문 :
+        </label>
+        <textarea
+          class="form-control"
+          id="Textarea1"
+          rows="5"
+          defaultValue={data.content}
+          disabled={writeSet}
+          onChange={(e) => {
+            setNewData({ content: e.target.value });
+          }}
+        ></textarea>
+      </div>
+    </div>
   );
 };
 
-export default ModalContent;
+const ContentPage = () => {
+  const num = useSelector((state) => state.detailNumber.num);
+  return (
+    <div>
+      <Detail num={num} />
+    </div>
+  );
+};
+
+export default ContentPage;

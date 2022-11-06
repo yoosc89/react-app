@@ -1,7 +1,7 @@
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 from datetime import datetime
 import json
@@ -119,3 +119,6 @@ async def modify_content(item: ContentItem):
         "update test_table set subject_title = %s, subject_writer =%s, content =%s where id= %s ", [item_dict['title'], item_dict['writer'], item_dict['content'], item_dict['id'], ])
     conn.commit()
     return item_dict
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='tokent')

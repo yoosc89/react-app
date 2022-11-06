@@ -3,7 +3,6 @@ import DaumPostcode from "react-daum-postcode";
 import { FloatingInput } from "./style";
 
 const CreateUser = (e) => {
-  alert([e.target.pwd.value, e.target.pwd2.value]);
   return;
 };
 

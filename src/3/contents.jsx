@@ -1,30 +1,43 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Route } from "react-router-dom";
 import axios from "axios";
+import { useDispatch, useSelector, batch } from "react-redux";
+import ContentPage from "./content_write";
 
 const CRowData = ({ data }) => {
+  const dispatch = useDispatch();
   return data.map((row) => (
     <tr>
       <td>{row.id}</td>
       <td>
-        <Link to="" class="text-decoration-none text-dark">
-          {row.title}
+        <Link
+          /* to={`/content/${id}/detail/${row.id}`} */
+          class="text-decoration-none text-dark"
+          onClick={() => {
+            batch(() => {
+              dispatch({ type: true });
+              dispatch({ type: row.id });
+              /* dispatch({ type: "CWBtrue" }); */
+            });
+          }}
+        >
+          {row.subject}
         </Link>
       </td>
-      <td>{row.writer}</td>
-      <td>{row.date}</td>
+      <td></td>
+      <td>{row.create_date}</td>
     </tr>
   ));
 };
 
-const GetData = (page, load) => {
+const GetData = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/contents/${page}`)
+      .get(`http://localhost:8000/api/question/list`)
       .then((res) => setData(res.data))
       .catch((err) => {});
-  }, [page, load]);
+  }, []);
 
   return data;
 };
@@ -37,6 +50,7 @@ const LastPageNumber = () => {
       .then((res) => setData(res.data))
       .catch((err) => {});
   }, []);
+
   return data;
 };
 
@@ -52,7 +66,7 @@ const CBody = ({ page }) => {
         </tr>
       </thead>
       <tbody>
-        <CRowData data={GetData(page)} />
+        <CRowData data={GetData()} />
       </tbody>
     </table>
   );
@@ -111,15 +125,15 @@ const Pagination = () => {
 
 const ContentsPage = () => {
   const { id } = useParams();
+  const show = useSelector((state) => state.contentShowSetting.bool);
 
   return (
     <div class="m-lg-3">
+      <div>{show && true ? <ContentPage /> : null}</div>
       <div>
         <CBody page={id} />
       </div>
-      <div class="position-relative">
-        <Pagination id={id} />
-      </div>
+      <div class="position-relative">{/* <Pagination id={id} /> */}</div>
     </div>
   );
 };
