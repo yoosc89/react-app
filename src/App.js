@@ -11,7 +11,6 @@ import MenuItems from "./3/menu";
 import ContentPage from "./3/content_write";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
 import "animate.css";
 
 function App() {
@@ -32,6 +31,7 @@ function App() {
               element={<NewAccount />}
             ></Route>
             <Route
+              exact
               caseSensitive
               path="/searchaccoute"
               element={<SearchAccoute />}
@@ -41,7 +41,10 @@ function App() {
               caseSensitive
               path={`/contents/:id`}
               element={<ContentsPage />}
-            ></Route>
+            >
+              <Route path={"detail/:id"} element={<ContentPage />} />
+            </Route>
+
             <Route caseSensitive exact path="/" element={<MainPage />}></Route>
           </Routes>
         </div>

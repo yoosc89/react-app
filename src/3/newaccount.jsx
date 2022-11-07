@@ -1,31 +1,33 @@
+import axios from "axios";
 import { useState } from "react";
 import DaumPostcode from "react-daum-postcode";
 import { FloatingInput } from "./style";
 
 const CreateUser = (e) => {
+  const params = {
+    user_id: String(e.target.id.value),
+    password1: String(e.target.pwd.value),
+    password2: String(e.target.pwd2.value),
+    email: String(e.target.email.value),
+    phonenumber: String(e.target.phone.value),
+    address1: String(e.target.address.value),
+    address2: String(e.target.addressdetail.value),
+  };
+  console.log(params);
+  axios
+    .post("http://localhost:8000/api/user/create", params, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((res) => {})
+    .catch((err) => alert(err.response.data.detail));
   return;
 };
 
 const NewAccount = () => {
-  const [input, setInput] = useState({
-    id: "",
-    pwd: "",
-    pwd2: "",
-    email: "",
-    phone: "",
-    address: "",
-    addressdetail: "",
-  });
-
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setInput({ ...input, [name]: value });
-  };
+  const [address, setAddress] = useState("");
 
   const PostCode = (data) => {
-    setInput({
-      address: `${data.zonecode} ${data.jibunAddress}(${data.buildingName})`,
-    });
+    setAddress(`${data.zonecode} ${data.jibunAddress}(${data.buildingName})`);
   };
   const [modal, setModal] = useState(false);
 
@@ -33,50 +35,30 @@ const NewAccount = () => {
     <>
       <div class="mt-5 container ">
         <form
+          action="/"
           class="d-grid gap-3 "
           onSubmit={(e) => {
             CreateUser(e);
           }}
         >
-          <FloatingInput
-            label="ID"
-            name="id"
-            type="text"
-            value={input.id}
-            requried={true}
-            onChange={(e) => {
-              onChange(e);
-            }}
-          />
+          <FloatingInput label="ID" name="id" type="text" requried={true} />
           <FloatingInput
             label="E-mail"
             name="email"
             type="email"
-            value={input.email}
             requried={true}
-            onChange={(e) => {
-              onChange(e);
-            }}
           />
           <FloatingInput
             label="Password"
             name="pwd"
             type="password"
-            value={input.pwd}
             required={true}
-            onChange={(e) => {
-              onChange(e);
-            }}
           />
           <FloatingInput
             label="Confirm Password"
             name="pwd2"
             type="password"
-            value={input.pwd2}
             required={true}
-            onChange={(e) => {
-              onChange(e);
-            }}
           />
           <FloatingInput
             label="Phone Number"
@@ -84,16 +66,16 @@ const NewAccount = () => {
             type="text"
             maxLength="11"
             required={true}
-            onChange={(e) => {
-              onChange(e);
-            }}
           />
           <FloatingInput
             label="Address"
             name="address"
             type="text"
-            value={input.address}
-            onClick={(e) => {
+            value={address}
+            onFocus={() => {
+              setModal(true);
+            }}
+            onClick={() => {
               setModal(true);
             }}
             readOnly
@@ -113,10 +95,6 @@ const NewAccount = () => {
             label="AddressDetail"
             name="addressdetail"
             type="text"
-            value={input.addressdetail}
-            onChange={(e) => {
-              onChange(e);
-            }}
           />
 
           <input
@@ -130,6 +108,7 @@ const NewAccount = () => {
           <button
             class="btn btn-outline-primary btn-lg shadow-sm"
             type="summit"
+            action="/"
           >
             회원가입
           </button>

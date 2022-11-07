@@ -15,6 +15,7 @@ export const FloatingInput = (props) => {
         readOnly={props.readOnly}
         multiple={props.multiple}
         onClick={props.onClick}
+        defaultValue={props.defaultValue}
       />
       <label for={props.name}>{props.label}</label>
     </div>
@@ -41,6 +42,8 @@ export const subjectInput = (props) => {
         readOnly={props.readOnly}
         multiple={props.multiple}
         onClick={props.onClick}
+        defaultValue={props.defaultValue}
+        onFocus={props.onFocus}
       />
     </div>
   );

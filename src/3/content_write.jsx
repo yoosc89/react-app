@@ -1,26 +1,25 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Reply from "./detail_reply";
 
-const GetData = (num) => {
+export const ReplyList = (id, load) => {
   const [data, setData] = useState([]);
-
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/question/list/detail/${num}`)
+      .get(`http://localhost:8000/api/question/list/detail/${id}`)
       .then((res) => {
         setData(res.data);
       })
       .catch((err) => {});
-  }, [num]);
+  }, [id, load]);
+
   return data;
 };
 
-const Detail = ({ num }) => {
+const Detail = ({ data }) => {
   const [newData, setNewData] = useState({ subject: "", content: "" });
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
-
-  const data = GetData(num);
 
   return (
     <div>
@@ -32,6 +31,7 @@ const Detail = ({ num }) => {
           type="text"
           class="form-control"
           id="Input1"
+          name="Input1"
           placeholder="Subject"
           defaultValue={data.subject}
           disabled={writeSet}
@@ -47,7 +47,8 @@ const Detail = ({ num }) => {
         <textarea
           class="form-control"
           id="Textarea1"
-          rows="5"
+          rows="3"
+          maxLength={200}
           defaultValue={data.content}
           disabled={writeSet}
           onChange={(e) => {
@@ -59,11 +60,40 @@ const Detail = ({ num }) => {
   );
 };
 
-const ContentPage = () => {
-  const num = useSelector((state) => state.detailNumber.num);
+const ContentPage = ({ id }) => {
+  const replyview = useSelector((state) => state.DetialReplyview.DRVset);
+  const data = ReplyList(id);
+  const dispatch = useDispatch();
+
   return (
     <div>
-      <Detail num={num} />
+      <div>
+        <Detail data={data} />
+      </div>
+      <div>{replyview && true ? <Reply data={data} /> : null}</div>
+      <div class="justify-content-center">
+        {replyview && true ? (
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            onClick={() => {
+              dispatch({ type: "DRVsetFalse" });
+            }}
+          >
+            댓글닫기
+          </button>
+        ) : (
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            onClick={() => {
+              dispatch({ type: "DRVsetTrue" });
+            }}
+          >
+            댓글보기
+          </button>
+        )}
+      </div>
     </div>
   );
 };
