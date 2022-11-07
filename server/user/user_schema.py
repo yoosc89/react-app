@@ -24,3 +24,9 @@ class UserCreate(BaseModel):
         if 'password1' in values and v != values['password1']:
             raise ValueError('비밀법호가 일치하지 않습니다.')
         return v
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    user_id: str

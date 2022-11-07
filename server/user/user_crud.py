@@ -23,3 +23,7 @@ def get_existing_user(db: Session, user_create: UserCreate):
         (User.user_id == user_create.user_id) |
         (User.email == user_create.email)
     ).first()
+
+
+def get_user(db: Session, user_id: str):
+    return db.query(User).filter(User.user_id == user_id).first()

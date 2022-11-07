@@ -1,32 +1,43 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector, batch } from "react-redux";
 import ContentPage from "./content_write";
+import dayjs from "dayjs";
 
 const CRowList = ({ data }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { pathname } = useLocation;
+
+  const isloginstate = (path) => {
+    if (!localStorage.getItem("islogin")) {
+      navigate("/login", { state: pathname });
+    } else {
+      navigate(`detail/${path}`);
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      batch(() => {
+        dispatch({ type: "detailTrue" });
+        dispatch({ type: "CWBtrue" });
+      });
+    }
+  };
   return data.map((row) => (
     <tr>
       <td>{row.id}</td>
       <td>
-        <Link
-          to={`detail/${row.id}`}
+        <a
           class="text-decoration-none text-dark"
           onClick={() => {
-            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-            batch(() => {
-              dispatch({ type: "detailTrue" });
-              dispatch({ type: "CWBtrue" });
-            });
+            isloginstate(row.id);
           }}
         >
           {row.subject}
-        </Link>
+        </a>
         <a class="text-primary text-decoration-none"> [{row.answers.length}]</a>
       </td>
       <td></td>
-      <td>{row.create_date}</td>
+      <td>{dayjs(row.create_date).format("YYYY-MM-DD HH:mm:ss")}</td>
     </tr>
   ));
 };

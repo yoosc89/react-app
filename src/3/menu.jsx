@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MenuItems = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <nav class="navbar navbar-expand-lg bg-primary fixed-top">
@@ -24,34 +26,51 @@ const MenuItems = () => {
 
           <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              {localStorage.getItem("islogin") && true ? null : (
+                <>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">
+                      <Link
+                        to="/newaccount"
+                        class="text-decoration-none text-bg-primary"
+                      >
+                        회원가입
+                      </Link>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">
+                      <Link
+                        to="/searchaccoute"
+                        class="text-decoration-none text-bg-primary"
+                      >
+                        계정찾기
+                      </Link>
+                    </a>
+                  </li>
+                </>
+              )}
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page">
-                  <Link
-                    to="/newaccount"
-                    class="text-decoration-none text-bg-primary"
-                  >
-                    회원가입
-                  </Link>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page">
-                  <Link
-                    to="/searchaccoute"
-                    class="text-decoration-none text-bg-primary"
-                  >
-                    계정찾기
-                  </Link>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page">
-                  <Link
-                    to="/login"
-                    class="text-decoration-none text-bg-primary"
-                  >
-                    로그인
-                  </Link>
+                  {localStorage.getItem("islogin") && true ? (
+                    <Link
+                      to="/"
+                      class="text-decoration-none text-bg-primary"
+                      onClick={() => {
+                        localStorage.clear();
+                        window.location.reload();
+                      }}
+                    >
+                      로그아웃
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/login"
+                      class="text-decoration-none text-bg-primary"
+                    >
+                      로그인
+                    </Link>
+                  )}
                 </a>
               </li>
               <li class="nav-item">

@@ -4,9 +4,13 @@ import { useState } from "react";
 const LoginState = () => {
   return (
     <div class="mt-5 mb-5 text-center h1">
-      <Link to="/login" class="text-decoration-none">
-        로그인을 하라
-      </Link>
+      {localStorage.getItem("islogin") && true ? (
+        <a class="text-decoration-none">로그인 했다</a>
+      ) : (
+        <Link to="/login" class="text-decoration-none">
+          로그인을 하라
+        </Link>
+      )}
     </div>
   );
 };

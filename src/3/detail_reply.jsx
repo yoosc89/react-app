@@ -10,14 +10,16 @@ const WriteReply = (num, e) => {
 
   axios
     .post(`http://localhost:8000/api/answer/answer_create/${num}`, params, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
     })
     .then((res) => {})
     .catch((err) => {});
 };
 
 const ReplyInput = (props) => {
-  const dispatch = useDispatch();
   const [value, setValue] = useState("");
   return (
     <div>

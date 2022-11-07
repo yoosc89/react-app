@@ -1,9 +1,34 @@
+import axios from "axios";
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FloatingInput } from "./style";
 
+const PreviousPage = () => {
+  const navigate = useNavigate();
+  navigate(-1);
+};
+
 const Loginsystem = (e) => {
-  alert(e.target.id.value);
+  e.preventDefault();
+
+  axios
+    .post(
+      "http://localhost:8000/api/user/login",
+      { username: e.target.id.value, password: e.target.pwd.value },
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    )
+    .then((res) => {
+      localStorage.clear();
+      localStorage.setItem("access_token", res.data.access_token);
+      localStorage.setItem("user_id", res.data.user_id);
+      localStorage.setItem("islogin", true);
+    })
+    .then(() => {
+      window.location.replace("/");
+    })
+    .catch((err) => console.log(err));
 
   return;
 };
@@ -23,8 +48,6 @@ const LoginPage = () => {
           onSubmit={(e) => {
             Loginsystem(e);
           }}
-          action="/"
-          method="post"
         >
           <FloatingInput
             name="id"
