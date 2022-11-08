@@ -4,7 +4,7 @@ const MenuItems = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <>
       <nav class="navbar navbar-expand-lg bg-primary fixed-top">
         <div class="container-fluid">
           <button
@@ -88,7 +88,7 @@ const MenuItems = () => {
         </div>
       </nav>
       <div>&nbsp;</div>
-    </div>
+    </>
   );
 };
 

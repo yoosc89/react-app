@@ -24,11 +24,27 @@ const DetialReplyview = (state = { DRVset: false }, action) => {
   }
   return { ...state };
 };
+const Reload = (state = { RLset: 0 }, action) => {
+  if (action.type === "RLset") {
+    return state.RLset === 0 ? { RLset: 1 } : { RLset: 0 };
+  }
+  return { ...state };
+};
+const WriteMode = (state = { WriteMode: false }, action) => {
+  if (action.type === "WMTrue") {
+    return { WriteMode: true };
+  } else if (action.type === "WMFalse") {
+    return { WriteMode: false };
+  }
+  return { ...state };
+};
 
 const Reducers = combineReducers({
   contentShowSetting,
   contentWriteBoolean,
   DetialReplyview,
+  Reload,
+  WriteMode,
 });
 
 export default Reducers;

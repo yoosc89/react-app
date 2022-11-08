@@ -1,7 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useDispatch, batch } from "react-redux";
+import { ReplyList } from "./content_write";
 
 const WriteReply = (num, e) => {
   e.preventDefault();
@@ -15,14 +16,17 @@ const WriteReply = (num, e) => {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     })
-    .then((res) => {})
+    .then((res) => {
+      ReplyList(null, Math.random());
+    })
     .catch((err) => {});
 };
 
 const ReplyInput = (props) => {
   const [value, setValue] = useState("");
+
   return (
-    <div>
+    <>
       <form
         method="post"
         onSubmit={(e) => {
@@ -43,14 +47,14 @@ const ReplyInput = (props) => {
           보내기
         </button>
       </form>
-    </div>
+    </>
   );
 };
 
 const ReplyListpage = ({ data }) => {
   const answers = data.answers;
   return (
-    <div>
+    <>
       {answers &&
         answers.map((answer) => (
           <div class="mt-4">
@@ -69,19 +73,17 @@ const ReplyListpage = ({ data }) => {
             </div>
           </div>
         ))}
-    </div>
+    </>
   );
 };
 
 const Reply = ({ data }) => {
   const num = useParams();
   return (
-    <div>
-      <div>
-        <ReplyInput num={num.id} />
-        <ReplyListpage data={data} />
-      </div>
-    </div>
+    <>
+      <ReplyInput num={num.id} />
+      <ReplyListpage data={data} />
+    </>
   );
 };
 export default Reply;
