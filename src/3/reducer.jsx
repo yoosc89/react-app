@@ -27,7 +27,7 @@ const DetialReplyview = (state = { DRVset: false }, action) => {
 };
 const Reload = (state = { RLset: 0 }, action) => {
   if (action.type === "RLset") {
-    return state.RLset === 0 ? { RLset: 1 } : { RLset: 0 };
+    return { RLset: Math.random() };
   }
   return { ...state };
 };

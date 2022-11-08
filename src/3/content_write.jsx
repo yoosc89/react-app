@@ -1,50 +1,9 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Reply from "./detail_reply";
-
-export const ReplyList = (id, load) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/question/list/detail/${id}`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {});
-  }, [id, load]);
-
-  return data;
-};
-
-const CreatePost = (e) => {
-  e.preventDefault();
-
-  const params = {
-    subject: e.target.Input1.value,
-    content: e.target.Textarea1.value,
-  };
-  console.log(params);
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + localStorage.getItem("access_token"),
-  };
-
-  axios
-    .post("http://localhost:8000/api/question/create", params, {
-      headers: headers,
-    })
-    .then((res) => {
-      alert("글쓰기 성공");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+import { CreatePost, ReplyList } from "./sync";
 
 const Detail = ({ data }) => {
-  const [newData, setNewData] = useState({ subject: "", content: "" });
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
 
   return (
@@ -54,7 +13,6 @@ const Detail = ({ data }) => {
         onSubmit={(e) => {
           CreatePost(e);
         }}
-        method="post"
       >
         <div class="mb-3">
           <label for="Input1" class="form-label">

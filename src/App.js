@@ -3,7 +3,7 @@ import LoginPage from "./3/login";
 import MainPage from "./3/mainpage";
 import NewAccount from "./3/newaccount";
 import SearchAccoute from "./3/searchaccount";
-import ContentsPage from "./3/contents";
+import ContentsPage from "./3/contents_list";
 import store from "./3/store";
 import { Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";

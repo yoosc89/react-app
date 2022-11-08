@@ -1,26 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useDispatch, batch } from "react-redux";
-import { ReplyList } from "./content_write";
-
-const WriteReply = (num, e) => {
-  e.preventDefault();
-
-  const params = { content: e.target.reply1.value };
-
-  axios
-    .post(`http://localhost:8000/api/answer/answer_create/${num}`, params, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
-    })
-    .then((res) => {
-      ReplyList(null, Math.random());
-    })
-    .catch((err) => {});
-};
+import { WriteReply } from "./sync";
 
 const ReplyInput = (props) => {
   const [value, setValue] = useState("");
@@ -43,7 +23,7 @@ const ReplyInput = (props) => {
           rows="3"
           onChange={(e) => setValue(e.target.value)}
         />
-        <button type="summit" class="btn btn-primary mt-4 w-100 b">
+        <button type="summit" class="btn btn-primary mt-4 w-100 mb-4">
           보내기
         </button>
       </form>

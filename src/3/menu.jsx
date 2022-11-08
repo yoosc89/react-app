@@ -1,8 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const MenuItems = () => {
-  const navigate = useNavigate();
-
   return (
     <>
       <nav class="navbar navbar-expand-lg bg-primary fixed-top">

@@ -1,41 +1,7 @@
-import axios from "axios";
-import React, { Fragment, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { FloatingInput } from "./style";
-
-const PreviousPage = () => {
-  const navigate = useNavigate();
-  navigate(-1);
-};
-
-const Loginsystem = (e) => {
-  e.preventDefault();
-
-  axios
-    .post(
-      "http://localhost:8000/api/user/login",
-      { username: e.target.id.value, password: e.target.pwd.value },
-      {
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    )
-    .then((res) => {
-      localStorage.clear();
-      localStorage.setItem("access_token", res.data.access_token);
-      localStorage.setItem("user_id", res.data.user_id);
-      localStorage.setItem("token_type", res.data.token_type);
-      localStorage.setItem("islogin", true);
-    })
-    .then(() => {
-      window.location.replace("/");
-    })
-    .catch((err) => {});
-
-  return;
-};
+import Loginsystem from "./sync";
 
 const LoginPage = () => {
   const [input, setInput] = useState({ id: "", pwd: "" });
