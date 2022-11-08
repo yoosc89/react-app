@@ -30,3 +30,12 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     user_id: str
+
+
+class User(BaseModel):
+    id: int
+    user_id: str
+    email: str
+
+    class Config:
+        orm_mode = True

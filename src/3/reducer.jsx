@@ -12,6 +12,7 @@ const contentShowSetting = (state = { bool: false }, action) => {
 
 const contentWriteBoolean = (state = { CWBool: true }, action) => {
   if (action.type === "CWBtrue") return { CWBool: false };
+  if (action.type === "CWBfalse") return { CWBool: true };
   return { ...state };
 };
 
@@ -30,21 +31,12 @@ const Reload = (state = { RLset: 0 }, action) => {
   }
   return { ...state };
 };
-const WriteMode = (state = { WriteMode: false }, action) => {
-  if (action.type === "WMTrue") {
-    return { WriteMode: true };
-  } else if (action.type === "WMFalse") {
-    return { WriteMode: false };
-  }
-  return { ...state };
-};
 
 const Reducers = combineReducers({
   contentShowSetting,
   contentWriteBoolean,
   DetialReplyview,
   Reload,
-  WriteMode,
 });
 
 export default Reducers;

@@ -1,5 +1,6 @@
 from pydantic import BaseModel, validator
 import datetime
+from user.user_schema import User
 
 
 class AnswerCreate(BaseModel):
@@ -16,6 +17,7 @@ class Answer(BaseModel):
     id: int
     content: str
     create_date: datetime.datetime
+    user: User | None
 
     class Config:
         orm_mode = True

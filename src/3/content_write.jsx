@@ -17,13 +17,40 @@ export const ReplyList = (id, load) => {
   return data;
 };
 
+const CreatePost = (e) => {
+  const params = {
+    subject: e.target.Input1.value,
+    content: e.target.Textarea1.value,
+  };
+  const headers = {
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
+    "Content-Type": "application/json",
+  };
+
+  axios
+    .post("http://localhost:8000/api/question/create", params, {
+      Headers: headers,
+    })
+    .then((res) => {
+      alert("글쓰기 성공");
+    })
+    .catch((err) => {
+      alert("Error");
+    });
+};
+
 const Detail = ({ data }) => {
   const [newData, setNewData] = useState({ subject: "", content: "" });
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
 
   return (
     <>
-      <form class="mb-3" onSubmit={(e) => {}}>
+      <form
+        class="mb-3"
+        onSubmit={(e) => {
+          CreatePost(e);
+        }}
+      >
         <div class="mb-3">
           <label for="Input1" class="form-label">
             제목 :
@@ -35,10 +62,7 @@ const Detail = ({ data }) => {
             name="Input1"
             placeholder="Subject"
             defaultValue={data === undefined ? "" : data.subject}
-            disabled={writeSet}
-            onChange={(e) => {
-              setNewData({ subject: e.target.value });
-            }}
+            readOnly={writeSet}
           ></input>
         </div>
         <div class="mb-3">
@@ -48,17 +72,17 @@ const Detail = ({ data }) => {
           <textarea
             class="form-control"
             id="Textarea1"
+            name="Textarea1"
             rows="3"
             maxLength={200}
             defaultValue={data === undefined ? "" : data.content}
-            disabled={writeSet}
-            onChange={(e) => {
-              setNewData({ content: e.target.value });
-            }}
+            readOnly={writeSet}
           ></textarea>
-          <button class="mt-3 btn btn-primary w-100" type="submit">
-            글쓰기
-          </button>
+          {writeSet && true ? null : (
+            <button class="mt-3 btn btn-primary w-100" type="submit">
+              글쓰기
+            </button>
+          )}
         </div>
       </form>
     </>
@@ -67,17 +91,17 @@ const Detail = ({ data }) => {
 
 const ContentPage = (props) => {
   const replyview = useSelector((state) => state.DetialReplyview.DRVset);
-  const WriteMode = useSelector((state) => state.WriteMode.WriteMode);
+  const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
   const dispatch = useDispatch();
   const data = ReplyList(props.id);
 
   return (
     <>
       <div>
-        {WriteMode && true ? (
-          <Detail data={undefined} />
-        ) : (
+        {writeSet && true ? (
           <Detail data={data} />
+        ) : (
+          <Detail data={undefined} />
         )}
       </div>
       <div>{replyview && true ? <Reply data={data} /> : null}</div>
