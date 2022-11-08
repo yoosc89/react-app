@@ -61,7 +61,7 @@ const CRowList = () => {
           <a
             class="text-decoration-none text-dark"
             onClick={() => {
-              /* isloginstate(row.id); */
+              isloginstate(row.id);
             }}
           >
             {row.subject}
@@ -164,16 +164,15 @@ const Pagination = () => {
 };
 
 const ContentsPage = () => {
-  const { id } = useParams();
   const show = useSelector((state) => state.contentShowSetting.bool);
 
   return (
     <div class="m-lg-3">
-      <div>{show && true ? <ContentPage id={id} /> : null}</div>
+      <div>{show && true ? <ContentPage /> : null}</div>
       <div class="mt-4">
         <CBody />
       </div>
-      <div class="position-relative">{<Pagination id={id} />}</div>
+      <div class="position-relative">{<Pagination />}</div>
     </div>
   );
 };

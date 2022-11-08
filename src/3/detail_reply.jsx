@@ -53,25 +53,22 @@ const ReplyInput = (props) => {
 
 const ReplyListpage = ({ data }) => {
   const answers = data.answers;
+
   return (
     <>
       {answers &&
         answers.map((answer) => (
-          <div class="mt-4">
-            <div>
-              <textarea
-                type="text"
-                class="form-control"
-                defaultValue={answer.content}
-                rows="2"
-                maxLength={10}
-                readOnly={true}
-              />
+          <>
+            <div class="row mt-2 pt-2 pb-2 text-bg-secondary">
+              <div class="col text-start ms-3">{answer.user.user_id}</div>
+              <div class="col text-end me-3">
+                작성 날짜 : {answer.create_date}
+              </div>
             </div>
-            <div class=" text-sm-end fs-6">
-              <a>작성 날짜 : {answer.create_date}</a>
+            <div class="">
+              <div class="row ms-3 pt-2 pb-2 ">{answer.content}</div>
             </div>
-          </div>
+          </>
         ))}
     </>
   );

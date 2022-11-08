@@ -16,19 +16,23 @@ const Loginsystem = (e) => {
       "http://localhost:8000/api/user/login",
       { username: e.target.id.value, password: e.target.pwd.value },
       {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       }
     )
     .then((res) => {
       localStorage.clear();
       localStorage.setItem("access_token", res.data.access_token);
       localStorage.setItem("user_id", res.data.user_id);
+      localStorage.setItem("token_type", res.data.token_type);
       localStorage.setItem("islogin", true);
     })
     .then(() => {
       window.location.replace("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {});
 
   return;
 };

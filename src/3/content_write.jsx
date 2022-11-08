@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import Reply from "./detail_reply";
 
 export const ReplyList = (id, load) => {
@@ -18,24 +19,27 @@ export const ReplyList = (id, load) => {
 };
 
 const CreatePost = (e) => {
+  e.preventDefault();
+
   const params = {
     subject: e.target.Input1.value,
     content: e.target.Textarea1.value,
   };
+  console.log(params);
   const headers = {
-    Authorization: "Bearer " + localStorage.getItem("access_token"),
     "Content-Type": "application/json",
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
   };
 
   axios
     .post("http://localhost:8000/api/question/create", params, {
-      Headers: headers,
+      headers: headers,
     })
     .then((res) => {
       alert("글쓰기 성공");
     })
     .catch((err) => {
-      alert("Error");
+      console.log(err);
     });
 };
 
@@ -50,6 +54,7 @@ const Detail = ({ data }) => {
         onSubmit={(e) => {
           CreatePost(e);
         }}
+        method="post"
       >
         <div class="mb-3">
           <label for="Input1" class="form-label">
@@ -89,11 +94,12 @@ const Detail = ({ data }) => {
   );
 };
 
-const ContentPage = (props) => {
+const ContentPage = () => {
+  const { id } = useParams();
   const replyview = useSelector((state) => state.DetialReplyview.DRVset);
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
   const dispatch = useDispatch();
-  const data = ReplyList(props.id);
+  const data = ReplyList(id);
 
   return (
     <>
