@@ -5,7 +5,7 @@ import { useDispatch, useSelector, batch } from "react-redux";
 import ContentPage from "./content_write";
 import dayjs from "dayjs";
 
-const CBody = ({ data }) => {
+const CBody = (props) => {
   return (
     <table class="table table-hover ">
       <thead>
@@ -17,28 +17,16 @@ const CBody = ({ data }) => {
         </tr>
       </thead>
       <tbody>
-        <CRowList data={data} />
+        <CRowList data={ContentList(props)} />
       </tbody>
     </table>
   );
 };
 
-const CRowList = () => {
-  const [data, setData] = useState([]);
-
-  const list = data.question_list;
+const CRowList = ({ data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation;
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/question/list`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {});
-  }, []);
 
   const isloginstate = (path) => {
     if (!localStorage.getItem("islogin")) {
@@ -75,18 +63,6 @@ const CRowList = () => {
       </tr>
     ))
   );
-};
-
-const LastPageNumber = () => {
-  const [data, setData] = useState(0);
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/contents/lastnumber`)
-      .then((res) => setData(res.data))
-      .catch((err) => {});
-  }, []);
-
-  return data;
 };
 
 const Pagination = () => {
