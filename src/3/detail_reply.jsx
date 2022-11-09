@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { WriteReply } from "./sync";
 
 const ReplyInput = (props) => {
-  console.log(1);
+  const [data, setdata] = useState([]);
+
+  useEffect(() => setdata(props), [props]);
+
   return (
     <>
       <form
         method="post"
         onSubmit={(e) => {
           WriteReply(props.num, e);
-          props.reload(Math.random());
+          setTimeout(() => props.reload(Math.random()), 100);
+          setdata({ content: "" });
         }}
       >
         <textarea
@@ -18,7 +22,8 @@ const ReplyInput = (props) => {
           class="form-control mt-4"
           id="reply1"
           name="reply1"
-          defaultValue={props.content}
+          value={data.content}
+          onChange={(e) => setdata({ content: e.target.value })}
           rows="3"
         />
         {props.user === localStorage.getItem("user_id") ||
@@ -33,41 +38,37 @@ const ReplyInput = (props) => {
 };
 
 const ReplyListpage = (props) => {
-  const answers = props.data.answers;
-  console.log(answers);
-
+  const [newnaswers, setnewanswers] = useState([]);
+  useEffect(() => {
+    setnewanswers(props.data?.answers);
+  }, [props]);
   return (
     <>
-      {answers &&
-        answers.map((answer) => (
-          <>
-            <div class="row mt-2 pt-2 pb-2 text-bg-secondary">
-              <div class="col text-start ms-3">{answer.user.user_id}</div>
-              <div class="col text-end me-3">
-                작성 날짜 : {answer.create_date}
-              </div>
+      {newnaswers.map((answer) => (
+        <>
+          <div class="row mt-2 pt-2 pb-2 text-bg-secondary">
+            <div class="col text-start ms-3">{answer.user?.user_id}</div>
+            <div class="col text-end me-3">
+              작성 날짜 : {answer.create_date}
             </div>
-            <div class="">
-              <div class="row pt-2 pb-2 ">
-                <ReplyInput
-                  content={answer.content}
-                  user={answer.user.user_id}
-                />
-              </div>
-            </div>
-            <div></div>
-          </>
-        ))}
+          </div>
+          <div class="row pt-2 pb-2 ">
+            <ReplyInput
+              content={answer.content}
+              user={answer.user.user_id}
+              reload={props.reload}
+            />
+          </div>
+        </>
+      ))}
     </>
   );
 };
 
 const Reply = (props) => {
-  const num = useParams();
-
   return (
     <>
-      <ReplyInput num={num.id} />
+      <ReplyInput num={props.id} reload={props.reload} />
       <ReplyListpage data={props.data} reload={props.reload} />
     </>
   );

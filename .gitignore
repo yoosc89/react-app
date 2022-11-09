@@ -37,3 +37,4 @@ server/1.txt
 oldserver/__pycache__/
 oldserver/alembic.ini
 server/text.py
+server/alembic.ini

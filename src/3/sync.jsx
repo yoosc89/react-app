@@ -15,7 +15,7 @@ export const ReplyList = (id, load) => {
   return data;
 };
 
-export const ContentList = (load, page, size) => {
+export const ContentList = (load, page = 0, size = 10) => {
   const [data, setData] = useState([]);
   const params = { page: Number(page), size: Number(size) };
 
@@ -39,7 +39,6 @@ export const ContentList = (load, page, size) => {
 
 export const WriteReply = (num, e) => {
   e.preventDefault();
-
   const params = { content: e.target.reply1.value };
 
   axios
@@ -49,9 +48,7 @@ export const WriteReply = (num, e) => {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     })
-    .then((res) => {
-      window.location.reload();
-    })
+    .then((res) => {})
     .catch((err) => {});
 };
 
@@ -98,8 +95,8 @@ export const CreatePost = (e) => {
   e.preventDefault();
 
   const params = {
-    subject: e.target.Input1.value,
-    content: e.target.Textarea1.value,
+    subject: e.target.postsubject.value,
+    content: e.target.postcontent.value,
   };
 
   const headers = {
@@ -115,6 +112,8 @@ export const CreatePost = (e) => {
     .catch((err) => {
       console.log(err);
     });
+
+  return;
 };
 
 export const ModifyPost = (e, id) => {

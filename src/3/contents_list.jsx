@@ -69,7 +69,7 @@ const CBody = (props) => {
 
 const ContentsPage = () => {
   const show = useSelector((state) => state.contentShowSetting.bool);
-  const [load, reload] = useState("");
+  const [load, reload] = useState(0);
   const [size, setsize] = useState(10);
   const { id } = useParams();
   const [contentid, setcontentid] = useState(0);
@@ -84,7 +84,15 @@ const ContentsPage = () => {
         <CBody data={data} setid={setcontentid} />
       </div>
       <div class="position-relative">
-        {<Pagination data={data} size={size} page={id} setsize={setsize} />}
+        {
+          <Pagination
+            data={data}
+            size={size}
+            page={id}
+            setsize={setsize}
+            setid={setcontentid}
+          />
+        }
       </div>
     </div>
   );
