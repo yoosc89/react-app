@@ -8,7 +8,6 @@ import store from "./3/store";
 import { Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import MenuItems from "./3/menu";
-import ContentPage from "./3/content_write";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "animate.css";

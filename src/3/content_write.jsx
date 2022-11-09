@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import Reply from "./detail_reply";
 import { CreatePost, ReplyList, ModifyPost } from "./sync";
 
