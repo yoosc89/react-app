@@ -3,15 +3,12 @@ import { useParams } from "react-router-dom";
 import { WriteReply } from "./sync";
 
 const ReplyInput = (props) => {
-  const [value, setValue] = useState("");
-
   return (
     <>
       <form
         method="post"
         onSubmit={(e) => {
           WriteReply(props.num, e);
-          setValue("");
           props.reload(Math.random());
         }}
       >
@@ -20,13 +17,15 @@ const ReplyInput = (props) => {
           class="form-control mt-4"
           id="reply1"
           name="reply1"
-          value={value}
+          defaultValue={props.content}
           rows="3"
-          onChange={(e) => setValue(e.target.value)}
         />
-        <button type="summit" class="btn btn-primary mt-4 w-100 mb-4">
-          보내기
-        </button>
+        {props.user === localStorage.getItem("user_id") ||
+        props.content === undefined ? (
+          <button type="summit" class="btn btn-secondary mt-4 w-100 mb-4">
+            {props.content === undefined ? "댓글작성" : "댓글수정"}
+          </button>
+        ) : null}
       </form>
     </>
   );
@@ -34,6 +33,7 @@ const ReplyInput = (props) => {
 
 const ReplyListpage = (props) => {
   const answers = props.data.answers;
+  console.log(answers);
 
   return (
     <>
@@ -47,8 +47,14 @@ const ReplyListpage = (props) => {
               </div>
             </div>
             <div class="">
-              <div class="row ms-3 pt-2 pb-2 ">{answer.content}</div>
+              <div class="row pt-2 pb-2 ">
+                <ReplyInput
+                  content={answer.content}
+                  user={answer.user.user_id}
+                />
+              </div>
             </div>
+            <div></div>
           </>
         ))}
     </>

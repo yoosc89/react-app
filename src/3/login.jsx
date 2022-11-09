@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FloatingInput } from "./style";
-import Loginsystem from "./sync";
+import { Loginsystem } from "./sync";
 
 const LoginPage = () => {
   const [input, setInput] = useState({ id: "", pwd: "" });
@@ -17,6 +17,7 @@ const LoginPage = () => {
         onSubmit={(e) => {
           Loginsystem(e);
         }}
+        method="post"
       >
         <FloatingInput
           name="id"

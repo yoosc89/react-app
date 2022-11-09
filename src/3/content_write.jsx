@@ -6,7 +6,17 @@ import { CreatePost, ReplyList } from "./sync";
 
 const Detail = (props) => {
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
-
+  console.log(props);
+  const userauth = (props) => {
+    const result =
+      props !== undefined
+        ? writeSet !== true
+          ? props.data.user.user_id === localStorage.getItem("user_id")
+            ? false
+            : true
+          : false
+        : false;
+  };
   return (
     <>
       <form
@@ -18,37 +28,35 @@ const Detail = (props) => {
         }}
       >
         <div class="mb-3">
-          <label for="Input1" class="form-label">
-            제목 :
-          </label>
+          <div class=" text-bg-secondary p-2 text-sm-center">제목</div>
+
           <input
             type="text"
-            class="form-control"
+            class="form-control mt-3"
             id="Input1"
             name="Input1"
             placeholder="Subject"
             defaultValue={props.data === undefined ? "" : props.data.subject}
-            readOnly={writeSet}
+            readOnly={userauth}
           ></input>
         </div>
         <div class="mb-3">
-          <label for="Textarea1" class="form-label">
-            본문 :
-          </label>
+          <div class=" text-bg-secondary p-2 text-sm-center">내용</div>
           <textarea
-            class="form-control"
+            class="form-control mt-3"
             id="Textarea1"
             name="Textarea1"
             rows="3"
             maxLength={200}
             defaultValue={props.data === undefined ? "" : props.data.content}
-            readOnly={writeSet}
+            readOnly={userauth}
           ></textarea>
-          {writeSet && true ? null : (
-            <button class="mt-3 btn btn-primary w-100" type="submit">
-              글쓰기
+
+          {writeSet === false ? (
+            <button class="mt-3 btn btn-secondary w-100" type="submit">
+              {props.data === undefined ? "글쓰기" : "수정하기"}
             </button>
-          )}
+          ) : null}
         </div>
       </form>
     </>
@@ -65,11 +73,7 @@ const ContentPage = (props) => {
   return (
     <>
       <div>
-        {writeSet && true ? (
-          <Detail data={data} reload={props.reload} />
-        ) : (
-          <Detail data={undefined} reload={props.reload} />
-        )}
+        <Detail data={data} reload={props.reload} />
       </div>
       <div>
         {replyview && true ? <Reply data={data} reload={props.reload} /> : null}

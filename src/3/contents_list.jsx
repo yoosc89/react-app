@@ -10,15 +10,17 @@ const CRowList = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation;
-  const Isloginstate = (path) => {
+  const Isloginstate = (path, user_id) => {
     if (!localStorage.getItem("islogin")) {
       navigate("/login", { state: pathname });
     } else {
       navigate(`detail/${path}`);
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       batch(() => {
+        user_id === localStorage.getItem("user_id")
+          ? dispatch({ type: "CWBtrue" })
+          : dispatch({ type: "CWBfalse" });
         dispatch({ type: "detailTrue" });
-        dispatch({ type: "CWBfalse" });
       });
     }
   };
@@ -30,8 +32,8 @@ const CRowList = (props) => {
         <td>
           <a
             class="text-decoration-none text-dark"
-            onClick={() => {
-              Isloginstate(row.id);
+            onClick={(e) => {
+              Isloginstate(row.id, row.user.user_id);
             }}
           >
             {row.subject}
