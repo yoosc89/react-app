@@ -5,14 +5,13 @@ import { CreatePost, ReplyList, ModifyPost } from "./sync";
 const Detail = (props) => {
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
   const userauth = (props) => {
-    const result =
-      props !== undefined
-        ? writeSet !== true
-          ? props.data.user.user_id === localStorage.getItem("user_id")
-            ? true
-            : false
+    return props !== undefined
+      ? writeSet !== true
+        ? props.data.user.user_id === localStorage.getItem("user_id")
+          ? true
           : false
-        : false;
+        : false
+      : false;
   };
   return (
     <>
@@ -68,7 +67,6 @@ const Detail = (props) => {
 
 const ContentPage = (props) => {
   const replyview = useSelector((state) => state.DetialReplyview.DRVset);
-  const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
   const dispatch = useDispatch();
   const data = ReplyList(props.id);
 

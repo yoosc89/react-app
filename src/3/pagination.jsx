@@ -1,34 +1,42 @@
 import { useLocation, useNavigate, useParams, Link } from "react-router-dom";
 import { batch, useDispatch } from "react-redux";
-import { ContentList } from "./sync";
+
+const Dropdown = (props) => {
+  return (
+    <li>
+      <a class="dropdown-item" onClick={() => props.setsize(props.pagesize)}>
+        {props.pagesize}
+      </a>
+    </li>
+  );
+};
+const Pagenumber = (page, total) => {
+  const pagelist = [];
+  for (let i = 0; i < total; i++) {
+    if (i >= page - 2 && i <= page + 2) {
+      pagelist.push(
+        <li class="page-item">
+          <Link
+            class={`page-link ${i === page ? "active" : ""}`}
+            to={`/contents/${i}`}
+          >
+            {i}
+          </Link>
+        </li>
+      );
+    }
+  }
+  return pagelist;
+};
 
 const Pagination = (props) => {
   const page = Number(props.page);
   const size = props.size;
   const total = Math.ceil(props.data.total / size);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation;
-
-  const Pagenumber = (page) => {
-    const pagelist = [];
-    for (let i = 0; i < total; i++) {
-      if (i >= page - 2 && i <= page + 2) {
-        pagelist.push(
-          <li class="page-item">
-            <Link
-              class={`page-link ${i === page ? "active" : ""}`}
-              to={`/contents/${i}`}
-            >
-              {i}
-            </Link>
-          </li>
-        );
-      }
-    }
-    return pagelist;
-  };
+  const dropdownlist = [10, 20, 50, 100, 200, 500, 1000];
 
   return (
     <>
@@ -45,41 +53,10 @@ const Pagination = (props) => {
                 페이지 표시 ({size})
               </button>
               <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" onClick={() => props.setsize(10)}>
-                    10
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" onClick={() => props.setsize(20)}>
-                    20
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" onClick={() => props.setsize(30)}>
-                    30
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" onClick={() => props.setsize(50)}>
-                    50
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" onClick={() => props.setsize(100)}>
-                    100
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" onClick={() => props.setsize(500)}>
-                    500
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" onClick={() => props.setsize(1000)}>
-                    1000
-                  </a>
-                </li>
+                {dropdownlist &&
+                  dropdownlist.map((item) => (
+                    <Dropdown pagesize={item} setsize={props.setsize} />
+                  ))}
               </ul>
             </div>
             <button
@@ -113,7 +90,7 @@ const Pagination = (props) => {
               </Link>
             </a>
           </li>
-          {Pagenumber(page)}
+          {Pagenumber(page, total)}
           <li class="page-item">
             <a class="page-link">
               <Link

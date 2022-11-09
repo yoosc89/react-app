@@ -74,7 +74,7 @@ const MenuItems = () => {
               <li class="nav-item">
                 <a class="nav-link active  text-bg-primary" aria-current="page">
                   <Link
-                    to="/contents/1"
+                    to="/contents/0"
                     class="text-decoration-none text-bg-primary"
                   >
                     게시판

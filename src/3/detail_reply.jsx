@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { WriteReply } from "./sync";
 
 const ReplyInput = (props) => {
+  console.log(1);
   return (
     <>
       <form

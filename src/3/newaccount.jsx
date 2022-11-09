@@ -71,10 +71,6 @@ const NewAccount = () => {
             label="Address"
             name="address"
             type="text"
-            value={address}
-            onFocus={() => {
-              setModal(true);
-            }}
             onClick={() => {
               setModal(true);
             }}
