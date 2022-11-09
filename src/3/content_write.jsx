@@ -1,17 +1,20 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Reply from "./detail_reply";
 import { CreatePost, ReplyList } from "./sync";
 
-const Detail = ({ data }) => {
+const Detail = (props) => {
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
 
   return (
     <>
       <form
+        method="post"
         class="mb-3"
         onSubmit={(e) => {
           CreatePost(e);
+          props.reload(Math.random());
         }}
       >
         <div class="mb-3">
@@ -24,7 +27,7 @@ const Detail = ({ data }) => {
             id="Input1"
             name="Input1"
             placeholder="Subject"
-            defaultValue={data === undefined ? "" : data.subject}
+            defaultValue={props.data === undefined ? "" : props.data.subject}
             readOnly={writeSet}
           ></input>
         </div>
@@ -38,7 +41,7 @@ const Detail = ({ data }) => {
             name="Textarea1"
             rows="3"
             maxLength={200}
-            defaultValue={data === undefined ? "" : data.content}
+            defaultValue={props.data === undefined ? "" : props.data.content}
             readOnly={writeSet}
           ></textarea>
           {writeSet && true ? null : (
@@ -52,7 +55,7 @@ const Detail = ({ data }) => {
   );
 };
 
-const ContentPage = () => {
+const ContentPage = (props) => {
   const { id } = useParams();
   const replyview = useSelector((state) => state.DetialReplyview.DRVset);
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
@@ -63,12 +66,14 @@ const ContentPage = () => {
     <>
       <div>
         {writeSet && true ? (
-          <Detail data={data} />
+          <Detail data={data} reload={props.reload} />
         ) : (
-          <Detail data={undefined} />
+          <Detail data={undefined} reload={props.reload} />
         )}
       </div>
-      <div>{replyview && true ? <Reply data={data} /> : null}</div>
+      <div>
+        {replyview && true ? <Reply data={data} reload={props.reload} /> : null}
+      </div>
       <div class="justify-content-center">
         {replyview && true ? (
           <button

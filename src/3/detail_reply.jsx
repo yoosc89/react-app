@@ -12,6 +12,7 @@ const ReplyInput = (props) => {
         onSubmit={(e) => {
           WriteReply(props.num, e);
           setValue("");
+          props.reload(Math.random());
         }}
       >
         <textarea
@@ -31,8 +32,8 @@ const ReplyInput = (props) => {
   );
 };
 
-const ReplyListpage = ({ data }) => {
-  const answers = data.answers;
+const ReplyListpage = (props) => {
+  const answers = props.data.answers;
 
   return (
     <>
@@ -54,12 +55,13 @@ const ReplyListpage = ({ data }) => {
   );
 };
 
-const Reply = ({ data }) => {
+const Reply = (props) => {
   const num = useParams();
+
   return (
     <>
       <ReplyInput num={num.id} />
-      <ReplyListpage data={data} />
+      <ReplyListpage data={props.data} reload={props.reload} />
     </>
   );
 };
