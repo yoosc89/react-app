@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Reply from "./detail_reply";
-import { CreatePost, ReplyList } from "./sync";
+import { CreatePost, ReplyList, ModifyPost } from "./sync";
 
 const Detail = (props) => {
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
@@ -12,8 +11,8 @@ const Detail = (props) => {
       props !== undefined
         ? writeSet !== true
           ? props.data.user.user_id === localStorage.getItem("user_id")
-            ? false
-            : true
+            ? true
+            : false
           : false
         : false;
   };
@@ -23,7 +22,7 @@ const Detail = (props) => {
         method="post"
         class="mb-3"
         onSubmit={(e) => {
-          CreatePost(e);
+          userauth ? ModifyPost(e, props.id) : CreatePost(e);
           props.reload(Math.random());
         }}
       >
@@ -33,23 +32,23 @@ const Detail = (props) => {
           <input
             type="text"
             class="form-control mt-3"
-            id="Input1"
-            name="Input1"
+            id="postsubject"
+            name="postsubject"
             placeholder="Subject"
             defaultValue={props.data === undefined ? "" : props.data.subject}
-            readOnly={userauth}
+            readOnly={!userauth}
           ></input>
         </div>
         <div class="mb-3">
           <div class=" text-bg-secondary p-2 text-sm-center">내용</div>
           <textarea
             class="form-control mt-3"
-            id="Textarea1"
-            name="Textarea1"
+            id="postcontent"
+            name="postcontent"
             rows="3"
             maxLength={200}
             defaultValue={props.data === undefined ? "" : props.data.content}
-            readOnly={userauth}
+            readOnly={!userauth}
           ></textarea>
 
           {writeSet === false ? (

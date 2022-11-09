@@ -50,8 +50,6 @@ const CRowList = (props) => {
 };
 
 const CBody = (props) => {
-  console.log(props.load);
-
   return (
     <table class="table table-hover ">
       <thead>

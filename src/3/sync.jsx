@@ -109,6 +109,28 @@ export const CreatePost = (e) => {
     });
 };
 
+export const ModifyPost = (e, id) => {
+  e.preventDefault();
+  console.log(e.target);
+  const params = {
+    question_id: id,
+    subject: e.target.postsubject.value,
+    content: e.target.postcontent.value,
+  };
+  const headers = {
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
+    "Content-Type": "application/json",
+  };
+  axios
+    .post("http://localhost:8000/api/question/update", params, {
+      headers: headers,
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => console.log(err));
+};
+
 const sync = () => {
   return;
 };

@@ -17,7 +17,7 @@ class Question(BaseModel):
         orm_mode = True
 
 
-class QusetionCreate(BaseModel):
+class QuestionCreate(BaseModel):
     subject: str
     content: str
 
@@ -28,11 +28,11 @@ class QusetionCreate(BaseModel):
         return v
 
 
-class QusetionUpdate(QusetionCreate):
+class QuestionUpdate(QuestionCreate):
     question_id: int
 
 
-class QusetionList(BaseModel):
+class QuestionList(BaseModel):
     total: int = 0
     question_list: list[Question] = []
 
