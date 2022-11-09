@@ -22,7 +22,7 @@ const Detail = (props) => {
         method="post"
         class="mb-3"
         onSubmit={(e) => {
-          userauth ? ModifyPost(e, props.id) : CreatePost(e);
+          userauth ? ModifyPost(e, props.data.id) : CreatePost(e);
           props.reload(Math.random());
         }}
       >
