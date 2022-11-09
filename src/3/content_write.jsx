@@ -5,7 +5,6 @@ import { CreatePost, ReplyList, ModifyPost } from "./sync";
 
 const Detail = (props) => {
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
-  console.log(props);
   const userauth = (props) => {
     const result =
       props !== undefined
@@ -36,7 +35,7 @@ const Detail = (props) => {
             name="postsubject"
             placeholder="Subject"
             defaultValue={props.data === undefined ? "" : props.data.subject}
-            readOnly={!userauth}
+            readOnly={!userauth(props)}
           ></input>
         </div>
         <div class="mb-3">
@@ -48,13 +47,19 @@ const Detail = (props) => {
             rows="3"
             maxLength={200}
             defaultValue={props.data === undefined ? "" : props.data.content}
-            readOnly={!userauth}
+            readOnly={!userauth(props)}
           ></textarea>
-
           {writeSet === false ? (
-            <button class="mt-3 btn btn-secondary w-100" type="submit">
-              {props.data === undefined ? "글쓰기" : "수정하기"}
-            </button>
+            props.data === undefined ? (
+              <button class="mt-3 btn btn-secondary w-100" type="submit">
+                "글쓰기"
+              </button>
+            ) : props.data.user &&
+              props.data.user.user_id === localStorage.getItem("user_id") ? (
+              <button class="mt-3 btn btn-secondary w-100" type="submit">
+                수정하기
+              </button>
+            ) : null
           ) : null}
         </div>
       </form>
@@ -63,11 +68,10 @@ const Detail = (props) => {
 };
 
 const ContentPage = (props) => {
-  const { id } = useParams();
   const replyview = useSelector((state) => state.DetialReplyview.DRVset);
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
   const dispatch = useDispatch();
-  const data = ReplyList(id);
+  const data = ReplyList(props.id);
 
   return (
     <>

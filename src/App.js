@@ -41,9 +41,7 @@ function App() {
               caseSensitive
               path={`/contents/:id`}
               element={<ContentsPage />}
-            >
-              <Route path={"detail/:id"} element={<ContentPage />} />
-            </Route>
+            ></Route>
 
             <Route caseSensitive exact path="/" element={<MainPage />}></Route>
           </Routes>

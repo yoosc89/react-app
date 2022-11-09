@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector, batch } from "react-redux";
 import ContentPage from "./content_write";
 import dayjs from "dayjs";
@@ -10,11 +10,10 @@ const CRowList = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation;
-  const Isloginstate = (path, user_id) => {
+  const Isloginstate = (user_id) => {
     if (!localStorage.getItem("islogin")) {
       navigate("/login", { state: pathname });
     } else {
-      navigate(`detail/${path}`);
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       batch(() => {
         user_id === localStorage.getItem("user_id")
@@ -33,7 +32,8 @@ const CRowList = (props) => {
           <a
             class="text-decoration-none text-dark"
             onClick={(e) => {
-              Isloginstate(row.id, row.user.user_id);
+              Isloginstate(row.user.user_id);
+              props.setid(row.id);
             }}
           >
             {row.subject}
@@ -61,7 +61,7 @@ const CBody = (props) => {
         </tr>
       </thead>
       <tbody>
-        <CRowList data={ContentList(props.load)} />
+        <CRowList data={props.data} setid={props.setid} />
       </tbody>
     </table>
   );
@@ -70,14 +70,22 @@ const CBody = (props) => {
 const ContentsPage = () => {
   const show = useSelector((state) => state.contentShowSetting.bool);
   const [load, reload] = useState("");
+  const [size, setsize] = useState(10);
+  const { id } = useParams();
+  const [contentid, setcontentid] = useState(0);
+  const data = ContentList(load, id, size);
 
   return (
     <div class="m-lg-3">
-      <div>{show && true ? <ContentPage reload={reload} /> : null}</div>
-      <div class="mt-4">
-        <CBody load={load} />
+      <div>
+        {show && true ? <ContentPage reload={reload} id={contentid} /> : null}
       </div>
-      <div class="position-relative">{<Pagination />}</div>
+      <div class="mt-4">
+        <CBody data={data} setid={setcontentid} />
+      </div>
+      <div class="position-relative">
+        {<Pagination data={data} size={size} page={id} setsize={setsize} />}
+      </div>
     </div>
   );
 };

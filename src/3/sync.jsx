@@ -15,17 +15,25 @@ export const ReplyList = (id, load) => {
   return data;
 };
 
-export const ContentList = (load) => {
+export const ContentList = (load, page, size) => {
   const [data, setData] = useState([]);
+  const params = { page: Number(page), size: Number(size) };
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/question/list`)
+      .get(
+        `http://localhost:8000/api/question/list`,
+        { params },
+        {
+          headers: { accept: "application/json" },
+        }
+      )
       .then((res) => {
         setData(res.data);
       })
       .catch((err) => {});
-  }, [load]);
+  }, [load, page, size]);
+
   return data;
 };
 
