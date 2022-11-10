@@ -34,6 +34,7 @@ const CRowList = (props) => {
             onClick={(e) => {
               Isloginstate(row.user.user_id);
               props.setid(row.id);
+              props.answers(row.answers);
             }}
           >
             {row.subject}
@@ -61,7 +62,11 @@ const CBody = (props) => {
         </tr>
       </thead>
       <tbody>
-        <CRowList data={props.data} setid={props.setid} />
+        <CRowList
+          data={props.data}
+          setid={props.setid}
+          answers={props.answers}
+        />
       </tbody>
     </table>
   );
@@ -69,19 +74,22 @@ const CBody = (props) => {
 
 const ContentsPage = () => {
   const show = useSelector((state) => state.contentShowSetting.bool);
-  const [load, reload] = useState(0);
+  const [load, reload] = useState(0.0);
   const [size, setsize] = useState(10);
   const { id } = useParams();
   const [contentid, setcontentid] = useState(0);
+  const [answers, setanswers] = useState([]);
   const data = ContentList(load, id, size);
 
   return (
     <div class="m-lg-3">
       <div>
-        {show && true ? <ContentPage reload={reload} id={contentid} /> : null}
+        {show && true ? (
+          <ContentPage reload={reload} Qid={contentid} answers={answers} />
+        ) : null}
       </div>
       <div class="mt-4">
-        <CBody data={data} setid={setcontentid} />
+        <CBody data={data} setid={setcontentid} answers={setanswers} />
       </div>
       <div class="position-relative">
         {
@@ -91,6 +99,7 @@ const ContentsPage = () => {
             page={id}
             setsize={setsize}
             setid={setcontentid}
+            reload={reload}
           />
         }
       </div>

@@ -38,3 +38,7 @@ class QuestionList(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class QuestionDelete(BaseModel):
+    question_id: int

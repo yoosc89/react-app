@@ -38,3 +38,5 @@ oldserver/__pycache__/
 oldserver/alembic.ini
 server/text.py
 server/alembic.ini
+server/answer/__pycache__/
+server/user/__pycache__/user_router.cpython-310.pyc

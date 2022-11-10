@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Reply from "./detail_reply";
-import { CreatePost, ReplyList, ModifyPost } from "./sync";
+import { CreatePost, ReplyList, ModifyPost, Deletepost } from "./sync";
 
 const Detail = (props) => {
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
+  const [submit, setsubmit] = useState(0);
   const { data } = props;
-
+  console.log(submit);
   const [newdata, setnewdata] = useState({
     subject: "",
     content: "",
@@ -32,7 +33,12 @@ const Detail = (props) => {
         method="post"
         class="mb-3"
         onSubmit={(e) => {
-          userauth(data) ? CreatePost(e) : ModifyPost(e, data.id);
+          submit === 0
+            ? CreatePost(e)
+            : submit === 1
+            ? ModifyPost(e, data.id)
+            : Deletepost(e, data.id);
+
           setnewdata({ subject: "", content: "" });
           setTimeout(() => props.reload(Math.random()), 100);
         }}
@@ -64,14 +70,31 @@ const Detail = (props) => {
           ></textarea>
           {writeSet === false ? (
             data.user?.user_id === undefined ? (
-              <button class="mt-3 btn btn-secondary w-100" type="submit">
+              <button
+                class="mt-3 btn btn-secondary w-100"
+                type="submit"
+                onClick={() => setsubmit(0)}
+              >
                 글쓰기
               </button>
             ) : data.user &&
               data.user.user_id === localStorage.getItem("user_id") ? (
-              <button class="mt-3 btn btn-secondary w-100" type="submit">
-                수정하기
-              </button>
+              <>
+                <button
+                  class="mt-3 btn btn-secondary w-75"
+                  type="submit"
+                  onClick={() => setsubmit(1)}
+                >
+                  수정하기
+                </button>
+                <button
+                  class="mt-3 btn btn-warning w-25"
+                  type="submit"
+                  onClick={() => setsubmit(2)}
+                >
+                  삭제
+                </button>
+              </>
             ) : null
           ) : null}
         </div>
@@ -83,7 +106,10 @@ const Detail = (props) => {
 const ContentPage = (props) => {
   const replyview = useSelector((state) => state.DetialReplyview.DRVset);
   const dispatch = useDispatch();
-  const data = ReplyList(props.id);
+  const data = ReplyList(props.Qid);
+  const replylist = props.answers;
+  const [newdata, setnewData] = useState([]);
+  useEffect(() => setnewData(data), [data]);
 
   return (
     <>
@@ -92,7 +118,7 @@ const ContentPage = (props) => {
       </div>
       <div>
         {replyview && true ? (
-          <Reply id={props.id} data={data} reload={props.reload} />
+          <Reply Qid={props.Qid} data={replylist} reload={props.reload} />
         ) : null}
       </div>
       <div class="justify-content-center">
@@ -112,6 +138,7 @@ const ContentPage = (props) => {
             class="btn btn-outline-primary"
             onClick={() => {
               dispatch({ type: "DRVsetTrue" });
+              setTimeout(() => props.reload(Math.random()), 100);
             }}
           >
             댓글보기

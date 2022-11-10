@@ -37,17 +37,22 @@ export const ContentList = (load, page = 0, size = 10) => {
   return data;
 };
 
-export const WriteReply = (num, e) => {
+export const WriteReply = (question_id, e) => {
   e.preventDefault();
+
   const params = { content: e.target.reply1.value };
 
   axios
-    .post(`http://localhost:8000/api/answer/answer_create/${num}`, params, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
-    })
+    .post(
+      `http://localhost:8000/api/answer/answer_create/${question_id}`,
+      params,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    )
     .then((res) => {})
     .catch((err) => {});
 };
@@ -128,7 +133,7 @@ export const ModifyPost = (e, id) => {
     "Content-Type": "application/json",
     Authorization: "Bearer " + localStorage.getItem("access_token"),
   };
-  console.log(params);
+
   axios
     .put("http://localhost:8000/api/question/update", params, {
       headers: headers,
@@ -139,8 +144,90 @@ export const ModifyPost = (e, id) => {
     .catch((err) => console.log(err));
 };
 
+export const ModifyReply = (e, id) => {
+  e.preventDefault();
+
+  const params = {
+    answer_id: id,
+    content: e.target.reply1.value,
+  };
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
+  };
+
+  axios
+    .put("http://localhost:8000/api/answer/update", params, {
+      headers: headers,
+    })
+    .then((res) => {})
+    .catch((err) => console.log(err));
+};
+
 const sync = () => {
   return;
+};
+
+export const Deletepost = (e, id) => {
+  e.preventDefault();
+  if (window.confirm("삭제하시겠습니까?")) {
+    const params = { question_id: id };
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    };
+
+    axios
+      .delete(
+        "http://localhost:8000/api/question/delete",
+        { params },
+        {
+          headers: headers,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
+
+export const Getreply = (id, load) => {
+  const [data, setdata] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/answer/detail/${id}`)
+      .then((res) => {
+        setdata(res.data);
+      })
+      .catch((err) => {});
+  }, [id, load]);
+
+  return data;
+};
+
+export const Deletereply = (e, id) => {
+  e.preventDefault();
+  if (window.confirm("삭제하시겠습니까?")) {
+    const params = { answer_id: id };
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    };
+
+    axios
+      .delete("http://localhost:8000/api/answer/delete", params, {
+        headers: headers,
+      })
+      .then((res) => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 };
 
 export default sync;
