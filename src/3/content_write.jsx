@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Reply from "./detail_reply";
-import {
-  CreatePost,
-  ReplyList,
-  ModifyPost,
-  Deletepost,
-  FileView,
-} from "./sync";
+import { CreatePost, ReplyList, ModifyPost, Deletepost } from "./sync";
 
 const Detail = (props) => {
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);

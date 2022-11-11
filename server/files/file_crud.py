@@ -5,7 +5,6 @@ from datetime import datetime
 import uuid
 import os
 from models import Question, User, File
-import itertools
 
 
 UPLOAD_DIR = os.path.abspath(os.getcwd())

@@ -253,12 +253,8 @@ export const Savefile = (e, id) => {
         headers: headers,
       }
     )
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    .then((res) => {})
+    .catch((err) => {});
 };
 
 export default sync;
