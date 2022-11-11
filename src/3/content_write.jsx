@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Reply from "./detail_reply";
-import { CreatePost, ReplyList, ModifyPost, Deletepost } from "./sync";
+import {
+  CreatePost,
+  ReplyList,
+  ModifyPost,
+  Deletepost,
+  Savefile,
+} from "./sync";
 
 const Detail = (props) => {
   const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
   const [submit, setsubmit] = useState(0);
   const { data } = props;
-  console.log(submit);
+
   const [newdata, setnewdata] = useState({
     subject: "",
     content: "",
@@ -30,6 +36,7 @@ const Detail = (props) => {
   return (
     <>
       <form
+        enctype="multipart/form-data"
         method="post"
         class="mb-3"
         onSubmit={(e) => {
@@ -68,6 +75,12 @@ const Detail = (props) => {
             onChange={(e) => setnewdata({ content: e.target.value })}
             /* readOnly={userauth(newdata.content)} */
           ></textarea>
+          <input
+            class="form-control mt-3"
+            type="file"
+            name="file"
+            multiple
+          ></input>
           {writeSet === false ? (
             data.user?.user_id === undefined ? (
               <button

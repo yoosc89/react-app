@@ -3,6 +3,7 @@ from pydantic import BaseModel, validator
 
 from answer.answer_schema import Answer
 from user.user_schema import User
+from files.file_schema import File
 
 
 class Question(BaseModel):
@@ -42,3 +43,12 @@ class QuestionList(BaseModel):
 
 class QuestionDelete(BaseModel):
     question_id: int
+
+
+class QuestionResModel(BaseModel):
+    id: int
+    subject: str
+    content: str
+
+    class Config:
+        orm_mode = True

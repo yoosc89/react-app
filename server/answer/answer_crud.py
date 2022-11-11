@@ -16,7 +16,7 @@ def create_answer(db: Session, question: Question, answer_create: AnswerCreate, 
 
 def get_answer(db: Session, answer_id: int):
     answer = db.query(Answer).get(answer_id)
-    print(answer)
+
     return answer
 
 

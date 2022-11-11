@@ -6,6 +6,7 @@ from database import get_db
 from models import User
 from . import question_schema, question_crud
 from user.user_router import get_current_user
+from files.file_schema import File
 
 router = APIRouter(prefix='/api/question')
 
@@ -24,10 +25,12 @@ def question_detail(question_id: int, db: Session = Depends(get_db)):
     return question
 
 
-@router.post("/create", status_code=status.HTTP_204_NO_CONTENT)
+@router.post("/create", response_model=question_schema.Question)
 def question_create(_question_cretae: question_schema.QuestionCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    question_crud.create_question(
+    question = question_crud.create_question(
         db=db, question_create=_question_cretae, user=current_user)
+
+    return question
 
 
 @router.put('/update', status_code=status.HTTP_204_NO_CONTENT)

@@ -1,3 +1,4 @@
+import { ConstructionOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -113,7 +114,11 @@ export const CreatePost = (e) => {
     .post("http://localhost:8000/api/question/create", params, {
       headers: headers,
     })
-    .then((res) => {})
+    .then((res) => {
+      setTimeout(() => {
+        Savefile(e, res.data.id);
+      }, 100);
+    })
     .catch((err) => {
       console.log(err);
     });
@@ -228,6 +233,32 @@ export const Deletereply = (e, id) => {
         console.log(err);
       });
   }
+};
+
+export const Savefile = (e, id) => {
+  const params = new FormData();
+  for (let i = 0; e.target.file.files.length > i; i++) {
+    params.append("_upload_file", e.target.file.files[i]);
+  }
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
+  };
+
+  axios
+    .post(
+      `http://localhost:8000/api/files/upload_file?question_id=${id}`,
+      params,
+      {
+        headers: headers,
+      }
+    )
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export default sync;

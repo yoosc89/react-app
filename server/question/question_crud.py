@@ -19,10 +19,16 @@ def get_question(db: Session, question_id: int):
 
 
 def create_question(db: Session, question_create: QuestionCreate, user: User):
+
     db_question = Question(subject=question_create.subject,
                            content=question_create.content, create_date=datetime.now(), user=user)
+
     db.add(db_question)
     db.commit()
+    question = db.query(Question).filter(
+        Question.subject == question_create.subject and Question.content == question_create.content).order_by(Question.id.desc()).first()
+
+    return question
 
 
 def update_question(db: Session, db_question: Question, question_update: QuestionUpdate):

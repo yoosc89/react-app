@@ -39,3 +39,15 @@ class User(Base):
     phonenumber = Column(String(50), unique=True, nullable=False)
     address1 = Column(String(255), nullable=False)
     address2 = Column(String(255), nullable=False)
+
+
+class File(Base):
+    __tablename__ = 'file'
+
+    id = Column(Integer, primary_key=True)
+    file = Column(Text, nullable=True)
+    create_date = Column(DateTime, nullable=False)
+    question_id = Column(Integer, ForeignKey('question.id'))
+    question = relationship("Question", backref="Files")
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship("User", backref="file_users")

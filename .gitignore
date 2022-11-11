@@ -40,3 +40,8 @@ server/text.py
 server/alembic.ini
 server/answer/__pycache__/
 server/user/__pycache__/user_router.cpython-310.pyc
+server/files/__pycache__/file_crud.cpython-310.pyc
+server/files/__pycache__/file_router.cpython-310.pyc
+server/files/__pycache__/file_schema.cpython-310.pyc
+.gitignore
+server/Untitled-1.ipynb
