@@ -6,7 +6,7 @@ import {
   ReplyList,
   ModifyPost,
   Deletepost,
-  Savefile,
+  FileView,
 } from "./sync";
 
 const Detail = (props) => {
@@ -75,24 +75,45 @@ const Detail = (props) => {
             onChange={(e) => setnewdata({ content: e.target.value })}
             /* readOnly={userauth(newdata.content)} */
           ></textarea>
-          <input
-            class="form-control mt-3"
-            type="file"
-            name="file"
-            multiple
-          ></input>
+          {data &&
+            data.files?.map((item) => (
+              <img
+                alt="..."
+                class="rounded mx-auto mt-2"
+                height={200}
+                src={`http://localhost:8000/api/files/question/${item.id}`}
+                onClick={(e) => {
+                  window.open(e.target.src, "_blank");
+                }}
+              />
+            ))}
+
           {writeSet === false ? (
             data.user?.user_id === undefined ? (
-              <button
-                class="mt-3 btn btn-secondary w-100"
-                type="submit"
-                onClick={() => setsubmit(0)}
-              >
-                글쓰기
-              </button>
+              <>
+                <input
+                  class="form-control mt-3"
+                  type="file"
+                  name="file"
+                  multiple
+                ></input>
+                <button
+                  class="mt-3 btn btn-secondary w-100"
+                  type="submit"
+                  onClick={() => setsubmit(0)}
+                >
+                  글쓰기
+                </button>
+              </>
             ) : data.user &&
               data.user.user_id === localStorage.getItem("user_id") ? (
               <>
+                <input
+                  class="form-control mt-3"
+                  type="file"
+                  name="file"
+                  multiple
+                ></input>
                 <button
                   class="mt-3 btn btn-secondary w-75"
                   type="submit"

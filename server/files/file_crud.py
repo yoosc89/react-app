@@ -4,7 +4,9 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 import uuid
 import os
-from models import Question, User
+from models import Question, User, File
+import itertools
+
 
 UPLOAD_DIR = os.path.abspath(os.getcwd())
 
@@ -23,3 +25,9 @@ def upload_file(db: Session, upload_file: list[UploadFile], user: User, question
             f.write(content)
 
     db.commit()
+
+
+def question_file(db: Session, file_id: int):
+    file = db.query(File).get(file_id)
+    filepath = UPLOAD_DIR+'/data/'+file.file
+    return filepath
