@@ -13,6 +13,7 @@ class Question(BaseModel):
     create_date: datetime.datetime
     answers: list[Answer] = []
     user: User | None
+    files: list[File] = []
 
     class Config:
         orm_mode = True

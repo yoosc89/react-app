@@ -48,6 +48,6 @@ class File(Base):
     file = Column(Text, nullable=True)
     create_date = Column(DateTime, nullable=False)
     question_id = Column(Integer, ForeignKey('question.id'))
-    question = relationship("Question", backref="Files")
+    question = relationship("Question", backref="files")
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", backref="file_users")

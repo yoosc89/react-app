@@ -80,6 +80,7 @@ const ContentsPage = () => {
   const [contentid, setcontentid] = useState(0);
   const [answers, setanswers] = useState([]);
   const data = ContentList(load, id, size);
+  console.log(data);
 
   return (
     <div class="m-lg-3">

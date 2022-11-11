@@ -4,9 +4,9 @@ from user.user_schema import User
 from fastapi import UploadFile
 
 
-class File(UploadFile):
+class File(BaseModel):
     id: int
-    file: list[UploadFile] = []
+    file: str
     create_date: datetime.datetime
     question_id: int
     user: User | None
