@@ -16,8 +16,12 @@ def create_answer(db: Session, question: Question, answer_create: AnswerCreate, 
 
 def get_answer(db: Session, answer_id: int):
     answer = db.query(Answer).get(answer_id)
-
     return answer
+
+
+def question_answer(db: Session, question_id: int):
+    answers = db.query(Answer).filter_by(question_id=question_id).all()
+    return answers
 
 
 def update_answer(db: Session, db_answer: Answer,

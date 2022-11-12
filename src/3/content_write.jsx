@@ -1,31 +1,89 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Reply from "./detail_reply";
 import { CreatePost, ReplyList, ModifyPost, Deletepost } from "./sync";
+import Slider from "react-slick";
+import { useParams, Link } from "react-router-dom";
 
-const Detail = (props) => {
-  const writeSet = useSelector((state) => state.contentWriteBoolean.CWBool);
-  const [submit, setsubmit] = useState(0);
-  const { data } = props;
-
-  const [newdata, setnewdata] = useState({
-    subject: "",
-    content: "",
-  });
-
-  useEffect(() => {
-    setnewdata(data);
-  }, [data]);
-
-  const userauth = (data) => {
-    return data !== undefined
-      ? writeSet === false
-        ? data.user && data.user.user_id === localStorage.getItem("user_id")
-          ? false
-          : true
-        : false
-      : false;
+const CarouselSlide = (props) => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    pauseOnHover: true,
+    swipeToSlide: true,
   };
+  return (
+    <>
+      <div class="mb-5 mt-3">
+        <Slider {...settings}>
+          {props.data &&
+            props.data.files?.map((item) => (
+              <div>
+                <img
+                  class="img-thumbnail mb-5"
+                  height={200}
+                  src={`http://localhost:8000/api/files/question/${item.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.open(e.target.src, "_blank");
+                  }}
+                />
+              </div>
+            ))}
+        </Slider>
+      </div>
+    </>
+  );
+};
+
+export const Createcontent = (props) => {
+  const { contents, detail } = useParams();
+  const valueHandler = (e) => {};
+  return (
+    <>
+      <form
+        enctype="multipart/form-data"
+        method="post"
+        class="mb-3"
+        onSubmit={(e) => {
+          CreatePost(e);
+          window.location.reload();
+        }}
+      >
+        <div class="mb-3">
+          <div class=" text-bg-secondary p-2 text-sm-center">글쓰기</div>
+          <input type="text" class="form-control mt-3" name="subject"></input>
+        </div>
+        <div class="mb-3">
+          <div class=" text-bg-secondary p-2 text-sm-center">내용</div>
+          <textarea
+            class="form-control mt-3"
+            name="content"
+            rows="3"
+            maxLength={200}
+          ></textarea>
+          <input
+            class="form-control mt-3"
+            type="file"
+            name="file"
+            multiple
+          ></input>
+          <button class="mt-3 btn btn-secondary w-100" type="submit">
+            글쓰기
+          </button>
+        </div>
+      </form>
+    </>
+  );
+};
+
+export const Detailcontent = () => {
+  const [modify, setmodify] = useState(false);
+  const [submit, setsubmit] = useState(0);
+  const { detail } = useParams();
+  const data = ReplyList(detail);
 
   return (
     <>
@@ -34,96 +92,75 @@ const Detail = (props) => {
         method="post"
         class="mb-3"
         onSubmit={(e) => {
-          submit === 0
-            ? CreatePost(e)
-            : submit === 1
-            ? ModifyPost(e, data.id)
-            : Deletepost(e, data.id);
-
-          setnewdata({ subject: "", content: "" });
-          setTimeout(() => props.reload(Math.random()), 100);
+          submit === 1 ? ModifyPost(e, data.id) : Deletepost(e, data.id);
         }}
       >
         <div class="mb-3">
-          <div class=" text-bg-secondary p-2 text-sm-center">제목</div>
+          <div class=" text-bg-secondary p-2 text-sm-center">
+            제목 [ID:{data.id}]
+          </div>
           <input
             type="text"
             class="form-control mt-3"
-            id="postsubject"
-            name="postsubject"
-            placeholder="Subject"
-            value={newdata.subject}
-            onChange={(e) => setnewdata({ subject: e.target.value })}
-            /* readOnly={userauth(newdata.subject)} */
+            name="subject"
+            defaultValue={data.subject}
+            readOnly={!modify}
           ></input>
         </div>
-        <div class="mb-3">
+        <div class="mb">
           <div class=" text-bg-secondary p-2 text-sm-center">내용</div>
           <textarea
             class="form-control mt-3"
-            id="postcontent"
-            name="postcontent"
+            name="content"
             rows="3"
             maxLength={200}
-            value={newdata.content}
-            onChange={(e) => setnewdata({ content: e.target.value })}
-            /* readOnly={userauth(newdata.content)} */
+            defaultValue={data.content}
+            readOnly={!modify}
           ></textarea>
-          {data &&
-            data.files?.map((item) => (
-              <img
-                alt="..."
-                class="rounded mx-auto mt-2"
-                height={200}
-                src={`http://localhost:8000/api/files/question/${item.id}`}
-                onClick={(e) => {
-                  window.open(e.target.src, "_blank");
-                }}
-              />
-            ))}
-
-          {writeSet === false ? (
-            data.user?.user_id === undefined ? (
-              <>
+          {data !== undefined ? <CarouselSlide data={data} /> : null}
+          {data.user &&
+          data.user.user_id === localStorage.getItem("user_id") ? (
+            modify ? (
+              <div>
                 <input
                   class="form-control mt-3"
                   type="file"
                   name="file"
                   multiple
-                ></input>
+                />
                 <button
-                  class="mt-3 btn btn-secondary w-100"
+                  class="mt-3 btn btn-primary w-75"
                   type="submit"
-                  onClick={() => setsubmit(0)}
+                  onClick={() => setsubmit(1)}
                 >
-                  글쓰기
+                  수정완료
                 </button>
-              </>
-            ) : data.user &&
-              data.user.user_id === localStorage.getItem("user_id") ? (
-              <>
-                <input
-                  class="form-control mt-3"
-                  type="file"
-                  name="file"
-                  multiple
-                ></input>
+                <button
+                  class="mt-3 btn btn-warning w-25"
+                  type="submit"
+                  onClick={() => setmodify(false)}
+                >
+                  취소
+                </button>
+              </div>
+            ) : (
+              <div>
                 <button
                   class="mt-3 btn btn-secondary w-75"
                   type="submit"
-                  onClick={() => setsubmit(1)}
+                  onClick={() => setmodify(true)}
                 >
                   수정하기
                 </button>
                 <button
-                  class="mt-3 btn btn-warning w-25"
+                  class="mt-3 btn btn-danger w-25"
                   type="submit"
                   onClick={() => setsubmit(2)}
                 >
                   삭제
                 </button>
-              </>
-            ) : null
+              </div>
+            )
           ) : null}
         </div>
       </form>
@@ -132,47 +169,41 @@ const Detail = (props) => {
 };
 
 const ContentPage = (props) => {
-  const replyview = useSelector((state) => state.DetialReplyview.DRVset);
-  const dispatch = useDispatch();
-  const data = ReplyList(props.Qid);
-  const replylist = props.answers;
-  const [newdata, setnewData] = useState([]);
-  useEffect(() => setnewData(data), [data]);
+  const [replyview, setreplyview] = useState(false);
 
   return (
     <>
       <div>
-        <Detail data={data} reload={props.reload} />
-      </div>
-      <div>
         {replyview && true ? (
-          <Reply Qid={props.Qid} data={replylist} reload={props.reload} />
+          <Reply Qid={props.Qid} data={props.answers} reload={props.reload} />
         ) : null}
       </div>
-      <div class="justify-content-center">
-        {replyview && true ? (
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            onClick={() => {
-              dispatch({ type: "DRVsetFalse" });
-            }}
-          >
-            댓글닫기
-          </button>
-        ) : (
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            onClick={() => {
-              dispatch({ type: "DRVsetTrue" });
-              setTimeout(() => props.reload(Math.random()), 100);
-            }}
-          >
-            댓글보기
-          </button>
-        )}
-      </div>
+      {/* {detail !== "new" ? (
+        <div class="justify-content-center">
+          {replyview && true ? (
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              onClick={() => {
+                setreplyview(false);
+              }}
+            >
+              댓글닫기
+            </button>
+          ) : (
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              onClick={() => {
+                setreplyview(true);
+                setTimeout(() => props.reload(Math.random()), 100);
+              }}
+            >
+              댓글보기
+            </button>
+          )}
+        </div>
+      ) : null} */}
     </>
   );
 };

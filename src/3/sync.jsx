@@ -1,4 +1,3 @@
-import { ConstructionOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -99,10 +98,10 @@ export const LastPageNumber = () => {
 
 export const CreatePost = (e) => {
   e.preventDefault();
-
+  console.log(e);
   const params = {
-    subject: e.target.postsubject.value,
-    content: e.target.postcontent.value,
+    subject: e.target.subject.value,
+    content: e.target.content.value,
   };
 
   const headers = {
@@ -117,13 +116,11 @@ export const CreatePost = (e) => {
     .then((res) => {
       setTimeout(() => {
         Savefile(e, res.data.id);
-      }, 100);
+      }, 1000);
     })
     .catch((err) => {
       console.log(err);
     });
-
-  return;
 };
 
 export const ModifyPost = (e, id) => {
@@ -131,8 +128,8 @@ export const ModifyPost = (e, id) => {
 
   const params = {
     question_id: id,
-    subject: e.target.postsubject.value,
-    content: e.target.postcontent.value,
+    subject: e.target.subject.value,
+    content: e.target.content.value,
   };
   const headers = {
     "Content-Type": "application/json",
@@ -143,10 +140,12 @@ export const ModifyPost = (e, id) => {
     .put("http://localhost:8000/api/question/update", params, {
       headers: headers,
     })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => console.log(err));
+    .then((res) => {})
+    .catch((err) => {});
+  setTimeout(() => {
+    Savefile(e, id);
+  }, 1000);
+  window.location.reload();
 };
 
 export const ModifyReply = (e, id) => {
@@ -165,7 +164,9 @@ export const ModifyReply = (e, id) => {
     .put("http://localhost:8000/api/answer/update", params, {
       headers: headers,
     })
-    .then((res) => {})
+    .then((res) => {
+      console.log(res);
+    })
     .catch((err) => console.log(err));
 };
 
@@ -175,14 +176,12 @@ const sync = () => {
 
 export const Deletepost = (e, id) => {
   e.preventDefault();
-  if (window.confirm("삭제하시겠습니까?")) {
-    const params = { question_id: id };
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  };
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-    };
-
+  const paramaxios = (params) => {
     axios
       .delete(
         "http://localhost:8000/api/question/delete",
@@ -197,6 +196,17 @@ export const Deletepost = (e, id) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+  if (window.confirm("삭제하시겠습니까?")) {
+    if (typeof id === "number") {
+      const params = { question_id: id };
+      paramaxios(params);
+    } else {
+      for (const arryid of id) {
+        const params = { question_id: arryid };
+        paramaxios(params);
+      }
+    }
   }
 };
 
@@ -255,6 +265,23 @@ export const Savefile = (e, id) => {
     )
     .then((res) => {})
     .catch((err) => {});
+};
+
+export const QuesionReplyList = (id) => {
+  const data = [];
+  const headers = { accept: "application/json" };
+  useEffect(() =>
+    axios
+      .get(`http://localhost:8000/api/answer/question/answer/${id}`, {
+        headers: headers,
+      })
+      .then((res) => data.push(res.data))
+      .catch((err) => {
+        console.log(err);
+      })
+  );
+  console.log();
+  return data;
 };
 
 export default sync;

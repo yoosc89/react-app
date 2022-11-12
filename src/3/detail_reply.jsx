@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { WriteReply, ModifyReply, Deletereply } from "./sync";
+import { WriteReply, ModifyReply, Deletereply, QuesionReplyList } from "./sync";
 
 const ReplyList = (props) => {
   const [data, setdata] = useState([]);
@@ -56,24 +56,22 @@ const ReplyListpage = (props) => {
     setnewanswers(props.data?.data);
   }, [props]);
 
-  return (
-    <>
-      {newnaswers &&
-        newnaswers.map((answer) => (
-          <>
-            <div class="row mt-2 pt-2 pb-2 text-bg-secondary">
-              <div class="col text-start ms-3">{answer.user?.user_id}</div>
-              <div class="col text-end me-3">
-                작성 날짜 : {answer.create_date}
-              </div>
-            </div>
-            <div class="row pt-2 pb-2 ">
-              <ReplyList data={answer} reload={props.relaod} />
-            </div>
-          </>
-        ))}
-    </>
-  );
+  /* const List = () => {
+    newnaswers?.map((answer) => {
+      return;
+      <>
+        <div class="row mt-2 pt-2 pb-2 text-bg-secondary">
+          <div class="col text-start ms-3">{answer.user?.user_id}</div>
+          <div class="col text-end me-3">작성 날짜 : {answer.create_date}</div>
+        </div>
+        <div class="row pt-2 pb-2 ">
+          <ReplyList data={answer} reload={props.relaod} />
+        </div>
+      </>;
+    });
+  }; */
+
+  return <></>;
 };
 
 const ReplyInput = (props) => {
@@ -108,16 +106,7 @@ const ReplyInput = (props) => {
 };
 
 const Reply = (props) => {
-  const [newprops, setprops] = useState([]);
-  useEffect(() => {
-    setprops(props);
-  }, [props]);
-
-  return (
-    <>
-      <ReplyInput Qid={newprops.Qid} reload={props.reload} />
-      <ReplyListpage data={newprops} reload={props.reload} />
-    </>
-  );
+  return <></>;
 };
+
 export default Reply;

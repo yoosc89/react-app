@@ -44,7 +44,7 @@ def question_update(_question_update: question_schema.QuestionUpdate, db: Sessio
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail='수정 권한이 없습니다')
 
-    question_crud.update_question(
+    result = question_crud.update_question(
         db=db, db_question=db_question, question_update=_question_update)
 
 

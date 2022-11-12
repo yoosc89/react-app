@@ -30,3 +30,8 @@ class AnswerUpdate(AnswerCreate):
 
 class AnswerDelete(BaseModel):
     answer_id: int
+
+
+class AnswerList(BaseModel):
+
+    answers: list[Answer]

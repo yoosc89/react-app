@@ -11,7 +11,9 @@ import MenuItems from "./3/menu";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "animate.css";
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import ContentPage from "./3/content_write";
 function App() {
   return (
     <>
@@ -36,11 +38,9 @@ function App() {
               element={<SearchAccoute />}
             ></Route>
 
-            <Route
-              caseSensitive
-              path={`/contents/:id`}
-              element={<ContentsPage />}
-            ></Route>
+            <Route path={"contents"}>
+              <Route path={`:contents/*`} element={<ContentsPage />}></Route>
+            </Route>
 
             <Route caseSensitive exact path="/" element={<MainPage />}></Route>
           </Routes>

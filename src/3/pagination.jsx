@@ -1,5 +1,6 @@
-import { useLocation, useNavigate, useParams, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link, NavLink } from "react-router-dom";
 import { batch, useDispatch } from "react-redux";
+import { Deletepost } from "./sync";
 
 const Dropdown = (props) => {
   return (
@@ -37,6 +38,17 @@ const Pagination = (props) => {
   const navigate = useNavigate();
   const { pathname } = useLocation;
   const dropdownlist = [10, 20, 50, 100, 200, 500, 1000];
+  const chkedAll = () => {
+    if (props.data.question_list.length !== props.chked.length) {
+      const list = [];
+      props.data.question_list.forEach((ele) => {
+        list.push(ele.id);
+      });
+      props.setChked(list);
+    } else {
+      props.setChked([]);
+    }
+  };
 
   return (
     <>
@@ -60,21 +72,39 @@ const Pagination = (props) => {
               </ul>
             </div>
             <button
-              class="btn btn-primary"
-              onClick={() => {
-                if (!localStorage.getItem("islogin")) {
-                  alert("로그인 후 이용 가능합니다");
-                  navigate("/login", { state: pathname });
-                } else {
-                  batch(() => {
-                    dispatch({ type: "detailTrue" });
-                    dispatch({ type: "CWBtrue" });
-                  });
-                }
-              }}
+              type="button"
+              class="btn btn-dark me-2"
+              onClick={(e) => chkedAll()}
             >
-              글쓰기
+              선택 ({props.chked.length})
             </button>
+            {props.chked.length > 0 ? (
+              <button
+                type="button"
+                class="btn btn-dark me-2"
+                onClick={(e) => Deletepost(e, props.chked)}
+              >
+                삭제 ({props.chked.length})
+              </button>
+            ) : null}
+            <NavLink to="detail/new">
+              <button
+                class="btn btn-primary"
+                onClick={(e) => {
+                  if (!localStorage.getItem("islogin")) {
+                    alert("로그인 후 이용 가능합니다");
+                    navigate("/login", { state: pathname });
+                  } else {
+                    batch(() => {
+                      /* dispatch({ type: "detailTrue" }); */
+                      dispatch({ type: "CWBtrue" });
+                    });
+                  }
+                }}
+              >
+                글쓰기
+              </button>
+            </NavLink>
           </div>
         </div>
       </div>

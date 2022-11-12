@@ -1,15 +1,5 @@
 import { combineReducers } from "redux";
 
-const contentShowSetting = (state = { bool: false }, action) => {
-  if (action.type === "detailTrue") {
-    return { bool: true };
-  }
-  if (action.type === "detailFalse") {
-    return { bool: false };
-  }
-  return { ...state };
-};
-
 const contentWriteBoolean = (state = { CWBool: true }, action) => {
   if (action.type === "CWBtrue") return { CWBool: false };
   if (action.type === "CWBfalse") return { CWBool: true };
@@ -33,7 +23,6 @@ const Reload = (state = { RLset: 0 }, action) => {
 };
 
 const Reducers = combineReducers({
-  contentShowSetting,
   contentWriteBoolean,
   DetialReplyview,
   Reload,

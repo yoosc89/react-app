@@ -29,6 +29,12 @@ def answer(answer_id: int, db: Session = Depends(get_db)):
     return answer
 
 
+@router.get("/question/answer/{question_id}", response_model=list[answer_schema.Answer])
+def answer(question_id: int, db: Session = Depends(get_db)):
+    answers = answer_crud.question_answer(db, question_id=question_id)
+    return answers
+
+
 @router.put("/update", status_code=status.HTTP_204_NO_CONTENT)
 def answer_update(_answer_update: answer_schema.AnswerUpdate,
                   db: Session = Depends(get_db),
