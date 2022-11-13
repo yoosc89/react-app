@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, forwardRef } from "react";
 import { useParams } from "react-router-dom";
 import { WriteReply, ModifyReply, Deletereply, QuesionReplyList } from "./sync";
+import dayjs from "dayjs";
 
 const ReplyList = (props) => {
   const [submit, setsubmit] = useState(0);
@@ -9,9 +10,13 @@ const ReplyList = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (submit === 1) {
-      ModifyReply(e, props.data.id);
+      ModifyReply(e, props.data.id, (callback) => {
+        props.setload(Math.random());
+      });
     } else if (submit === 2) {
-      Deletereply(e, props.data.id);
+      Deletereply(e, props.data.id, () => {
+        props.setload(Math.random());
+      });
     }
   };
 
@@ -81,20 +86,18 @@ const ReplyListpage = (props) => {
       {data.answers &&
         data.answers.map((answer) => (
           <>
-            {}
             <div
               class="row mt-2 pt-2 pb-2 text-bg-secondary"
-              ref={(ele) =>
-                (props.inputref.current[`replylist${answer.id}`] = ele)
-              }
+              ref={(ele) => (props.inputref.current[`${answer.id}`] = ele)}
             >
               <div class="col text-start ms-3">{answer.user?.user_id}</div>
               <div class="col text-end me-3">
-                작성 날짜 : {answer.create_date}
+                작성 날짜 :{" "}
+                {dayjs(answer.create_date).format("YYYY-MM-DD HH:mm:ss")}
               </div>
             </div>
             <div class="row pt-2 pb-2 ">
-              <ReplyList data={answer} />
+              <ReplyList data={answer} setload={props.setload} />
             </div>
           </>
         ))}
@@ -110,17 +113,14 @@ const ReplyInput = (props) => {
       <form
         method="post"
         onSubmit={(e) => {
-          WriteReply(detail, e, (callback) => {
-            setdata("");
-            setTimeout(props.setload(Math.random()), 200);
-            setTimeout(
-              props.inputref.current[
-                `replylist${callback.id}`
-              ].scrollIntoView(),
-              1000
-            );
+          WriteReply(detail, e, async (callback) => {
+            await setdata({ content: "" });
+            await props.setload(Math.random());
+            await props.inputref.current?.at(-1).scrollIntoView({
+              behavior: "auto",
+              block: "start",
+            });
           });
-          setdata({ content: "" });
         }}
       >
         <textarea
@@ -131,8 +131,8 @@ const ReplyInput = (props) => {
           value={data.content}
           onChange={(e) => setdata({ content: e.target.value })}
           rows="3"
+          ref={(ele) => (props.inputref.current["createreply"] = ele)}
         />
-
         <button type="summit" class="btn btn-primary mt-4 w-100 mb-4">
           댓글작성
         </button>
@@ -158,8 +158,11 @@ export const ReplyToggle = (props) => {
         <button
           type="button"
           class="btn btn-outline-primary"
-          onClick={() => {
-            props.settoggle(true);
+          onClick={async (e) => {
+            await setTimeout(props.settoggle(true), 2000);
+            await props.inputref.current["createreply"].scrollIntoView({
+              block: "center",
+            });
           }}
         >
           댓글보기
@@ -176,12 +179,12 @@ const Reply = () => {
 
   return (
     <>
-      <ReplyToggle toggle={toggle} settoggle={settoggle} />
+      <ReplyToggle toggle={toggle} inputref={inputref} settoggle={settoggle} />
       <>
         {toggle ? (
           <>
             <ReplyInput inputref={inputref} setload={setload} />
-            <ReplyListpage inputref={inputref} load={load} />
+            <ReplyListpage inputref={inputref} load={load} setload={setload} />
           </>
         ) : null}
       </>

@@ -2,9 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import json
+import os
 
-
-with open('/Users/yuseungcheol/Desktop/project/react-app/server/mysql_info.json')as f:
+with open(f'{os.getcwd()}/mysql_info.json')as f:
     DBINFO = json.load(f)
 
 DB_URL = f"mysql+pymysql://{DBINFO['user']}:{DBINFO['password']}@{DBINFO['host']}:{DBINFO['port']}/{DBINFO['db']}?charset=utf8"

@@ -11,7 +11,8 @@ from files import file_router
 app = FastAPI()
 
 origins = [
-    'http://localhost:8000', 'http://localhost:3000', 'http://localhost'
+    'http://localhost:8000', 'http://localhost:3000', 'http://localhost', 'http://tysct.kr', 'https://tysct.kr',
+
 ]
 
 app.add_middleware(CORSMiddleware, allow_origins=origins,

@@ -101,8 +101,9 @@ export const Detailcontent = () => {
 
   const onsubmit = (e) => {
     if (submit === 1) {
-      ModifyPost(e, data.id);
-      Savefile(e, data.id);
+      ModifyPost(e, data.id, (callback) => {
+        Savefile(e, data.id);
+      });
     } else if (submit === 2) {
       Deletepost(e, data.id);
     }

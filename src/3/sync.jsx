@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const ReplyList = (id, load) => {
   const [data, setData] = useState([]);
@@ -118,7 +117,7 @@ export const CreatePost = async (e, callback) => {
     });
 };
 
-export const ModifyPost = (e, id) => {
+export const ModifyPost = (e, id, callback) => {
   e.preventDefault();
 
   const params = {
@@ -135,7 +134,9 @@ export const ModifyPost = (e, id) => {
     .put("http://localhost:8000/api/question/update", params, {
       headers: headers,
     })
-    .then((res) => {})
+    .then((res) => {
+      callback(res.data);
+    })
     .catch((err) => {});
 };
 
@@ -168,26 +169,21 @@ const sync = () => {
 
 export const Deletepost = (e, id) => {
   e.preventDefault();
+
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
   };
 
   const paramaxios = (params) => {
-    axios
-      .delete(
-        "http://localhost:8000/api/question/delete",
-        { params },
-        {
-          headers: headers,
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    axios({
+      method: "delete",
+      url: "http://localhost:8000/api/question/delete",
+      data: params,
+      headers: headers,
+    }).then(() => {
+      window.location.reload();
+    });
   };
   if (window.confirm("삭제하시겠습니까?")) {
     if (typeof id === "number") {
@@ -216,24 +212,33 @@ export const Getreply = (id, load) => {
   return data;
 };
 
-export const Deletereply = (e, id) => {
+export const Deletereply = (e, id, callback) => {
   e.preventDefault();
-  if (window.confirm("삭제하시겠습니까?")) {
-    const params = { answer_id: id };
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    };
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
+  };
 
-    axios
-      .delete("http://localhost:8000/api/answer/delete", params, {
-        headers: headers,
+  const axiosexe = (params) => {
+    axios({
+      method: "delete",
+      url: "http://localhost:8000/api/answer/delete",
+      data: params,
+      headers: headers,
+    })
+      .then((res) => {
+        callback(res.data);
       })
-      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  if (window.confirm("삭제하시겠습니까?")) {
+    console.log(id);
+    const params = { answer_id: Number(id) };
+    axiosexe(params);
   }
 };
 
