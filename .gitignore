@@ -46,3 +46,9 @@ server/data/
 server/data/
 server/answer/__pycache__/
 server/answer/__pycache__/
+server/answer/__pycache__/answer_crud.cpython-310.pyc
+server/answer/__pycache__/answer_router.cpython-310.pyc
+server/answer/__pycache__/answer_schema.cpython-310.pyc
+server/answer/__pycache__/answer_crud.cpython-310.pyc
+server/answer/__pycache__/answer_router.cpython-310.pyc
+server/answer/__pycache__/answer_schema.cpython-310.pyc

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FloatingInput } from "./style";
 import { Loginsystem } from "./sync";
 
 const LoginPage = () => {
+  const prelocation = useLocation();
+  const navigate = useNavigate();
+
   const [input, setInput] = useState({ id: "", pwd: "" });
 
   const onChange = (e) => {
@@ -16,6 +19,7 @@ const LoginPage = () => {
         class="container  mt-5 d-grid gap-4 rounded"
         onSubmit={(e) => {
           Loginsystem(e);
+          navigate(prelocation.state.pathname);
         }}
         method="post"
       >

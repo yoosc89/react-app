@@ -33,5 +33,5 @@ class AnswerDelete(BaseModel):
 
 
 class AnswerList(BaseModel):
-
-    answers: list[Answer]
+    total: int
+    answers: list[Answer] | None

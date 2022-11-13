@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 const MenuItems = () => {
   return (
@@ -18,7 +19,9 @@ const MenuItems = () => {
           </button>
           <a class="navbar-brand">
             <Link to="/" class="text-decoration-none text-bg-primary">
-              (끄덕)
+              {localStorage.getItem("islogin") && true
+                ? localStorage.getItem("user_id")
+                : "(끄덕)"}
             </Link>
           </a>
 

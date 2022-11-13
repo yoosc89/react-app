@@ -5,8 +5,8 @@ import {
   Route,
   Routes,
   NavLink,
+  Link,
 } from "react-router-dom";
-import { useDispatch, batch } from "react-redux";
 import dayjs from "dayjs";
 import { ContentList, Deletepost } from "./sync";
 import Pagination from "./pagination";
@@ -15,8 +15,8 @@ import { Detailcontent, Createcontent } from "./content_write";
 
 const CRowList = (props) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { pathname } = useLocation;
+  const { pathname } = useLocation();
+  const { contents } = useParams();
 
   const cheklist = (chked, id) => {
     if (chked) {
@@ -26,17 +26,14 @@ const CRowList = (props) => {
     }
   };
 
-  const Isloginstate = (user_id) => {
+  const Isloginstate = (user_id, id) => {
     if (!localStorage.getItem("islogin")) {
-      navigate("/login", { state: pathname });
+      navigate("/login", { state: { pathname: pathname } });
     } else {
+      window.location.replace(
+        `http://localhost:3000/contents/${contents}/detail/${id}`
+      );
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-      batch(() => {
-        user_id === localStorage.getItem("user_id")
-          ? dispatch({ type: "CWBtrue" })
-          : dispatch({ type: "CWBfalse" });
-        props.setshow(true);
-      });
     }
   };
 
@@ -54,16 +51,15 @@ const CRowList = (props) => {
         </td>
         <td>{row.id}</td>
         <td>
-          <NavLink
-            to={`detail/${row.id}`}
+          <a
             class="text-decoration-none text-dark"
             onClick={(e) => {
-              Isloginstate(row.user.user_id);
+              Isloginstate(row.user.user_id, row.id);
               props.setid(row.id);
             }}
           >
             {row.subject}
-          </NavLink>
+          </a>
           <a class="text-primary text-decoration-none">
             [{row.answers.length}]
           </a>

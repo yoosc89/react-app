@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Reply from "./detail_reply";
-import { CreatePost, ReplyList, ModifyPost, Deletepost } from "./sync";
+import {
+  CreatePost,
+  ReplyList,
+  ModifyPost,
+  Deletepost,
+  Savefile,
+} from "./sync";
 import Slider from "react-slick";
 import { useParams, Link } from "react-router-dom";
 
@@ -16,13 +23,13 @@ const CarouselSlide = (props) => {
   };
   return (
     <>
-      <div class="mb-5 mt-3">
+      <div class="mb-4 mt-4">
         <Slider {...settings}>
           {props.data &&
             props.data.files?.map((item) => (
               <div>
                 <img
-                  class="img-thumbnail mb-5"
+                  class="img-thumbnail"
                   height={200}
                   src={`http://localhost:8000/api/files/question/${item.id}`}
                   onClick={(e) => {
@@ -40,7 +47,12 @@ const CarouselSlide = (props) => {
 
 export const Createcontent = (props) => {
   const { contents, detail } = useParams();
-  const valueHandler = (e) => {};
+
+  const replace = async (id) => {
+    await window.location.replace(
+      `http://localhost:3000/contents/${contents}/detail/${id}`
+    );
+  };
   return (
     <>
       <form
@@ -48,8 +60,10 @@ export const Createcontent = (props) => {
         method="post"
         class="mb-3"
         onSubmit={(e) => {
-          CreatePost(e);
-          window.location.reload();
+          CreatePost(e, (callback) => {
+            setTimeout(Savefile(e, callback.id), 1000);
+            setTimeout(replace(callback.id), 1000);
+          });
         }}
       >
         <div class="mb-3">
@@ -82,8 +96,17 @@ export const Createcontent = (props) => {
 export const Detailcontent = () => {
   const [modify, setmodify] = useState(false);
   const [submit, setsubmit] = useState(0);
-  const { detail } = useParams();
+  const { detail, contents } = useParams();
   const data = ReplyList(detail);
+
+  const onsubmit = (e) => {
+    if (submit === 1) {
+      ModifyPost(e, data.id);
+      Savefile(e, data.id);
+    } else if (submit === 2) {
+      Deletepost(e, data.id);
+    }
+  };
 
   return (
     <>
@@ -91,9 +114,7 @@ export const Detailcontent = () => {
         enctype="multipart/form-data"
         method="post"
         class="mb-3"
-        onSubmit={(e) => {
-          submit === 1 ? ModifyPost(e, data.id) : Deletepost(e, data.id);
-        }}
+        onSubmit={onsubmit}
       >
         <div class="mb-3">
           <div class=" text-bg-secondary p-2 text-sm-center">
@@ -117,7 +138,7 @@ export const Detailcontent = () => {
             defaultValue={data.content}
             readOnly={!modify}
           ></textarea>
-          {data !== undefined ? <CarouselSlide data={data} /> : null}
+          {data.files?.length ? <CarouselSlide data={data} /> : null}
           {data.user &&
           data.user.user_id === localStorage.getItem("user_id") ? (
             modify ? (
@@ -164,6 +185,7 @@ export const Detailcontent = () => {
           ) : null}
         </div>
       </form>
+      <Reply />
     </>
   );
 };
@@ -178,32 +200,6 @@ const ContentPage = (props) => {
           <Reply Qid={props.Qid} data={props.answers} reload={props.reload} />
         ) : null}
       </div>
-      {/* {detail !== "new" ? (
-        <div class="justify-content-center">
-          {replyview && true ? (
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              onClick={() => {
-                setreplyview(false);
-              }}
-            >
-              댓글닫기
-            </button>
-          ) : (
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              onClick={() => {
-                setreplyview(true);
-                setTimeout(() => props.reload(Math.random()), 100);
-              }}
-            >
-              댓글보기
-            </button>
-          )}
-        </div>
-      ) : null} */}
     </>
   );
 };

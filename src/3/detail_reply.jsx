@@ -1,48 +1,71 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, forwardRef } from "react";
+import { useParams } from "react-router-dom";
 import { WriteReply, ModifyReply, Deletereply, QuesionReplyList } from "./sync";
 
 const ReplyList = (props) => {
-  const [data, setdata] = useState([]);
-  const [del, setdel] = useState(false);
-  useEffect(() => setdata(props.data), [props]);
+  const [submit, setsubmit] = useState(0);
+  const [modify, setmodify] = useState(false);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (submit === 1) {
+      ModifyReply(e, props.data.id);
+    } else if (submit === 2) {
+      Deletereply(e, props.data.id);
+    }
+  };
 
   return (
     <>
-      <form
-        method="post"
-        onSubmit={(e) => {
-          del ? Deletereply(e, props.data?.id) : ModifyReply(e, props.data?.id);
-          setTimeout(() => props.reload(Math.random()), 100);
-        }}
-      >
+      <form method="post" onSubmit={onSubmit}>
         <textarea
           type="text"
           class="form-control mt-4"
-          id="reply1"
-          name="reply1"
-          value={data.content}
-          onChange={(e) => setdata({ content: e.target.value })}
+          name="reply"
+          defaultValue={props.data.content}
+          readOnly={!modify}
           rows="3"
         />
         {props.data.user?.user_id === localStorage.getItem("user_id") ? (
-          <>
-            <button
-              type="submit"
-              class="btn btn-secondary mt-4 w-75 mb-4"
-              onClick={() => {
-                setdel(false);
-              }}
-            >
-              댓글수정
-            </button>
-            <button
-              type="summit"
-              class="btn btn-warning mt-4 w-25 mb-4"
-              onClick={() => setdel(true)}
-            >
-              삭제
-            </button>
-          </>
+          modify ? (
+            <div>
+              <button
+                type="submit"
+                class="btn btn-primary mt-4 w-75 mb-4"
+                onClick={() => {
+                  setsubmit(1);
+                  setmodify(false);
+                }}
+              >
+                수정완료
+              </button>
+              <button
+                type="submit"
+                class="btn btn-danger mt-4 w-25 mb-4"
+                onClick={() => setmodify(false)}
+              >
+                취소
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button
+                class="btn btn-warning mt-4 w-75 mb-4"
+                type="submit"
+                onClick={() => setmodify(true)}
+              >
+                댓글수정
+              </button>
+
+              <button
+                class="btn btn-danger mt-4 w-25 mb-4"
+                type="submit"
+                onClick={() => setsubmit(2)}
+              >
+                삭제
+              </button>
+            </div>
+          )
         ) : null}
       </form>
     </>
@@ -50,41 +73,54 @@ const ReplyList = (props) => {
 };
 
 const ReplyListpage = (props) => {
-  const [newnaswers, setnewanswers] = useState([]);
+  const { detail } = useParams();
+  const data = QuesionReplyList(detail, props.load);
 
-  useEffect(() => {
-    setnewanswers(props.data?.data);
-  }, [props]);
-
-  /* const List = () => {
-    newnaswers?.map((answer) => {
-      return;
-      <>
-        <div class="row mt-2 pt-2 pb-2 text-bg-secondary">
-          <div class="col text-start ms-3">{answer.user?.user_id}</div>
-          <div class="col text-end me-3">작성 날짜 : {answer.create_date}</div>
-        </div>
-        <div class="row pt-2 pb-2 ">
-          <ReplyList data={answer} reload={props.relaod} />
-        </div>
-      </>;
-    });
-  }; */
-
-  return <></>;
+  return (
+    <>
+      {data.answers &&
+        data.answers.map((answer) => (
+          <>
+            {}
+            <div
+              class="row mt-2 pt-2 pb-2 text-bg-secondary"
+              ref={(ele) =>
+                (props.inputref.current[`replylist${answer.id}`] = ele)
+              }
+            >
+              <div class="col text-start ms-3">{answer.user?.user_id}</div>
+              <div class="col text-end me-3">
+                작성 날짜 : {answer.create_date}
+              </div>
+            </div>
+            <div class="row pt-2 pb-2 ">
+              <ReplyList data={answer} />
+            </div>
+          </>
+        ))}
+    </>
+  );
 };
 
 const ReplyInput = (props) => {
   const [data, setdata] = useState([]);
-
+  const { detail } = useParams();
   return (
     <>
       <form
         method="post"
         onSubmit={(e) => {
-          WriteReply(props.Qid, e);
+          WriteReply(detail, e, (callback) => {
+            setdata("");
+            setTimeout(props.setload(Math.random()), 200);
+            setTimeout(
+              props.inputref.current[
+                `replylist${callback.id}`
+              ].scrollIntoView(),
+              1000
+            );
+          });
           setdata({ content: "" });
-          setTimeout(() => props.reload(Math.random()), 100);
         }}
       >
         <textarea
@@ -97,7 +133,7 @@ const ReplyInput = (props) => {
           rows="3"
         />
 
-        <button type="summit" class="btn btn-secondary mt-4 w-100 mb-4">
+        <button type="summit" class="btn btn-primary mt-4 w-100 mb-4">
           댓글작성
         </button>
       </form>
@@ -105,8 +141,52 @@ const ReplyInput = (props) => {
   );
 };
 
-const Reply = (props) => {
-  return <></>;
+export const ReplyToggle = (props) => {
+  return (
+    <div class="justify-content-center">
+      {props.toggle ? (
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          onClick={() => {
+            props.settoggle(false);
+          }}
+        >
+          댓글닫기
+        </button>
+      ) : (
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          onClick={() => {
+            props.settoggle(true);
+          }}
+        >
+          댓글보기
+        </button>
+      )}
+    </div>
+  );
+};
+
+const Reply = () => {
+  const [toggle, settoggle] = useState(false);
+  const [load, setload] = useState(0.0);
+  const inputref = useRef([]);
+
+  return (
+    <>
+      <ReplyToggle toggle={toggle} settoggle={settoggle} />
+      <>
+        {toggle ? (
+          <>
+            <ReplyInput inputref={inputref} setload={setload} />
+            <ReplyListpage inputref={inputref} load={load} />
+          </>
+        ) : null}
+      </>
+    </>
+  );
 };
 
 export default Reply;

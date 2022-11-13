@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const ReplyList = (id, load) => {
   const [data, setData] = useState([]);
@@ -37,7 +38,7 @@ export const ContentList = (load, page = 0, size = 10) => {
   return data;
 };
 
-export const WriteReply = (question_id, e) => {
+export const WriteReply = (question_id, e, callback) => {
   e.preventDefault();
 
   const params = { content: e.target.reply1.value };
@@ -53,7 +54,7 @@ export const WriteReply = (question_id, e) => {
         },
       }
     )
-    .then((res) => {})
+    .then((res) => callback(res.data))
     .catch((err) => {});
 };
 
@@ -78,9 +79,7 @@ export const Loginsystem = (e) => {
       localStorage.setItem("token_type", res.data.token_type);
       localStorage.setItem("islogin", true);
     })
-    .then(() => {
-      window.location.replace("/");
-    })
+    .then(() => {})
     .catch((err) => {});
 };
 
@@ -96,9 +95,9 @@ export const LastPageNumber = () => {
   return data;
 };
 
-export const CreatePost = (e) => {
+export const CreatePost = async (e, callback) => {
   e.preventDefault();
-  console.log(e);
+
   const params = {
     subject: e.target.subject.value,
     content: e.target.content.value,
@@ -109,15 +108,11 @@ export const CreatePost = (e) => {
     Authorization: "Bearer " + localStorage.getItem("access_token"),
   };
 
-  axios
+  await axios
     .post("http://localhost:8000/api/question/create", params, {
       headers: headers,
     })
-    .then((res) => {
-      setTimeout(() => {
-        Savefile(e, res.data.id);
-      }, 1000);
-    })
+    .then((res) => callback(res.data))
     .catch((err) => {
       console.log(err);
     });
@@ -142,10 +137,6 @@ export const ModifyPost = (e, id) => {
     })
     .then((res) => {})
     .catch((err) => {});
-  setTimeout(() => {
-    Savefile(e, id);
-  }, 1000);
-  window.location.reload();
 };
 
 export const ModifyReply = (e, id) => {
@@ -153,8 +144,9 @@ export const ModifyReply = (e, id) => {
 
   const params = {
     answer_id: id,
-    content: e.target.reply1.value,
+    content: e.target.reply.value,
   };
+
   const headers = {
     "Content-Type": "application/json",
     Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -245,7 +237,8 @@ export const Deletereply = (e, id) => {
   }
 };
 
-export const Savefile = (e, id) => {
+export const Savefile = async (e, id) => {
+  e.preventDefault();
   const params = new FormData();
   for (let i = 0; e.target.file.files.length > i; i++) {
     params.append("_upload_file", e.target.file.files[i]);
@@ -255,7 +248,7 @@ export const Savefile = (e, id) => {
     Authorization: "Bearer " + localStorage.getItem("access_token"),
   };
 
-  axios
+  await axios
     .post(
       `http://localhost:8000/api/files/upload_file?question_id=${id}`,
       params,
@@ -267,20 +260,19 @@ export const Savefile = (e, id) => {
     .catch((err) => {});
 };
 
-export const QuesionReplyList = (id) => {
-  const data = [];
+export const QuesionReplyList = (id, load) => {
+  const [data, setdata] = useState([]);
   const headers = { accept: "application/json" };
-  useEffect(() =>
+
+  useEffect(() => {
     axios
       .get(`http://localhost:8000/api/answer/question/answer/${id}`, {
         headers: headers,
       })
-      .then((res) => data.push(res.data))
-      .catch((err) => {
-        console.log(err);
-      })
-  );
-  console.log();
+      .then((res) => {
+        setdata(res.data);
+      });
+  }, [id, load]);
   return data;
 };
 

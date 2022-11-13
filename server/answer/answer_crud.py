@@ -12,6 +12,9 @@ def create_answer(db: Session, question: Question, answer_create: AnswerCreate, 
         question=question, content=answer_create.content, create_date=datetime.now(), user=user)
     db.add(db_answer)
     db.commit()
+    answer = db.query(Answer).filter(
+        Answer.content == answer_create.content and question.id == Answer.id).order_by(Answer.id.desc()).first()
+    return answer
 
 
 def get_answer(db: Session, answer_id: int):
@@ -21,7 +24,8 @@ def get_answer(db: Session, answer_id: int):
 
 def question_answer(db: Session, question_id: int):
     answers = db.query(Answer).filter_by(question_id=question_id).all()
-    return answers
+    total = len(answers)
+    return total, answers
 
 
 def update_answer(db: Session, db_answer: Answer,
