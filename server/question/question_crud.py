@@ -13,7 +13,12 @@ def get_question_list(db: Session, skip: int = 0, limit: int = 10):
     return total, question_list
 
 
-def get_question(db: Session, question_idlist: list):
+def get_question(db: Session, question_id: int):
+    question = db.query(Question).get(question_id)
+    return question
+
+
+def del_get_question_list(db: Session, question_idlist: list):
     question_list = []
     for i in question_idlist:
         question_list.append(db.query(Question).get(i.question_id))

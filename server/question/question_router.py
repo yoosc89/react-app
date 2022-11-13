@@ -52,13 +52,11 @@ def question_update(_question_update: question_schema.QuestionUpdate, db: Sessio
 def question_delete(_question_delete: question_schema.QuestionDeleteList,
                     db: Session = Depends(get_db),
                     current_user: User = Depends(get_current_user)):
-    db_question = question_crud.get_question(
+    db_question = question_crud.del_get_question_list(
         db, question_idlist=_question_delete.question_idlist)
 
     if not db_question:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="데이터를 찾을수 없습니다.")
-    if current_user.id != db_question[0].user.id:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="삭제 권한이 없습니다.")
-    question_crud.delete_question(db=db, db_question=db_question)
+    del_db = [i for i in db_question if current_user.id == i.user.id]
+    question_crud.delete_question(db=db, db_question=del_db)

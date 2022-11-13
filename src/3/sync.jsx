@@ -113,7 +113,7 @@ export const CreatePost = async (e, callback) => {
     })
     .then((res) => callback(res.data))
     .catch((err) => {
-      console.log(err);
+      callback(err.data);
     });
 };
 
@@ -259,7 +259,9 @@ export const Savefile = async (e, id, callback) => {
     .then((res) => {
       callback(res.data);
     })
-    .catch((err) => {});
+    .catch((err) => {
+      callback(err.data);
+    });
 };
 
 export const QuesionReplyList = (id, load) => {
