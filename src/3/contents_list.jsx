@@ -68,7 +68,7 @@ const CRowList = (props) => {
         <td>{dayjs(row.create_date).format("YYYY-MM-DD HH:mm:ss")}</td>
         <td>
           {row.user?.user_id === localStorage.getItem("user_id") ? (
-            <a onClick={(e) => Deletepost(e, row.id)}>삭제</a>
+            <a onClick={(e) => Deletepost(e, [row.id])}>삭제</a>
           ) : null}
         </td>
       </tr>

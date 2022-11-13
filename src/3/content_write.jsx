@@ -48,11 +48,6 @@ const CarouselSlide = (props) => {
 export const Createcontent = (props) => {
   const { contents, detail } = useParams();
 
-  const replace = async (id) => {
-    await window.location.replace(
-      `http://localhost:3000/contents/${contents}/detail/${id}`
-    );
-  };
   return (
     <>
       <form
@@ -61,8 +56,11 @@ export const Createcontent = (props) => {
         class="mb-3"
         onSubmit={(e) => {
           CreatePost(e, (callback) => {
-            setTimeout(Savefile(e, callback.id), 1000);
-            setTimeout(replace(callback.id), 1000);
+            Savefile(e, callback.id, () =>
+              window.location.replace(
+                `http://localhost:3000/contents/${contents}/detail/${callback.id}`
+              )
+            );
           });
         }}
       >
@@ -101,9 +99,9 @@ export const Detailcontent = () => {
 
   const onsubmit = (e) => {
     if (submit === 1) {
-      ModifyPost(e, data.id, (callback) => {
-        Savefile(e, data.id);
-      });
+      ModifyPost(e, data.id, () =>
+        Savefile(e, data.id, () => window.location.reload())
+      );
     } else if (submit === 2) {
       Deletepost(e, data.id);
     }
@@ -153,7 +151,9 @@ export const Detailcontent = () => {
                 <button
                   class="mt-3 btn btn-primary w-75"
                   type="submit"
-                  onClick={() => setsubmit(1)}
+                  onClick={async () => {
+                    setsubmit(1);
+                  }}
                 >
                   수정완료
                 </button>
@@ -192,17 +192,7 @@ export const Detailcontent = () => {
 };
 
 const ContentPage = (props) => {
-  const [replyview, setreplyview] = useState(false);
-
-  return (
-    <>
-      <div>
-        {replyview && true ? (
-          <Reply Qid={props.Qid} data={props.answers} reload={props.reload} />
-        ) : null}
-      </div>
-    </>
-  );
+  return;
 };
 
 export default ContentPage;

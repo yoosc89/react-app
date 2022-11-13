@@ -13,9 +13,11 @@ def get_question_list(db: Session, skip: int = 0, limit: int = 10):
     return total, question_list
 
 
-def get_question(db: Session, question_id: int):
-    question = db.query(Question).get(question_id)
-    return question
+def get_question(db: Session, question_idlist: list):
+    question_list = []
+    for i in question_idlist:
+        question_list.append(db.query(Question).get(i.question_id))
+    return question_list
 
 
 def create_question(db: Session, question_create: QuestionCreate, user: User):
@@ -39,6 +41,8 @@ def update_question(db: Session, db_question: Question, question_update: Questio
     db.commit()
 
 
-def delete_question(db: Session, db_question: Question):
-    db.delete(db_question)
+def delete_question(db: Session, db_question: list[Question]):
+    print(db_question)
+    for i in db_question:
+        db.delete(i)
     db.commit()

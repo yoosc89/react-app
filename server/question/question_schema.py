@@ -46,6 +46,10 @@ class QuestionDelete(BaseModel):
     question_id: int
 
 
+class QuestionDeleteList(BaseModel):
+    question_idlist: list[QuestionDelete]
+
+
 class QuestionResModel(BaseModel):
     id: int
     subject: str

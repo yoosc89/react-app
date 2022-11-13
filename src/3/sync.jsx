@@ -181,20 +181,15 @@ export const Deletepost = (e, id) => {
       url: "http://localhost:8000/api/question/delete",
       data: params,
       headers: headers,
-    }).then(() => {
-      window.location.reload();
-    });
+    }).then(window.location.reload());
   };
+
   if (window.confirm("삭제하시겠습니까?")) {
-    if (typeof id === "number") {
-      const params = { question_id: id };
-      paramaxios(params);
-    } else {
-      for (const arryid of id) {
-        const params = { question_id: arryid };
-        paramaxios(params);
-      }
+    const params = { question_idlist: [] };
+    for (const i of id) {
+      params.question_idlist.push({ question_id: i });
     }
+    paramaxios(params);
   }
 };
 
@@ -242,7 +237,7 @@ export const Deletereply = (e, id, callback) => {
   }
 };
 
-export const Savefile = async (e, id) => {
+export const Savefile = async (e, id, callback) => {
   e.preventDefault();
   const params = new FormData();
   for (let i = 0; e.target.file.files.length > i; i++) {
@@ -261,7 +256,9 @@ export const Savefile = async (e, id) => {
         headers: headers,
       }
     )
-    .then((res) => {})
+    .then((res) => {
+      callback(res.data);
+    })
     .catch((err) => {});
 };
 
