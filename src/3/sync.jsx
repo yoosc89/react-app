@@ -167,25 +167,15 @@ const sync = () => {
   return;
 };
 
-export const Deletepost = (e, id) => {
+export const Deletepost = async (e, id, callback) => {
   e.preventDefault();
-
+  const params = { question_idlist: [] };
   const headers = {
     "Content-Type": "application/json",
     Authorization: "Bearer " + localStorage.getItem("access_token"),
   };
 
-  const paramaxios = (params) => {
-    axios({
-      method: "delete",
-      url: "http://localhost:8000/api/question/delete",
-      data: params,
-      headers: headers,
-    }).then(window.location.reload());
-  };
-
   if (window.confirm("삭제하시겠습니까?")) {
-    const params = { question_idlist: [] };
     if (typeof id === "number") {
       params.question_idlist.push({ question_id: id });
     } else {
@@ -193,8 +183,16 @@ export const Deletepost = (e, id) => {
         params.question_idlist.push({ question_id: i });
       }
     }
-    paramaxios(params);
   }
+
+  await axios({
+    method: "delete",
+    url: "http://localhost:8000/api/question/delete",
+    data: params,
+    headers: headers,
+  }).then((res) => {
+    callback(res.data);
+  });
 };
 
 export const Getreply = (id, load) => {

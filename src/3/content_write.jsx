@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Reply from "./detail_reply";
 import {
@@ -91,11 +92,12 @@ export const Createcontent = (props) => {
   );
 };
 
-export const Detailcontent = () => {
+export const Detailcontent = (props) => {
   const [modify, setmodify] = useState(false);
   const [submit, setsubmit] = useState(0);
   const { detail, contents } = useParams();
   const data = ReplyList(detail);
+  const navigate = useNavigate();
 
   const onsubmit = (e) => {
     if (submit === 1) {
@@ -103,7 +105,10 @@ export const Detailcontent = () => {
         Savefile(e, data.id, () => window.location.reload())
       );
     } else if (submit === 2) {
-      Deletepost(e, data.id);
+      Deletepost(e, data.id, async () => {
+        props.reload(Math.random());
+        await navigate(`/contents/${contents}`);
+      });
     }
   };
 

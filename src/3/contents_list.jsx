@@ -15,6 +15,9 @@ const CRowList = (props) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { contents } = useParams();
+  let number = 0;
+  const total = props.data?.total;
+  const pagesize = props?.size;
 
   const cheklist = (chked, id) => {
     if (chked) {
@@ -32,54 +35,59 @@ const CRowList = (props) => {
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
   };
+  const itemnumber = (total, start, number, size) => {
+    const index = Number(total) - Number(size) * Number(start) - Number(number);
+    return index;
+  };
 
   return (
-    props.data.question_list &&
-    props.data.question_list.map((row) => (
-      <tr>
-        <td>
-          {row.user?.user_id === localStorage.getItem("user_id") ? (
-            <input
-              type="checkbox"
-              name={`list-sel-${row.id}`}
-              onChange={(e) => cheklist(e.target.checked, row.id)}
-              checked={props.chked.includes(row.id) ? true : false}
-            />
-          ) : null}
-        </td>
-        <td>{row.id}</td>
-        <td>
-          <a
-            class="text-decoration-none text-dark"
-            onClick={(e) => {
-              Isloginstate(row.user.user_id, row.id);
-              props.setid(row.id);
-            }}
-          >
-            {row.subject}
-          </a>
-          <a class="text-primary text-decoration-none">
-            [{row.answers.length}]
-          </a>
-        </td>
-        <td>{row.user && true ? row.user.user_id : null}</td>
-        <td>{dayjs(row.create_date).format("YYYY-MM-DD HH:mm:ss")}</td>
-        <td>
-          {row.user?.user_id === localStorage.getItem("user_id") ? (
-            <a
-              onClick={(e) => {
-                Deletepost(e, row.id);
-                window.location.replace(
-                  `http://localhost:3000/contents/${contents}`
-                );
-              }}
-            >
-              삭제
-            </a>
-          ) : null}
-        </td>
-      </tr>
-    ))
+    <>
+      {props.data?.question_list &&
+        props.data?.question_list.map((row) => (
+          <tr>
+            <td>
+              {row.user?.user_id === localStorage.getItem("user_id") ? (
+                <input
+                  type="checkbox"
+                  name={`list-sel-${row.id}`}
+                  onChange={(e) => cheklist(e.target.checked, row.id)}
+                  checked={props.chked.includes(row.id) ? true : false}
+                />
+              ) : null}
+            </td>
+            <td>{itemnumber(total, contents, number++, pagesize)}</td>
+            <td>
+              <a
+                class="text-decoration-none text-dark"
+                onClick={(e) => {
+                  Isloginstate(row.user.user_id, row.id);
+                  props.setid(row.id);
+                }}
+              >
+                {row.subject}
+              </a>
+              <a class="text-primary text-decoration-none">
+                [{row.answers.length}]
+              </a>
+            </td>
+            <td>{row.user && true ? row.user.user_id : null}</td>
+            <td>{dayjs(row.create_date).format("YYYY-MM-DD HH:mm:ss")}</td>
+            <td>
+              {row.user?.user_id === localStorage.getItem("user_id") ? (
+                <a
+                  onClick={async (e) => {
+                    Deletepost(e, row.id);
+                    await navigate(`/contents/${contents}`);
+                    await window.location.reload();
+                  }}
+                >
+                  삭제
+                </a>
+              ) : null}
+            </td>
+          </tr>
+        ))}
+    </>
   );
 };
 
@@ -104,6 +112,8 @@ const CBody = (props) => {
           setChked={props.setChked}
           chked={props.chked}
           setshow={props.setshow}
+          reload={props.relaod}
+          size={props.size}
         />
       </tbody>
     </table>
@@ -124,7 +134,7 @@ const ContentsPage = () => {
     <div class="m-lg-3">
       <Routes>
         <Route path={`detail`}>
-          <Route path=":detail" element={<Detailcontent />} />
+          <Route path=":detail" element={<Detailcontent reload={reload} />} />
           <Route path="new" element={<Createcontent />} />
         </Route>
       </Routes>
@@ -137,6 +147,8 @@ const ContentsPage = () => {
           setChked={setChked}
           chked={chked}
           setshow={setshow}
+          reload={reload}
+          size={size}
         />
       </div>
       <div class="position-relative">

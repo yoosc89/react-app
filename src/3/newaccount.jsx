@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import DaumPostcode from "react-daum-postcode";
 import { FloatingInput } from "./style";
