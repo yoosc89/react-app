@@ -19,12 +19,13 @@ const LoginPage = () => {
     <>
       <form
         class="container  mt-5 d-grid gap-4 rounded"
-        onSubmit={async (e) => {
-          Loginsystem(e);
-          (await prelocation.state) !== null
-            ? navigate(prelocation.state.pathname)
-            : navigate("/");
-          await dispatch({ type: "RLset" });
+        onSubmit={(e) => {
+          Loginsystem(e, () => {
+            console.log(prelocation.state);
+            prelocation.state !== null
+              ? window.location.replace(`${prelocation.state.pathname}`)
+              : window.location.replace("/");
+          });
         }}
         method="post"
       >

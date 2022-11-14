@@ -80,6 +80,7 @@ const ReplyList = (props) => {
 const ReplyListpage = (props) => {
   const { detail } = useParams();
   const data = QuesionReplyList(detail, props.load);
+  console.log(props.load);
 
   return (
     <>
@@ -172,9 +173,9 @@ export const ReplyToggle = (props) => {
   );
 };
 
-const Reply = () => {
+const Reply = (props) => {
   const [toggle, settoggle] = useState(false);
-  const [load, setload] = useState(0.0);
+
   const inputref = useRef([]);
 
   return (
@@ -183,8 +184,12 @@ const Reply = () => {
       <>
         {toggle ? (
           <>
-            <ReplyInput inputref={inputref} setload={setload} />
-            <ReplyListpage inputref={inputref} load={load} setload={setload} />
+            <ReplyInput inputref={inputref} setload={props.setload} />
+            <ReplyListpage
+              inputref={inputref}
+              load={props.load}
+              setload={props.setload}
+            />
           </>
         ) : null}
       </>

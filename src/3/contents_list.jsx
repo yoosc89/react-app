@@ -134,7 +134,10 @@ const ContentsPage = () => {
     <div class="m-lg-3">
       <Routes>
         <Route path={`detail`}>
-          <Route path=":detail" element={<Detailcontent reload={reload} />} />
+          <Route
+            path=":detail"
+            element={<Detailcontent load={load} reload={reload} />}
+          />
           <Route path="new" element={<Createcontent />} />
         </Route>
       </Routes>

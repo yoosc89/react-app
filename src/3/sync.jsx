@@ -57,7 +57,7 @@ export const WriteReply = (question_id, e, callback) => {
     .catch((err) => {});
 };
 
-export const Loginsystem = (e) => {
+export const Loginsystem = (e, callback) => {
   e.preventDefault();
 
   axios
@@ -78,8 +78,13 @@ export const Loginsystem = (e) => {
       localStorage.setItem("token_type", res.data.token_type);
       localStorage.setItem("islogin", true);
     })
-    .then(() => {})
-    .catch((err) => {});
+    .catch((err) => {
+      alert("계정을 찾을 수 없습니다.");
+      callback(err.data);
+    })
+    .finally(() => {
+      callback();
+    });
 };
 
 export const LastPageNumber = () => {
@@ -94,12 +99,12 @@ export const LastPageNumber = () => {
   return data;
 };
 
-export const CreatePost = async (e, callback) => {
+export const CreatePost = async (e, content, callback) => {
   e.preventDefault();
 
   const params = {
     subject: e.target.subject.value,
-    content: e.target.content.value,
+    content: content,
   };
 
   const headers = {
@@ -117,13 +122,13 @@ export const CreatePost = async (e, callback) => {
     });
 };
 
-export const ModifyPost = (e, id, callback) => {
+export const ModifyPost = (e, id, content, callback) => {
   e.preventDefault();
 
   const params = {
     question_id: id,
     subject: e.target.subject.value,
-    content: e.target.content.value,
+    content: content,
   };
   const headers = {
     "Content-Type": "application/json",

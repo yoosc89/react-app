@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Reply from "./detail_reply";
@@ -11,6 +11,8 @@ import {
 } from "./sync";
 import Slider from "react-slick";
 import { useParams, Link } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const CarouselSlide = (props) => {
   const settings = {
@@ -48,7 +50,8 @@ const CarouselSlide = (props) => {
 
 export const Createcontent = (props) => {
   const { contents, detail } = useParams();
-
+  const [content, getcontent] = useState();
+  console.log(content);
   return (
     <>
       <form
@@ -56,7 +59,7 @@ export const Createcontent = (props) => {
         method="post"
         class="mb-3"
         onSubmit={(e) => {
-          CreatePost(e, (callback) => {
+          CreatePost(e, content, (callback) => {
             Savefile(e, callback.id, () =>
               window.location.replace(
                 `http://localhost:3000/contents/${contents}/detail/${callback.id}`
@@ -71,12 +74,25 @@ export const Createcontent = (props) => {
         </div>
         <div class="mb-3">
           <div class=" text-bg-secondary p-2 text-sm-center">내용</div>
-          <textarea
-            class="form-control mt-3"
-            name="content"
-            rows="3"
-            maxLength={200}
-          ></textarea>
+          <CKEditor
+            id="createcontent"
+            editor={ClassicEditor}
+            disabled={false}
+            data={content}
+            onReady={(editor) => {
+              // You can store the "editor" and use when it is needed.
+              console.log("Editor is ready to use!", editor);
+            }}
+            onChange={(event, editor) => {
+              getcontent(editor.getData());
+            }}
+            onBlur={(event, editor) => {
+              console.log("Blur.", editor);
+            }}
+            onFocus={(event, editor) => {
+              console.log("Focus.", editor);
+            }}
+          />
           <input
             class="form-control mt-3"
             type="file"
@@ -96,12 +112,16 @@ export const Detailcontent = (props) => {
   const [modify, setmodify] = useState(false);
   const [submit, setsubmit] = useState(0);
   const { detail, contents } = useParams();
-  const data = ReplyList(detail);
   const navigate = useNavigate();
+  const data = ReplyList(detail, props?.load);
+  const [content, getcontent] = useState("");
+  useEffect(() => {
+    getcontent(data.content);
+  }, []);
 
   const onsubmit = (e) => {
     if (submit === 1) {
-      ModifyPost(e, data.id, () =>
+      ModifyPost(e, data.id, content.content, () =>
         Savefile(e, data.id, () => window.location.reload())
       );
     } else if (submit === 2) {
@@ -134,14 +154,26 @@ export const Detailcontent = (props) => {
         </div>
         <div class="mb">
           <div class=" text-bg-secondary p-2 text-sm-center">내용</div>
-          <textarea
-            class="form-control mt-3"
-            name="content"
-            rows="3"
-            maxLength={200}
-            defaultValue={data.content}
-            readOnly={!modify}
-          ></textarea>
+          <CKEditor
+            editor={ClassicEditor}
+            disabled={!modify}
+            data={data.content}
+            onReady={(editor) => {
+              // You can store the "editor" and use when it is needed.
+              //console.log("Editor is ready to use!", editor);
+            }}
+            onChange={(event, editor) => {
+              getcontent({ ...data, content: editor.getData() });
+            }}
+            onBlur={(event, editor) => {
+              //console.log("Blur.", editor);
+            }}
+            onFocus={(event, editor) => {
+              //console.log("Focus.", editor);
+            }}
+          />
+        </div>
+        <div>
           {data.files?.length ? <CarouselSlide data={data} /> : null}
           {data.user &&
           data.user.user_id === localStorage.getItem("user_id") ? (
@@ -191,7 +223,8 @@ export const Detailcontent = (props) => {
           ) : null}
         </div>
       </form>
-      <Reply />
+
+      <Reply load={props.load} setload={props.reload} />
     </>
   );
 };
