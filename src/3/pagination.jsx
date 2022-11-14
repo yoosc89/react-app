@@ -34,17 +34,23 @@ const Pagination = (props) => {
   const page = Number(props.page);
   const size = props.size;
   const total = Math.ceil(props.data.total / size);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation;
   const dropdownlist = [10, 20, 50, 100, 200, 500, 1000];
-  const chkedAll = () => {
-    if (props.data.question_list.length !== props.chked.length) {
-      const list = [];
-      props.data.question_list.forEach((ele) => {
+
+  const userfilter = (props) => {
+    const list = [];
+    props.data.question_list.forEach((ele) => {
+      if (ele.user.user_id === localStorage.getItem("user_id")) {
         list.push(ele.id);
-      });
-      props.setChked(list);
+      }
+    });
+    return list;
+  };
+
+  const chkedAll = (e) => {
+    if (userfilter(props).length !== props.chked.length) {
+      props.setChked(userfilter(props));
     } else {
       props.setChked([]);
     }
@@ -71,11 +77,7 @@ const Pagination = (props) => {
                   ))}
               </ul>
             </div>
-            <button
-              type="button"
-              class="btn btn-dark me-2"
-              onClick={(e) => chkedAll()}
-            >
+            <button type="button" class="btn btn-dark me-2" onClick={chkedAll}>
               선택 ({props.chked.length})
             </button>
             {props.chked.length > 0 ? (
@@ -87,24 +89,20 @@ const Pagination = (props) => {
                 삭제 ({props.chked.length})
               </button>
             ) : null}
-            <NavLink to="detail/new">
-              <button
-                class="btn btn-primary"
-                onClick={(e) => {
-                  if (!localStorage.getItem("islogin")) {
-                    alert("로그인 후 이용 가능합니다");
-                    navigate("/login", { state: pathname });
-                  } else {
-                    batch(() => {
-                      /* dispatch({ type: "detailTrue" }); */
-                      dispatch({ type: "CWBtrue" });
-                    });
-                  }
-                }}
-              >
-                글쓰기
-              </button>
-            </NavLink>
+
+            <button
+              class="btn btn-primary"
+              onClick={(e) => {
+                if (!localStorage.getItem("islogin")) {
+                  alert("로그인 후 이용 가능합니다");
+                  navigate("/login", { state: pathname });
+                } else {
+                  navigate("detail/new");
+                }
+              }}
+            >
+              글쓰기
+            </button>
           </div>
         </div>
       </div>

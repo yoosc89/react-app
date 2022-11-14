@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FloatingInput } from "./style";
 import { Loginsystem } from "./sync";
+import { useDispatch } from "react-redux";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const prelocation = useLocation();
   const navigate = useNavigate();
-  console.log(prelocation.state);
+
   const [input, setInput] = useState({ id: "", pwd: "" });
 
   const onChange = (e) => {
@@ -22,6 +24,7 @@ const LoginPage = () => {
           (await prelocation.state) !== null
             ? navigate(prelocation.state.pathname)
             : navigate("/");
+          await dispatch({ type: "RLset" });
         }}
         method="post"
       >

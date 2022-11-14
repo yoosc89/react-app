@@ -1,11 +1,17 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
-const MenuItems = () => {
-  const [load, reload] = useState([]);
-  const params = useParams();
-  useEffect(() => reload(params), [params]);
+export const MenuItems = () => {
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.Reload.RLset);
+  const [load, reload] = useState(0.0);
+
+  useEffect(() => {
+    reload(selector);
+  }, [selector]);
+
   return (
     <>
       <nav class="navbar navbar-expand-lg bg-primary fixed-top">
@@ -63,7 +69,7 @@ const MenuItems = () => {
                       class="text-decoration-none text-bg-primary"
                       onClick={() => {
                         localStorage.clear();
-                        window.location.reload();
+                        dispatch({ typeof: "RLset" });
                       }}
                     >
                       로그아웃

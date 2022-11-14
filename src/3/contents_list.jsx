@@ -30,9 +30,7 @@ const CRowList = (props) => {
     if (!localStorage.getItem("islogin")) {
       navigate("/login", { state: { pathname: pathname } });
     } else {
-      window.location.replace(
-        `http://localhost:3000/contents/${contents}/detail/${id}`
-      );
+      navigate(`/contents/${contents}/detail/${id}`);
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
   };
@@ -42,12 +40,14 @@ const CRowList = (props) => {
     props.data.question_list.map((row) => (
       <tr>
         <td>
-          <input
-            type="checkbox"
-            name={`list-sel-${row.id}`}
-            onChange={(e) => cheklist(e.target.checked, row.id)}
-            checked={props.chked.includes(row.id) ? true : false}
-          />
+          {row.user?.user_id === localStorage.getItem("user_id") ? (
+            <input
+              type="checkbox"
+              name={`list-sel-${row.id}`}
+              onChange={(e) => cheklist(e.target.checked, row.id)}
+              checked={props.chked.includes(row.id) ? true : false}
+            />
+          ) : null}
         </td>
         <td>{row.id}</td>
         <td>
