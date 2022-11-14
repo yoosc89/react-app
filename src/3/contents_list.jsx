@@ -4,8 +4,6 @@ import {
   useParams,
   Route,
   Routes,
-  NavLink,
-  Link,
 } from "react-router-dom";
 import dayjs from "dayjs";
 import { ContentList, Deletepost } from "./sync";

@@ -1,5 +1,4 @@
-import { useLocation, useNavigate, Link, NavLink } from "react-router-dom";
-import { batch, useDispatch } from "react-redux";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Deletepost } from "./sync";
 
 const Dropdown = (props) => {

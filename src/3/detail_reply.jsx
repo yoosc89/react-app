@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, forwardRef } from "react";
+import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { WriteReply, ModifyReply, Deletereply, QuesionReplyList } from "./sync";
 import dayjs from "dayjs";
