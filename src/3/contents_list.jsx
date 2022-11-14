@@ -127,7 +127,8 @@ const ContentsPage = () => {
   const { contents } = useParams();
   const [contentid, setcontentid] = useState(0);
   const [answers, setanswers] = useState([]);
-  const data = ContentList(load, contents, size);
+  const [keyword, setkeyword] = useState("");
+  const data = ContentList(load, contents, size, keyword);
   const [chked, setChked] = useState([]);
 
   return (
@@ -165,6 +166,7 @@ const ContentsPage = () => {
             reload={reload}
             chked={chked}
             setChked={setChked}
+            setkeyword={setkeyword}
           />
         }
       </div>

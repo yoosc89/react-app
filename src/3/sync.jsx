@@ -15,10 +15,14 @@ export const ReplyList = (id, load) => {
   return data;
 };
 
-export const ContentList = (load, page = 0, size = 10) => {
+export const ContentList = (load, page = 0, size = 10, keyword = "") => {
   const [data, setData] = useState([]);
-  const params = { page: Number(page), size: Number(size) };
-
+  const params = {
+    page: Number(page),
+    size: Number(size),
+    keyword: String(keyword),
+  };
+  console.log(params);
   useEffect(() => {
     axios
       .get(
@@ -32,7 +36,7 @@ export const ContentList = (load, page = 0, size = 10) => {
         setData(res.data);
       })
       .catch((err) => {});
-  }, [load, page, size]);
+  }, [load, page, size, keyword]);
 
   return data;
 };

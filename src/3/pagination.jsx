@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { Deletepost } from "./sync";
+import { Deletepost, ContentList } from "./sync";
 
 const Dropdown = (props) => {
   return (
@@ -31,11 +31,9 @@ const Pagenumber = (page, total) => {
 
 const Pagination = (props) => {
   const page = Number(props.page);
-  const size = props.size;
-  const total = Math.ceil(props.data.total / size);
+  const total = Math.ceil(props.data.total / props.size);
   const navigate = useNavigate();
   const { pathname } = useLocation;
-  const dropdownlist = [10, 20, 50, 100, 200, 500, 1000];
 
   const userfilter = (props) => {
     const list = [];
@@ -54,28 +52,20 @@ const Pagination = (props) => {
       props.setChked([]);
     }
   };
-
+  const ConfirmLogin = (e) => {
+    if (!localStorage.getItem("islogin")) {
+      alert("로그인 후 이용 가능합니다");
+      navigate("/login", { state: pathname });
+    } else {
+      navigate("detail/new");
+    }
+  };
   return (
     <>
-      <div class="">
-        <div class=" row">
-          <div>
-            <div class="btn-group me-2">
-              <button
-                type="button"
-                class="btn btn-danger dropdown-toggle"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                페이지 표시 ({size})
-              </button>
-              <ul class="dropdown-menu">
-                {dropdownlist &&
-                  dropdownlist.map((item) => (
-                    <Dropdown pagesize={item} setsize={props.setsize} />
-                  ))}
-              </ul>
-            </div>
+      <div class=" container-fluid">
+        <div class="row">
+          <div class="col-8">
+            <PagePerButton size={props.size} setsize={props.setsize} />
             <button type="button" class="btn btn-dark me-2" onClick={chkedAll}>
               선택 ({props.chked.length})
             </button>
@@ -88,20 +78,12 @@ const Pagination = (props) => {
                 삭제 ({props.chked.length})
               </button>
             ) : null}
-
-            <button
-              class="btn btn-primary"
-              onClick={(e) => {
-                if (!localStorage.getItem("islogin")) {
-                  alert("로그인 후 이용 가능합니다");
-                  navigate("/login", { state: pathname });
-                } else {
-                  navigate("detail/new");
-                }
-              }}
-            >
+            <button class="btn btn-primary" onClick={ConfirmLogin}>
               글쓰기
             </button>
+          </div>
+          <div class="col-4 align-items-end">
+            <Searchbox setkeyword={props.setkeyword} />
           </div>
         </div>
       </div>
@@ -121,7 +103,7 @@ const Pagination = (props) => {
           <li class="page-item">
             <a class="page-link">
               <Link
-                to={`/contents/${page <= total ? page + 1 : page}`}
+                to={`/contents/${page < total - 1 ? page + 1 : page}`}
                 class="text-decoration-none"
               >
                 Next
@@ -131,6 +113,51 @@ const Pagination = (props) => {
         </ul>
       </nav>
     </>
+  );
+};
+
+const PagePerButton = (props) => {
+  const dropdownlist = [10, 20, 50, 100, 200, 500, 1000];
+  return (
+    <div class="btn-group me-2">
+      <button
+        type="button"
+        class="btn btn-danger dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        페이지 표시 ({props.size})
+      </button>
+      <ul class="dropdown-menu">
+        {dropdownlist &&
+          dropdownlist.map((item) => (
+            <Dropdown pagesize={item} setsize={props.setsize} />
+          ))}
+      </ul>
+    </div>
+  );
+};
+
+const Searchbox = (props) => {
+  return (
+    <form
+      class="input-group"
+      type="submit"
+      onSubmit={(e) => {
+        e.preventDefault();
+        props.setkeyword(e.target.keyword.value);
+      }}
+    >
+      <input
+        type="text"
+        name="keyword"
+        class="form-control"
+        placeholder="검색"
+      />
+      <button class="btn btn-outline-secondary" type="submit">
+        검색
+      </button>
+    </form>
   );
 };
 
