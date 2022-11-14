@@ -130,19 +130,22 @@ export const ModifyPost = (e, id, content, callback) => {
     subject: e.target.subject.value,
     content: content,
   };
+
   const headers = {
     "Content-Type": "application/json",
     Authorization: "Bearer " + localStorage.getItem("access_token"),
   };
-
-  axios
-    .put("http://localhost:8000/api/question/update", params, {
-      headers: headers,
-    })
+  axios({
+    method: "put",
+    url: "http://localhost:8000/api/question/update",
+    data: params,
+    headers: headers,
+  })
     .then((res) => {
       callback(res.data);
     })
-    .catch((err) => {});
+    .catch((err) => callback(err.data))
+    .finally(() => callback());
 };
 
 export const ModifyReply = (e, id) => {

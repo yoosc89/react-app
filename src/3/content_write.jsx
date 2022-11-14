@@ -51,7 +51,7 @@ const CarouselSlide = (props) => {
 export const Createcontent = (props) => {
   const { contents, detail } = useParams();
   const [content, getcontent] = useState();
-  console.log(content);
+
   return (
     <>
       <form
@@ -112,17 +112,16 @@ export const Detailcontent = (props) => {
   const [modify, setmodify] = useState(false);
   const [submit, setsubmit] = useState(0);
   const { detail, contents } = useParams();
+  const [content, getcontent] = useState("");
   const navigate = useNavigate();
   const data = ReplyList(detail, props?.load);
-  const [content, getcontent] = useState("");
-  useEffect(() => {
-    getcontent(data.content);
-  }, []);
 
   const onsubmit = (e) => {
     if (submit === 1) {
-      ModifyPost(e, data.id, content.content, () =>
-        Savefile(e, data.id, () => window.location.reload())
+      ModifyPost(e, data.id, content, () =>
+        Savefile(e, data.id, () => {
+          window.location.reload();
+        })
       );
     } else if (submit === 2) {
       Deletepost(e, data.id, async () => {
@@ -163,7 +162,7 @@ export const Detailcontent = (props) => {
               //console.log("Editor is ready to use!", editor);
             }}
             onChange={(event, editor) => {
-              getcontent({ ...data, content: editor.getData() });
+              getcontent(editor.getData());
             }}
             onBlur={(event, editor) => {
               //console.log("Blur.", editor);
