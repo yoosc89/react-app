@@ -47,7 +47,7 @@ def update_question(db: Session, db_question: Question, question_update: Questio
 
 
 def delete_question(db: Session, db_question: list[Question]):
-    print(db_question)
+
     for i in db_question:
         db.delete(i)
     db.commit()

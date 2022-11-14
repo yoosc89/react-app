@@ -186,8 +186,12 @@ export const Deletepost = (e, id) => {
 
   if (window.confirm("삭제하시겠습니까?")) {
     const params = { question_idlist: [] };
-    for (const i of id) {
-      params.question_idlist.push({ question_id: i });
+    if (typeof id === "number") {
+      params.question_idlist.push({ question_id: id });
+    } else {
+      for (const i of id) {
+        params.question_idlist.push({ question_id: i });
+      }
     }
     paramaxios(params);
   }
