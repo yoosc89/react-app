@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
 
 const MenuItems = () => {
+  const [load, reload] = useState([]);
+  const params = useParams();
+  useEffect(() => reload(params), [params]);
   return (
     <>
       <nav class="navbar navbar-expand-lg bg-primary fixed-top">

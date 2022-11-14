@@ -284,4 +284,25 @@ export const QuesionReplyList = (id, load) => {
   return data;
 };
 
+export const CreateUser = (e) => {
+  e.preventDefault();
+  const params = {
+    user_id: String(e.target.id.value),
+    password1: String(e.target.pwd.value),
+    password2: String(e.target.pwd2.value),
+    email: String(e.target.email.value),
+    phonenumber: String(e.target.phone.value),
+    address1: String(e.target.address.value),
+    address2: String(e.target.addressdetail.value),
+  };
+  console.log(params);
+  axios
+    .post("http://localhost:8000/api/user/create", params, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((res) => {})
+    .catch((err) => alert(err.response.data.detail));
+  return;
+};
+
 export default sync;

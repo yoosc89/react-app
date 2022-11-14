@@ -2,26 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import DaumPostcode from "react-daum-postcode";
 import { FloatingInput } from "./style";
-
-const CreateUser = (e) => {
-  const params = {
-    user_id: String(e.target.id.value),
-    password1: String(e.target.pwd.value),
-    password2: String(e.target.pwd2.value),
-    email: String(e.target.email.value),
-    phonenumber: String(e.target.phone.value),
-    address1: String(e.target.address.value),
-    address2: String(e.target.addressdetail.value),
-  };
-  console.log(params);
-  axios
-    .post("http://localhost:8000/api/user/create", params, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then((res) => {})
-    .catch((err) => alert(err.response.data.detail));
-  return;
-};
+import { CreateUser } from "./sync";
 
 const NewAccount = () => {
   const [address, setAddress] = useState("");
@@ -35,7 +16,7 @@ const NewAccount = () => {
     <>
       <div class="mt-5 container ">
         <form
-          action="/"
+          method="post"
           class="d-grid gap-3 "
           onSubmit={(e) => {
             CreateUser(e);
@@ -71,6 +52,7 @@ const NewAccount = () => {
             label="Address"
             name="address"
             type="text"
+            value={address}
             onClick={() => {
               setModal(true);
             }}
@@ -104,7 +86,6 @@ const NewAccount = () => {
           <button
             class="btn btn-outline-primary btn-lg shadow-sm"
             type="summit"
-            action="/"
           >
             회원가입
           </button>

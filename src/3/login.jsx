@@ -6,7 +6,7 @@ import { Loginsystem } from "./sync";
 const LoginPage = () => {
   const prelocation = useLocation();
   const navigate = useNavigate();
-
+  console.log(prelocation.state);
   const [input, setInput] = useState({ id: "", pwd: "" });
 
   const onChange = (e) => {
@@ -17,9 +17,11 @@ const LoginPage = () => {
     <>
       <form
         class="container  mt-5 d-grid gap-4 rounded"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           Loginsystem(e);
-          navigate(prelocation.state.pathname);
+          (await prelocation.state) !== null
+            ? navigate(prelocation.state.pathname)
+            : navigate("/");
         }}
         method="post"
       >

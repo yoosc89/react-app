@@ -69,9 +69,11 @@ const CRowList = (props) => {
         <td>
           {row.user?.user_id === localStorage.getItem("user_id") ? (
             <a
-              onClick={async (e) => {
+              onClick={(e) => {
                 Deletepost(e, row.id);
-                await window.location.reload();
+                window.location.replace(
+                  `http://localhost:3000/contents/${contents}`
+                );
               }}
             >
               삭제
