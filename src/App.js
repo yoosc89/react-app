@@ -1,18 +1,20 @@
 import "./App.css";
-import LoginPage from "./3/login";
-import MainPage from "./3/mainpage";
-import NewAccount from "./3/newaccount";
-import SearchAccoute from "./3/searchaccount";
-import ContentsPage from "./3/contents_list";
-import store from "./3/store";
-import { Route, Routes } from "react-router-dom";
-import { Provider } from "react-redux";
-import MenuItems from "./3/menu";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "animate.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
+import LoginPage from "./app/freeboard/login";
+import MainPage from "./app/freeboard/mainpage";
+import NewAccount from "./app/freeboard/newaccount";
+import SearchAccoute from "./app/freeboard/searchaccount";
+import ContentsPage from "./app/freeboard/contents_list";
+import store from "./app/store";
+import { Route, Routes } from "react-router-dom";
+import { Provider } from "react-redux";
+import MenuItems from "./app/menu";
+import CreateUser from "./app/shopping/createuser";
 
 function App() {
   return (
@@ -43,6 +45,15 @@ function App() {
             </Route>
 
             <Route caseSensitive exact path="/" element={<MainPage />}></Route>
+          </Routes>
+          <Routes>
+            <Route path="/shopping">
+              <Route
+                caseSensitive
+                path="createuser"
+                element={<CreateUser />}
+              ></Route>
+            </Route>
           </Routes>
         </div>
       </Provider>

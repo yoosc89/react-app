@@ -6,7 +6,7 @@ from database import get_db
 from models import User
 from . import question_schema, question_crud
 from user.user_router import get_current_user
-from files.file_schema import File
+
 
 router = APIRouter(prefix='/api/question')
 
@@ -59,4 +59,5 @@ def question_delete(_question_delete: question_schema.QuestionDeleteList,
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="데이터를 찾을수 없습니다.")
     del_db = [i for i in db_question if current_user.id == i.user.id]
+
     question_crud.delete_question(db=db, db_question=del_db)

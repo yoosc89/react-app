@@ -296,6 +296,7 @@ export const QuesionReplyList = (id, load) => {
 
 export const CreateUser = (e) => {
   e.preventDefault();
+
   const params = {
     user_id: String(e.target.id.value),
     password1: String(e.target.pwd.value),

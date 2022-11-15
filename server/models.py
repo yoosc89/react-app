@@ -12,8 +12,9 @@ class Question(Base):
     content = Column(Text, nullable=False)
     create_date = Column(DateTime, nullable=False)
     user_id = Column(Integer, ForeignKey(
-        "user.id"), nullable=True)
-    user = relationship("User", backref="question_users")
+        "user.id", ondelete='CASCADE'), nullable=True)
+    user = relationship("User", backref=backref(
+        "question_user", cascade='all,delete'))
     modify_date = Column(DateTime, nullable=True)
 
 
@@ -26,7 +27,7 @@ class Answer(Base):
     question_id = Column(Integer, ForeignKey(
         "question.id", ondelete="CASCADE"))
     question = relationship(
-        "Question", backref=backref("answers", cascade='all,delete'))
+        "Question", backref=backref("answers_question", cascade='all,delete'))
     user_id = Column(Integer, ForeignKey(
         "user.id"), nullable=True)
     user = relationship("User", backref="answer_users")
@@ -52,8 +53,102 @@ class File(Base):
     file = Column(Text, nullable=True)
     create_date = Column(DateTime, nullable=False)
     question_id = Column(Integer, ForeignKey(
-        'question.id'))
+        'question.id', ondelete="CASCADE"))
     question = relationship(
-        "Question", backref=backref("files", cascade='all, delete', passive_deletes=True))
+        "Question", backref=backref("file_question", cascade='all, delete'))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", backref="file_users")
+
+
+class Consumer(Base):
+    __tablename__ = 'consumer'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(String(30), unique=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    user_name = Column(String(30), nullable=False)
+    phone_number = Column(String(20), unique=True, nullable=False)
+    address1 = Column(String(100), nullable=False)
+    address2 = Column(String(100), nullable=False)
+    point = Column(Integer, nullable=False)
+    cache = Column(Integer, nullable=False)
+    create_date = Column(DateTime, nullable=False)
+
+
+class Seller(Base):
+    __tablename__ = 'seller'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(String(30), unique=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    user_name = Column(String(30), nullable=False)
+    phone_number = Column(String(20), unique=True, nullable=False)
+    regist_number = Column(String(20), unique=True, nullable=False)
+    address1 = Column(String(100), nullable=False)
+    address2 = Column(String(100), nullable=False)
+    point = Column(Integer, nullable=False)
+    cache = Column(Integer, nullable=False)
+    create_date = Column(DateTime, nullable=False)
+
+
+class Product(Base):
+    __tablename__ = 'product'
+
+    id = Column(Integer, primary_key=True)
+    item_name = Column(String(30), nullable=False)
+    item_content = Column(Text, nullable=False)
+    cache = Column(Integer, nullable=False)
+    create_date = Column(DateTime, nullable=False)
+    modify_date = Column(DateTime, nullable=False)
+    close_date = Column(DateTime, nullable=False)
+    seller_id = Column(Integer, ForeignKey(
+        'seller.id', ondelete='CASCADE'))
+    sleller = relationship('Seller', backref=backref(
+        'product_seller', cascade='all, delete'))
+
+
+class ProductFile(Base):
+    __tablename__ = 'productfile'
+
+    id = Column(Integer, primary_key=True)
+    path = Column(String(255), nullable=True)
+    product_id = Column(Integer, ForeignKey('product.id', ondelete="CASCADE"))
+    product = relationship('Product', backref=backref(
+        'file_products', cascade='all, delete'))
+
+
+class PurchaseList(Base):
+    __tablename__ = 'purchaselist'
+
+    id = Column(Integer, primary_key=True)
+    purchase_number = Column(Integer, primary_key=True)
+    count = Column(Integer, primary_key=True)
+    create_date = Column(DateTime, nullable=False)
+    name = Column(String(20), nullable=False)
+    phone_number = Column(String(20), nullable=False)
+    address1 = Column(String(50), nullable=False)
+    address2 = Column(String(50), nullable=False)
+    cunsumer_id = Column(Integer, ForeignKey(
+        'consumer.id', ondelete='CASCADE'))
+    cunsumer = relationship('Consumer', backref=backref(
+        'pruchase_consumer', cascade='all, delete'))
+    product_id = Column(Integer, ForeignKey(
+        'product.id', ondelete='CASCADE'))
+    product = relationship('Product', backref=backref(
+        'purchase_product', cascade='all, delete'))
+
+
+class SaleList(Base):
+    __tablename__ = 'salelist'
+
+    id = Column(Integer, primary_key=True)
+    purchaselist_id = Column(Integer, ForeignKey(
+        'purchaselist.id', ondelete="CASCADE"))
+    purchaselist = relationship('PurchaseList', backref=backref(
+        'sale_purchaselist', cascade='all, delete'))
+    product_id = Column(Integer, ForeignKey(
+        'product.id', ondelete="CASCADE"))
+    product = relationship('Product', backref=backref(
+        'sale_product', cascade='all, delete'))

@@ -26,5 +26,4 @@ def get_existing_user(db: Session, user_create: UserCreate):
 
 
 def get_user(db: Session, user_id: str):
-
     return db.query(User).filter(User.user_id == user_id).first()

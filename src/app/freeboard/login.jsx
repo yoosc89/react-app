@@ -21,7 +21,6 @@ const LoginPage = () => {
         class="container  mt-5 d-grid gap-4 rounded"
         onSubmit={(e) => {
           Loginsystem(e, () => {
-            console.log(prelocation.state);
             prelocation.state !== null
               ? window.location.replace(`${prelocation.state.pathname}`)
               : window.location.replace("/");

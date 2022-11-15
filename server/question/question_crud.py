@@ -12,18 +12,18 @@ def get_question_list(db: Session, skip: int = 0, limit: int = 10, keyword: str 
         search = '%%{}%%'.format(keyword)
         sub_query = db.query(Answer.question_id, Answer.content, User.user_id).outerjoin(
             User, Answer.user_id == User.id).subquery()
-        question_list = question_list.outerjoin(User).outerjoin(sub_query, sub_query.c.question_id == Question.id).filter(Question.subject.ilike(search) |        # 질문제목
-                                                                                                                          # 질문내용
+        question_list = question_list.outerjoin(User).outerjoin(sub_query, sub_query.c.question_id == Question.id).filter(Question.subject.ilike(search) |
+
                                                                                                                           Question.content.ilike(search) |
-                                                                                                                          # 질문작성자
+
                                                                                                                           User.user_id.ilike(search) |
-                                                                                                                          # 답변내용
+
                                                                                                                           sub_query.c.content.ilike(search) |
                                                                                                                           sub_query.c.user_id.ilike(
-                                                                                                                              search))      # 답변작성자
+                                                                                                                              search))
     total = question_list.distinct().count()
-    question_list = question_list.order_by(Question.create_date.desc())\
-        .offset(skip).limit(limit).distinct().all()
+    question_list = question_list.order_by(
+        Question.create_date.desc()).offset(skip).limit(limit).distinct().all()
     return total, question_list
 
 
@@ -61,7 +61,6 @@ def update_question(db: Session, db_question: Question, question_update: Questio
 
 
 def delete_question(db: Session, db_question: list[Question]):
-
     for i in db_question:
         db.delete(i)
     db.commit()

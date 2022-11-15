@@ -6,6 +6,7 @@ from question import question_router
 from answer import answer_router
 from user import user_router
 from files import file_router
+from shopping.consumer import consumer_router
 
 
 app = FastAPI()
@@ -23,3 +24,5 @@ app.include_router(question_router.router)
 app.include_router(answer_router.router)
 app.include_router(user_router.router)
 app.include_router(file_router.router)
+app.include_router(file_router.router)
+app.include_router(consumer_router.router)

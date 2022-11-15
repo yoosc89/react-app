@@ -1,5 +1,4 @@
 from fastapi import UploadFile
-from models import File
 from sqlalchemy.orm import Session
 from datetime import datetime
 import uuid
@@ -29,4 +28,5 @@ def upload_file(db: Session, upload_file: list[UploadFile], user: User, question
 def question_file(db: Session, file_id: int):
     file = db.query(File).get(file_id)
     filepath = UPLOAD_DIR+'/data/'+file.file
+
     return filepath
