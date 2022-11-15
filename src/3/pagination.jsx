@@ -1,6 +1,44 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { Deletepost, ContentList } from "./sync";
+import { Deletepost } from "./sync";
 
+const SelectAndDelete = (props) => {
+  const userfilter = (props) => {
+    const list = [];
+    props.data.question_list.forEach((ele) => {
+      if (ele.user.user_id === localStorage.getItem("user_id")) {
+        list.push(ele.id);
+      }
+    });
+    return list;
+  };
+
+  const chkedAll = (e) => {
+    if (userfilter(props).length !== props.chked.length) {
+      props.setChked(userfilter(props));
+    } else {
+      props.setChked([]);
+    }
+  };
+
+  return (
+    <>
+      <button type="button" class="btn btn-dark me-2" onClick={chkedAll}>
+        선택 ({props.chked.length})
+      </button>
+      {props.chked.length > 0 ? (
+        <button
+          type="button"
+          class="btn btn-dark me-2"
+          onClick={(e) =>
+            Deletepost(e, props.chked, () => window.location.reload())
+          }
+        >
+          삭제 ({props.chked.length})
+        </button>
+      ) : null}
+    </>
+  );
+};
 const Dropdown = (props) => {
   return (
     <li>
@@ -10,6 +48,52 @@ const Dropdown = (props) => {
     </li>
   );
 };
+
+const PagePerButton = (props) => {
+  const dropdownlist = [10, 20, 50, 100, 200, 500, 1000];
+  return (
+    <div class="btn-group me-2">
+      <button
+        type="button"
+        class="btn btn-danger dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        페이지 표시 ({props.size})
+      </button>
+      <ul class="dropdown-menu">
+        {dropdownlist &&
+          dropdownlist.map((item) => (
+            <Dropdown pagesize={item} setsize={props.setsize} />
+          ))}
+      </ul>
+    </div>
+  );
+};
+
+const Searchbox = (props) => {
+  return (
+    <form
+      class="input-group"
+      type="submit"
+      onSubmit={(e) => {
+        e.preventDefault();
+        props.setkeyword(e.target.keyword.value);
+      }}
+    >
+      <input
+        type="text"
+        name="keyword"
+        class="form-control"
+        placeholder="검색"
+      />
+      <button class="btn btn-outline-secondary" type="submit">
+        검색
+      </button>
+    </form>
+  );
+};
+
 const Pagenumber = (page, total) => {
   const pagelist = [];
   for (let i = 0; i < total; i++) {
@@ -28,7 +112,6 @@ const Pagenumber = (page, total) => {
   }
   return pagelist;
 };
-
 const Pagination = (props) => {
   const page = Number(props.page);
   const total = Math.ceil(props.data.total / props.size);
@@ -91,89 +174,6 @@ const Pagination = (props) => {
         </ul>
       </nav>
     </>
-  );
-};
-
-const SelectAndDelete = (props) => {
-  const userfilter = (props) => {
-    const list = [];
-    props.data.question_list.forEach((ele) => {
-      if (ele.user.user_id === localStorage.getItem("user_id")) {
-        list.push(ele.id);
-      }
-    });
-    return list;
-  };
-
-  const chkedAll = (e) => {
-    if (userfilter(props).length !== props.chked.length) {
-      props.setChked(userfilter(props));
-    } else {
-      props.setChked([]);
-    }
-  };
-
-  return (
-    <>
-      <button type="button" class="btn btn-dark me-2" onClick={chkedAll}>
-        선택 ({props.chked.length})
-      </button>
-      {props.chked.length > 0 ? (
-        <button
-          type="button"
-          class="btn btn-dark me-2"
-          onClick={(e) =>
-            Deletepost(e, props.chked, () => window.location.reload())
-          }
-        >
-          삭제 ({props.chked.length})
-        </button>
-      ) : null}
-    </>
-  );
-};
-const PagePerButton = (props) => {
-  const dropdownlist = [10, 20, 50, 100, 200, 500, 1000];
-  return (
-    <div class="btn-group me-2">
-      <button
-        type="button"
-        class="btn btn-danger dropdown-toggle"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        페이지 표시 ({props.size})
-      </button>
-      <ul class="dropdown-menu">
-        {dropdownlist &&
-          dropdownlist.map((item) => (
-            <Dropdown pagesize={item} setsize={props.setsize} />
-          ))}
-      </ul>
-    </div>
-  );
-};
-
-const Searchbox = (props) => {
-  return (
-    <form
-      class="input-group"
-      type="submit"
-      onSubmit={(e) => {
-        e.preventDefault();
-        props.setkeyword(e.target.keyword.value);
-      }}
-    >
-      <input
-        type="text"
-        name="keyword"
-        class="form-control"
-        placeholder="검색"
-      />
-      <button class="btn btn-outline-secondary" type="submit">
-        검색
-      </button>
-    </form>
   );
 };
 

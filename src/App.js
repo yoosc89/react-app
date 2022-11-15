@@ -13,7 +13,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "animate.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ContentPage from "./3/content_write";
+
 function App() {
   return (
     <>
