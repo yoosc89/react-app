@@ -15,6 +15,7 @@ import { Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import MenuItems from "./app/menu";
 import CreateUser from "./app/shopping/createuser";
+import Login from "./app/shopping/login";
 
 function App() {
   return (
@@ -23,8 +24,8 @@ function App() {
         <div>
           <MenuItems />
         </div>
-        <div></div>
-        <div class="mt-5 mb-5">
+
+        <div>
           <Routes>
             <Route caseSensitive path="/login" element={<LoginPage />}></Route>
             <Route
@@ -53,6 +54,7 @@ function App() {
                 path="createuser"
                 element={<CreateUser />}
               ></Route>
+              <Route caseSensitive path="login" element={<Login />}></Route>
             </Route>
           </Routes>
         </div>

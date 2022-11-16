@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { hosturl } from "../shopping/axios";
 
 export const ReplyList = (id, load) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/question/list/detail/${id}`)
+      .get(`${hosturl}/api/question/list/detail/${id}`)
       .then((res) => {
         setData(res.data);
       })
@@ -26,7 +27,7 @@ export const ContentList = (load, page = 0, size = 10, keyword = "") => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8000/api/question/list`,
+        `${hosturl}/api/question/list`,
         { params },
         {
           headers: { accept: "application/json" },
@@ -47,16 +48,12 @@ export const WriteReply = (question_id, e, callback) => {
   const params = { content: e.target.reply1.value };
 
   axios
-    .post(
-      `http://localhost:8000/api/answer/answer_create/${question_id}`,
-      params,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      }
-    )
+    .post(`${hosturl}/api/answer/answer_create/${question_id}`, params, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    })
     .then((res) => callback(res.data))
     .catch((err) => {});
 };
@@ -66,7 +63,7 @@ export const Loginsystem = (e, callback) => {
 
   axios
     .post(
-      "http://localhost:8000/api/user/login",
+      "${hosturl}/api/user/login",
       { username: e.target.id.value, password: e.target.pwd.value },
       {
         headers: {
@@ -95,7 +92,7 @@ export const LastPageNumber = () => {
   const [data, setData] = useState(0);
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/contents/lastnumber`)
+      .get(`${hosturl}/contents/lastnumber`)
       .then((res) => setData(res.data))
       .catch((err) => {});
   }, []);
@@ -117,7 +114,7 @@ export const CreatePost = async (e, content, callback) => {
   };
 
   await axios
-    .post("http://localhost:8000/api/question/create", params, {
+    .post(`${hosturl}/api/question/create`, params, {
       headers: headers,
     })
     .then((res) => callback(res.data))
@@ -141,7 +138,7 @@ export const ModifyPost = (e, id, content, callback) => {
   };
   axios({
     method: "put",
-    url: "http://localhost:8000/api/question/update",
+    url: `${hosturl}/api/question/update`,
     data: params,
     headers: headers,
   })
@@ -166,7 +163,7 @@ export const ModifyReply = (e, id) => {
   };
 
   axios
-    .put("http://localhost:8000/api/answer/update", params, {
+    .put(`${hosturl}/api/answer/update`, params, {
       headers: headers,
     })
     .then((res) => {
@@ -199,7 +196,7 @@ export const Deletepost = async (e, id, callback) => {
 
   await axios({
     method: "delete",
-    url: "http://localhost:8000/api/question/delete",
+    url: `${hosturl}/api/question/delete`,
     data: params,
     headers: headers,
   }).then((res) => {
@@ -211,7 +208,7 @@ export const Getreply = (id, load) => {
   const [data, setdata] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/answer/detail/${id}`)
+      .get(`${hosturl}/api/answer/detail/${id}`)
       .then((res) => {
         setdata(res.data);
       })
@@ -232,7 +229,7 @@ export const Deletereply = (e, id, callback) => {
   const axiosexe = (params) => {
     axios({
       method: "delete",
-      url: "http://localhost:8000/api/answer/delete",
+      url: `${hosturl}/api/answer/delete`,
       data: params,
       headers: headers,
     })
@@ -263,13 +260,9 @@ export const Savefile = async (e, id, callback) => {
   };
 
   await axios
-    .post(
-      `http://localhost:8000/api/files/upload_file?question_id=${id}`,
-      params,
-      {
-        headers: headers,
-      }
-    )
+    .post(`${hosturl}/api/files/upload_file?question_id=${id}`, params, {
+      headers: headers,
+    })
     .then((res) => {
       callback(res.data);
     })
@@ -284,7 +277,7 @@ export const QuesionReplyList = (id, load) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/answer/question/answer/${id}`, {
+      .get(`${hosturl}/api/answer/question/answer/${id}`, {
         headers: headers,
       })
       .then((res) => {
@@ -308,7 +301,7 @@ export const CreateUser = (e) => {
   };
   console.log(params);
   axios
-    .post("http://localhost:8000/api/user/create", params, {
+    .post(`${hosturl}/api/user/create`, params, {
       headers: { "Content-Type": "application/json" },
     })
     .then((res) => {})

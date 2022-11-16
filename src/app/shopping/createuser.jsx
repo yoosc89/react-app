@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CreateuserInput } from "./style";
 import DaumPostcode from "react-daum-postcode";
 import { CreateConsumer, CreateSeller, ExistUser } from "./axios";
+import "./scss/createuser.scss";
 
 const CreateUser = () => {
   const [mode, setmode] = useState(false);
@@ -61,7 +62,7 @@ const CreateUser = () => {
   };
 
   return (
-    <div class="d-grid row col-8 mx-auto">
+    <div class="d-grid row col-8 mx-auto mt10vh maxwidth600">
       <>
         <div class="text-center">
           <h2>회원가입({!mode ? "구매자용" : "판매자용"})</h2>

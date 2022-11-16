@@ -104,6 +104,16 @@ export const MenuItems = () => {
                   </Link>
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link active  text-bg-primary" aria-current="page">
+                  <Link
+                    to="/shopping/login"
+                    class="text-decoration-none text-bg-primary"
+                  >
+                    쇼핑로그인
+                  </Link>
+                </a>
+              </li>
             </ul>
           </div>
         </div>

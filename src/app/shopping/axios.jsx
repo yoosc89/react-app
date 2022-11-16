@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
+
+export const hosturl = "http://localhost:8000";
 
 export const CreateConsumer = (e, callback) => {
   e.preventDefault();
@@ -18,7 +19,7 @@ export const CreateConsumer = (e, callback) => {
     cache: 0,
   };
 
-  const url = `http://localhost:8000/api/shopping/consumer/create`;
+  const url = `${hosturl}/api/shopping/consumer/create`;
   axios({
     method: "post",
     url: url,
@@ -51,7 +52,7 @@ export const CreateSeller = (e, callback) => {
     cache: 0,
   };
 
-  const url = `http://localhost:8000/api/shopping/seller/create`;
+  const url = `${hosturl}/api/shopping/seller/create`;
   axios({
     method: "post",
     url: url,
@@ -74,9 +75,9 @@ export const ExistUser = (params, mode, callback) => {
     accept: "application/json",
   };
   if (!mode) {
-    url = "http://localhost:8000/api/shopping/consumer/existing";
+    url = `${hosturl}/api/shopping/consumer/existing`;
   } else {
-    url = "http://localhost:8000/api/shopping/seller/existing";
+    url = `${hosturl}/api/shopping/seller/existing`;
   }
 
   axios({
