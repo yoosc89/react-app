@@ -7,15 +7,15 @@ from sqlalchemy.orm import Session
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
 
 
-def get_consumer(db: Session, consumer_id: int):
-    consumer = db.query(Consumer).get(consumer_id)
+def get_consumer(db: Session, user_id: str):
+    consumer = db.query(Consumer).filter(Consumer.user_id == user_id).first()
     return consumer
 
 
 def existing_consumer(db: Session, consumer_create: Existing):
     result = db.query(Consumer).filter((Consumer.user_id == consumer_create.user_id) | (
         Consumer.phone_number == consumer_create.phone_number) | (Consumer.email == consumer_create.email)).first()
-    print(result)
+
     return result
 
 

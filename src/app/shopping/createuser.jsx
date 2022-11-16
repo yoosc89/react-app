@@ -82,6 +82,7 @@ const CreateUser = () => {
       </>
       <div>
         <form
+          action="/"
           method="post"
           class="form-floating mt-3"
           onSubmit={(e) =>

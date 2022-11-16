@@ -1,5 +1,5 @@
 div {
-
+/* border: 1px solid red; */
 }
 .wrapper {
     min-height: 96vh;
@@ -26,6 +26,9 @@ div {
 }
 .text12rem{
     font-size: 1.2rem;
+}
+.text13rem{
+    font-size: 1.3rem;
 }
 .textstart{
     text-align: left;
@@ -54,14 +57,14 @@ div {
 }
 .bgwh08{
     
-    background-color: rgba($color: #ffffff, $alpha: 0.1);
-    
-    transition: 0.5s;
+    background-color: rgba($color: #ffffff, $alpha: 0.3);
+    backdrop-filter: blur(1px);
+    transition: 0.8s;
     
     
 }
 .bgwh08:hover{
     
     background-color: rgba($color: #ffffff, $alpha: 0.5);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(4px);
 }

@@ -12,7 +12,7 @@ from shopping.seller.seller_crud import pwd_context
 ACCESS_TOKEN_EXPIRE_MINUTES = 10
 SECRET_KEY = '2a5cff8a79313d7b3d75b700c6a0805ef0fe32199476d4d0c4518b830724f2fe'
 ALGORITHM = 'HS256'
-oauth2_cheme = OAuth2PasswordBearer(tokenUrl='api/shopping/login')
+oauth2_cheme = OAuth2PasswordBearer(tokenUrl='/api/shopping/seller/login')
 
 router = APIRouter(
     prefix='/api/shopping/seller'
