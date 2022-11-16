@@ -1,21 +1,28 @@
 import { useState } from "react";
 import { CreateuserInput } from "./style";
 import DaumPostcode from "react-daum-postcode";
+import { CreateConsumer, CreateSeller, ExistUser } from "./axios";
 
 const CreateUser = () => {
   const [mode, setmode] = useState(false);
   const [Address, setAddress] = useState("");
   const [pwd1, setpwd1] = useState("");
   const [complete, setcomplete] = useState({
-    ID: false,
-    NAME: false,
-    PASSWORD: false,
-    PASSWORDCONFIRM: false,
-    EMAIL: false,
-    PHONENUMBER: false,
-    REGISTNUMBER: false,
-    ADRRESS: false,
-    ADDRESSDETAIL: false,
+    user_id: false,
+    user_name: false,
+    password: false,
+    passwordconfirm: false,
+    email: false,
+    phonenumber: false,
+    regist_number: false,
+    address: false,
+    adrressdetail: false,
+  });
+  const [params, setparams] = useState({
+    user_id: "",
+    email: "1@2.as",
+    phone_number: "",
+    regist_number: "",
   });
   const [addressmodal, setaddressmodal] = useState(false);
   const PostCode = (data) => {
@@ -28,9 +35,29 @@ const CreateUser = () => {
       : setcomplete({ ...complete, [name]: 0 });
   };
   const pwdconfirm = (e) => {
-    pwd1 === e.target.value
-      ? setcomplete({ ...complete, PASSWORDCONFIRM: 1 })
-      : setcomplete({ ...complete, PASSWORDCONFIRM: 2 });
+    e.target.value
+      ? pwd1 === e.target.value
+        ? setcomplete({ ...complete, passwordconfirm: 1 })
+        : setcomplete({ ...complete, passwordconfirm: 2 })
+      : setcomplete({ ...complete, passwordconfirm: 0 });
+  };
+
+  const existOnchange = (e) => {
+    setparams({ ...params, [e.target.name]: e.target.value });
+  };
+
+  const existing = (e) => {
+    e.target.value
+      ? ExistUser(params, mode, (callback) => {
+          callback
+            ? setcomplete({ ...complete, [e.target.name]: 2 })
+            : setcomplete({ ...complete, [e.target.name]: 1 });
+        })
+      : setcomplete({ ...complete, [e.target.name]: 0 });
+  };
+
+  const existingToggle = async (e) => {
+    !mode ? existing(e) : existing(e);
   };
 
   return (
@@ -56,62 +83,76 @@ const CreateUser = () => {
         <form
           method="post"
           class="form-floating mt-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
+          onSubmit={(e) =>
+            !mode
+              ? CreateConsumer(e, (callback) => {})
+              : CreateSeller(e, (callback) => {})
+          }
         >
           <CreateuserInput
-            name="ID"
+            name="user_id"
+            label="아이디"
             type="text"
-            onBlur={inputcomplete}
-            complete={complete.ID}
+            onChange={existOnchange}
+            onBlur={existingToggle}
+            complete={complete.user_id}
           />
           <CreateuserInput
-            name="NAME"
+            name="user_name"
+            label="이름"
             type="text"
             onBlur={inputcomplete}
-            complete={complete.NAME}
+            complete={complete.user_name}
           />
           <CreateuserInput
-            name="PASSWORD"
+            name="password"
             type="password"
+            label="비밀번호"
             onChange={(e) => setpwd1(e.target.value)}
             onBlur={inputcomplete}
-            complete={complete.PASSWORD}
+            complete={complete.password}
           />
           <CreateuserInput
-            name="PASSWORDCONFIRM"
+            name="passwordconfirm"
             type="password"
+            label="비밀번호(재확인)"
             onBlur={pwdconfirm}
-            complete={complete.PASSWORDCONFIRM}
+            complete={complete.passwordconfirm}
           />
           <CreateuserInput
-            name="EMAIL"
+            name="email"
             type="email"
-            onBlur={inputcomplete}
-            complete={complete.EMAIL}
+            label="E-mail"
+            onChange={existOnchange}
+            onBlur={existingToggle}
+            complete={complete.email}
           />
           <CreateuserInput
-            name="PHONENUMBER"
+            name="phonenumber"
             type="number"
-            onBlur={inputcomplete}
-            complete={complete.PHONENUMBER}
+            label="연락처(휴대폰)"
+            onChange={existOnchange}
+            onBlur={existingToggle}
+            complete={complete.phonenumber}
           />
           {!mode ? null : (
             <CreateuserInput
-              name="REGISTNUMBER"
+              name="regist_number"
+              label="사업자번호"
               type="text"
-              onBlur={inputcomplete}
-              complete={complete.REGISTNUMBER}
+              onChange={existOnchange}
+              onBlur={existingToggle}
+              complete={complete.regist_number}
             />
           )}
           <CreateuserInput
-            name="ADRRESS"
+            name="address"
+            label="주소"
             readOnly={true}
             value={Address}
             onClick={(e) => setaddressmodal(true)}
             onBlur={inputcomplete}
-            complete={complete.ADRRESS}
+            complete={complete.address}
           />
           {addressmodal ? (
             <div class="mt-3 shadow">
@@ -125,10 +166,11 @@ const CreateUser = () => {
           ) : null}
           {Address !== "" ? (
             <CreateuserInput
-              name="ADRRESSDETAIL"
+              name="adrressdetail"
+              label="주소(상세)"
               type="text"
               onBlur={inputcomplete}
-              complete={complete.ADRRESSDETAIL}
+              complete={complete.adrressdetail}
             />
           ) : null}
 

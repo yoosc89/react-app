@@ -9,7 +9,8 @@ export const ReplyList = (id, load) => {
       .then((res) => {
         setData(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => {});
   }, [id, load]);
 
   return data;
@@ -22,7 +23,6 @@ export const ContentList = (load, page = 0, size = 10, keyword = "") => {
     size: Number(size),
     keyword: String(keyword),
   };
-  console.log(params);
   useEffect(() => {
     axios
       .get(

@@ -10,7 +10,7 @@ import {
   Savefile,
 } from "./sync";
 import Slider from "react-slick";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
@@ -24,24 +24,24 @@ const CarouselSlide = (props) => {
     pauseOnHover: true,
     swipeToSlide: true,
   };
+
   return (
     <>
       <div class="mb-4 mt-4">
         <Slider {...settings}>
-          {props.data &&
-            props.data.files?.map((item) => (
-              <div>
-                <img
-                  class="img-thumbnail"
-                  height={200}
-                  src={`http://localhost:8000/api/files/question/${item.id}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.open(e.target.src, "_blank");
-                  }}
-                />
-              </div>
-            ))}
+          {props.data?.file_question.map((item) => (
+            <div>
+              <img
+                class="img-thumbnail"
+                height={200}
+                src={`http://localhost:8000/api/files/question/${item.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open(e.target.src, "_blank");
+                }}
+              />
+            </div>
+          ))}
         </Slider>
       </div>
     </>
@@ -173,7 +173,9 @@ export const Detailcontent = (props) => {
           />
         </div>
         <div>
-          {data.files?.length ? <CarouselSlide data={data} /> : null}
+          <div>
+            {data.file_question?.length ? <CarouselSlide data={data} /> : null}
+          </div>
           {data.user &&
           data.user.user_id === localStorage.getItem("user_id") ? (
             modify ? (

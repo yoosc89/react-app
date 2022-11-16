@@ -3,7 +3,7 @@ import datetime
 from user.user_schema import User
 
 
-class Files(BaseModel):
+class File(BaseModel):
     id: int
     file: str
     create_date: datetime.datetime

@@ -67,7 +67,7 @@ const CRowList = (props) => {
                 {row.subject}
               </a>
               <a class="text-primary text-decoration-none">
-                [{row.answers.length}]
+                [{row.answers_question.length}]
               </a>
             </td>
             <td>{row.user && true ? row.user.user_id : null}</td>

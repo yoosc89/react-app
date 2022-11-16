@@ -54,3 +54,16 @@ server/answer/__pycache__/answer_router.cpython-310.pyc
 server/answer/__pycache__/answer_schema.cpython-310.pyc
 server/user/__pycache__/user_crud.cpython-310.pyc
 .gitignore
+server/shopping/consumer/__pycache__/consumer_crud.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_router.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_schema.cpython-310.pyc
+server/shopping/seller/__pycache__/seller_crud.cpython-310.pyc
+server/shopping/seller/__pycache__/seller_router.cpython-310.pyc
+server/shopping/seller/__pycache__/seller_schema.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_crud.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_router.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_schema.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_crud.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_router.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_schema.cpython-310.pyc
+server/shopping/consumer/__pycache__/consumer_crud.cpython-310.pyc

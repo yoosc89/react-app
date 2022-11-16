@@ -1,13 +1,14 @@
 from pydantic import BaseModel, validator, EmailStr
 
 
-class ConsumerCreate(BaseModel):
+class SellerCreate(BaseModel):
     user_id: str
     email: EmailStr
     user_name: str
     password1: str
     password2: str
     phone_number: str
+    regist_number: str
     address1: str
     address2: str
     point: int
@@ -16,7 +17,7 @@ class ConsumerCreate(BaseModel):
     class Config:
         orm_mode = True
 
-    @validator('user_id', 'user_name', 'password1', 'password2', 'phone_number', 'address1', 'address2')
+    @validator('user_id', 'user_name', 'password1', 'password2', 'phone_number', 'address1', 'address2', 'regist_number')
     def not_empty(cls, v):
         if not v or not v.strip():
             raise ValueError('빈 값은 허용되지 않습니다')
@@ -35,7 +36,7 @@ class Token(BaseModel):
     user_id: str
 
 
-class Consumer(BaseModel):
+class Seller(BaseModel):
     id: int
     user_id: int
     user_name: str
@@ -48,6 +49,7 @@ class Existing(BaseModel):
     user_id: str | None
     email: EmailStr | None
     phone_number: str | None
+    regist_number: str | None
 
     class Config:
         orm_mode = True

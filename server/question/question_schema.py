@@ -3,7 +3,7 @@ from pydantic import BaseModel, validator
 
 from answer.answer_schema import Answer
 from user.user_schema import User
-from files.file_schema import Files
+from files.file_schema import File
 
 
 class Question(BaseModel):
@@ -11,9 +11,9 @@ class Question(BaseModel):
     subject: str
     content: str
     create_date: datetime.datetime
-    answers: list[Answer] = []
+    answers_question: list[Answer] = []
     user: User | None
-    files: list[Files] = []
+    file_question: list[File] = []
 
     class Config:
         orm_mode = True

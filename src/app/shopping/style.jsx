@@ -12,12 +12,12 @@ export const CreateuserInput = (props) => {
   return (
     <>
       <div class="input-group mt-4 shadow">
-        <span class={`input-group-text ${complete(props)}`}>{props.name}</span>
+        <span class={`input-group-text ${complete(props)}`}>{props.label}</span>
         <input
           type={props.type}
           name={props.name}
           class="form-control "
-          placeholder={props.name}
+          placeholder={props.label}
           value={props.value}
           onChange={props.onChange}
           required={props.required}
