@@ -33,6 +33,7 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     user_id: str
+    mode: str
 
 
 class Consumer(BaseModel):

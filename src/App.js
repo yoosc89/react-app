@@ -16,16 +16,19 @@ import { Provider } from "react-redux";
 import MenuItems from "./app/menu";
 import CreateUser from "./app/shopping/createuser";
 import Login from "./app/shopping/login";
-
+import ProductList from "./app/shopping/product_list";
+import "./app/shopping/scss/app.scss";
+import NewProduct from "./app/shopping/new_product";
+import ProductDetail from "./app/shopping/product_datail";
 function App() {
   return (
     <>
       <Provider store={store}>
-        <div>
+        <div class="mb1vh">
           <MenuItems />
         </div>
-
-        <div>
+        <div class="mt1vh">&nbsp;</div>
+        <div class="mt-5">
           <Routes>
             <Route caseSensitive path="/login" element={<LoginPage />}></Route>
             <Route
@@ -55,6 +58,22 @@ function App() {
                 element={<CreateUser />}
               ></Route>
               <Route caseSensitive path="login" element={<Login />}></Route>
+              <Route
+                caseSensitive
+                path="product_list"
+                element={<ProductList />}
+              >
+                <Route
+                  caseSensitive
+                  path="detail:detail"
+                  element={<ProductDetail />}
+                ></Route>
+              </Route>
+              <Route
+                caseSensitive
+                path="new_product"
+                element={<NewProduct />}
+              ></Route>
             </Route>
           </Routes>
         </div>

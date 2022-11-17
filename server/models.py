@@ -101,11 +101,13 @@ class Product(Base):
     item_content = Column(Text, nullable=False)
     cache = Column(Integer, nullable=False)
     create_date = Column(DateTime, nullable=False)
-    modify_date = Column(DateTime, nullable=False)
+    modify_date = Column(DateTime, nullable=True)
     close_date = Column(DateTime, nullable=False)
+    discount = Column(Integer, nullable=True)
+    shipping_fee = Column(Integer, nullable=True)
     seller_id = Column(Integer, ForeignKey(
         'seller.id', ondelete='CASCADE'))
-    sleller = relationship('Seller', backref=backref(
+    seller = relationship('Seller', backref=backref(
         'product_seller', cascade='all, delete'))
 
 

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import "./scss/login.scss";
 import { Loginfastapi } from "./axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [mode, setmode] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -19,10 +21,11 @@ const Login = () => {
 
               <form
                 method="post"
-                onSubmit={async (e) => {
+                onSubmit={(e) => {
                   e.preventDefault();
-                  Loginfastapi(e, mode);
-                  await console.log(localStorage.length);
+                  Loginfastapi(e, mode, () => {
+                    navigate("/");
+                  });
                 }}
               >
                 <div class="mt50 form-floating">

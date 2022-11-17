@@ -54,14 +54,14 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     return {
         'access_token': access_token,
         'token_type': "Bearer",
-        'user_id': seller.user_id
+        'user_id': seller.user_id,
+        'mode': 'Seller'
     }
 
 
 def get_current_seller(token: str = Depends(oauth2_cheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED, detail='인증되지 않은 사용자 입니다', headers={'WWW-Authenticate': "Bearer"})
-
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get('sub')

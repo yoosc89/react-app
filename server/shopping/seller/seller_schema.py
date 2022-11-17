@@ -34,6 +34,7 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     user_id: str
+    mode: str
 
 
 class Seller(BaseModel):
@@ -43,6 +44,25 @@ class Seller(BaseModel):
     email: str
     point: int
     cache: int
+
+
+class ProductListSeller(BaseModel):
+    user_name: str
+
+    class Config:
+        orm_mode = True
+
+
+class ProductDetailSeller(BaseModel):
+    user_name:  str
+    phone_number: str
+    regist_number: str
+    address1: str
+    address2: str
+    email: EmailStr
+
+    class Config:
+        orm_mode = True
 
 
 class Existing(BaseModel):

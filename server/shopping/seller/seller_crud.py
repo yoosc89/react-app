@@ -7,8 +7,8 @@ from sqlalchemy.orm import Session
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
 
 
-def get_seller(db: Session, user_id: str):
-    seller = db.query(Seller).filter(Seller.user_id == user_id).first()
+def get_seller(db: Session, seller_id: str):
+    seller = db.query(Seller).filter(Seller.user_id == seller_id).first()
     return seller
 
 

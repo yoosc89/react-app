@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { Axios } from "axios";
+import { useState, useEffect } from "react";
 
 export const hosturl = "http://localhost:8000";
 
@@ -88,7 +89,7 @@ export const ExistUser = (params, mode, callback) => {
   }).then((res) => callback(res.data.exist));
 };
 
-export const Loginfastapi = (e, mode) => {
+export const Loginfastapi = (e, mode, callback) => {
   const params = {
     username: e.target.id.value,
     password: e.target.password.value,
@@ -111,6 +112,51 @@ export const Loginfastapi = (e, mode) => {
     .then((res) => {
       localStorage.setItem("user_id", res.data.user_id);
       localStorage.setItem("access_token", res.data.access_token);
+      localStorage.setItem("mode", res.data.mode);
+      localStorage.setItem("islogin", true);
     })
-    .catch((err) => console.log(err.data));
+    .catch((err) => console.log(err.data))
+    .finally(() => callback());
+};
+
+export const AxiosProductList = (load, page = 0, size = 10) => {
+  const [data, setdata] = useState([]);
+  const url = `${hosturl}/api/shopping/product/list`;
+  const params = { page: page, size: size };
+  const headers = { accept: "application/json" };
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: url,
+      data: params,
+      headers: headers,
+    })
+      .then((res) => setdata(res.data))
+      .catch((err) => {})
+      .finally(() => {});
+  }, [load, page, size]);
+
+  return data;
+};
+
+export const AxoisProductDetail = (id) => {
+  const [data, setData] = useState([]);
+  const url = `${hosturl}/api/shopping/product/list/detail/${id}`;
+  const headers = { accept: "application/json" };
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: url,
+      headers: headers,
+    })
+      .then((res) => setData(res.data))
+      .catch((err) => {
+        console.log(err.data);
+      })
+      .finally(() => {});
+  }, [id]);
+
+  return data;
 };

@@ -30,7 +30,9 @@ export const MenuItems = () => {
           <a class="navbar-brand">
             <Link to="/" class="text-decoration-none text-bg-primary">
               {localStorage.getItem("islogin") && true
-                ? localStorage.getItem("user_id")
+                ? `${localStorage.getItem("user_id")}(${localStorage.getItem(
+                    "mode"
+                  )})`
                 : "(끄덕)"}
             </Link>
           </a>
@@ -104,16 +106,36 @@ export const MenuItems = () => {
                   </Link>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active  text-bg-primary" aria-current="page">
-                  <Link
-                    to="/shopping/login"
-                    class="text-decoration-none text-bg-primary"
+              {!localStorage.getItem("islogin") ? (
+                <li class="nav-item">
+                  <a
+                    class="nav-link active  text-bg-primary"
+                    aria-current="page"
                   >
-                    쇼핑로그인
-                  </Link>
-                </a>
-              </li>
+                    <Link
+                      to="/shopping/login"
+                      class="text-decoration-none text-bg-primary"
+                    >
+                      쇼핑로그인
+                    </Link>
+                  </a>
+                </li>
+              ) : null}
+              {localStorage.getItem("islogin") ? (
+                <li class="nav-item">
+                  <a
+                    class="nav-link active  text-bg-primary"
+                    aria-current="page"
+                  >
+                    <Link
+                      to="/shopping/product_list"
+                      class="text-decoration-none text-bg-primary"
+                    >
+                      제품판매
+                    </Link>
+                  </a>
+                </li>
+              ) : null}
             </ul>
           </div>
         </div>
