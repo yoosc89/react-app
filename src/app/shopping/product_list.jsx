@@ -1,45 +1,45 @@
 import Product from "./product";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductDetail from "./product_datail";
-import { useState } from "react";
 import { AxiosProductList } from "./axios";
 
 const LinkProduct = (props) => {
+  const navigate = useNavigate();
   return (
-    <div>
-      <Link
-        to={`detail${props.data.id}`}
-        class="text-decoration-none"
-        onClick={() => props.setproductdetailview(true)}
-      >
-        <Product data={props.data} />
-      </Link>
+    <div
+      onClick={async () => {
+        navigate(`detail${props.data.id}`);
+        await window.scrollTo({ top: 0, behavior: "instant" });
+      }}
+    >
+      <Product data={props.data} />
     </div>
   );
 };
 
 const ProductList = (props) => {
-  const [productdetailview, setproductdetailview] = useState(false);
   const data = AxiosProductList();
+  const { detail } = useParams();
 
   return (
     <>
-      {productdetailview ? (
-        <ProductDetail setproductdetailview={setproductdetailview} />
+      {console.log(localStorage.getItem("mode"))}
+      {detail ? <ProductDetail /> : null}
+      {localStorage.getItem("mode") === "Seller" ? (
+        <div class="text-start m-3">
+          <button class="btn btn-primary ">
+            <Link
+              to="/shopping/new_product"
+              class="text-white text-decoration-none"
+            >
+              새로 만들기
+            </Link>
+          </button>
+        </div>
       ) : null}
-      <div class="text-start m-3">
-        <button class="btn btn-primary ">
-          <Link
-            to="/shopping/new_product"
-            class="text-white text-decoration-none"
-          >
-            새로 만들기
-          </Link>
-        </button>
-      </div>
 
       {data?.product_list?.map((item) => (
-        <LinkProduct data={item} setproductdetailview={setproductdetailview} />
+        <LinkProduct data={item} />
       ))}
     </>
   );

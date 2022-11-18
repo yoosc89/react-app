@@ -45,3 +45,8 @@ def product_update(_product_update: product_schema.ProductUpdate, db: Session = 
             status_code=status.HTTP_400_BAD_REQUEST, detail='수정 권한이 없습니다')
     product_curd.update_product(
         db=db, db_product=db_product, product_update=_product_update)
+
+def get_current_product(product_id : int, db: Session = Depends(get_db)):
+    product = product_curd.get_product(db,product_id=product_id)
+    return product
+    

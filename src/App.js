@@ -20,6 +20,8 @@ import ProductList from "./app/shopping/product_list";
 import "./app/shopping/scss/app.scss";
 import NewProduct from "./app/shopping/new_product";
 import ProductDetail from "./app/shopping/product_datail";
+import NewPurchase from "./app/shopping/new_purchase";
+
 function App() {
   return (
     <>
@@ -31,18 +33,8 @@ function App() {
         <div class="mt-5">
           <Routes>
             <Route caseSensitive path="/login" element={<LoginPage />}></Route>
-            <Route
-              exact
-              caseSensitive
-              path="/newaccount"
-              element={<NewAccount />}
-            ></Route>
-            <Route
-              exact
-              caseSensitive
-              path="/searchaccoute"
-              element={<SearchAccoute />}
-            ></Route>
+            <Route exact caseSensitive path="/newaccount" element={<NewAccount />}></Route>
+            <Route exact caseSensitive path="/searchaccoute" element={<SearchAccoute />}></Route>
 
             <Route path={"contents"}>
               <Route path={`:contents/*`} element={<ContentsPage />}></Route>
@@ -52,28 +44,13 @@ function App() {
           </Routes>
           <Routes>
             <Route path="/shopping">
-              <Route
-                caseSensitive
-                path="createuser"
-                element={<CreateUser />}
-              ></Route>
+              <Route caseSensitive path="createuser" element={<CreateUser />}></Route>
               <Route caseSensitive path="login" element={<Login />}></Route>
-              <Route
-                caseSensitive
-                path="product_list"
-                element={<ProductList />}
-              >
-                <Route
-                  caseSensitive
-                  path="detail:detail"
-                  element={<ProductDetail />}
-                ></Route>
+              <Route caseSensitive path="product_list" element={<ProductList />}>
+                <Route caseSensitive path="detail:detail" element={<ProductDetail />}></Route>
               </Route>
-              <Route
-                caseSensitive
-                path="new_product"
-                element={<NewProduct />}
-              ></Route>
+              <Route caseSensitive path="new_product" element={<NewProduct />}></Route>
+              <Route caseSensitive path="new_purchase" element={<NewPurchase />}></Route>
             </Route>
           </Routes>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AxoisProductDetail } from "./axios";
 
 import "./scss/product_detail.scss";
@@ -9,6 +9,7 @@ const ProductDetail = (props) => {
   const [more, setmore] = useState(false);
   const { detail } = useParams();
   const data = AxoisProductDetail(detail);
+  const navigate = useNavigate();
   const cache = data.cache?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const discount = data.discount
     ?.toString()
@@ -32,7 +33,7 @@ const ProductDetail = (props) => {
   return (
     <div class="m-3 rounded-2 boderblack1px shadow prodeuct-detail-fadein">
       <div>
-        <button class="btn" onClick={() => props.setproductdetailview(false)}>
+        <button class="btn" onClick={() => navigate("./")}>
           <a class="product-detail-close-text text-decoration-none">X</a>
         </button>
       </div>
@@ -51,10 +52,10 @@ const ProductDetail = (props) => {
               </div>
               <div class="mt-2">
                 <a class="font20px text-nonedeco">Price : </a>
-                <a class="font20px text-nonedeco">$ {discount}</a>
+                <a class="font20px text-nonedeco">￦ {discount}</a>
                 <a>&nbsp;&nbsp;&nbsp;</a>
                 <a class="text-small text-line-through text-nonedeco">
-                  $ {cache}
+                  ￦ {cache}
                 </a>
                 <a>&nbsp;&nbsp;</a>
                 <a class="text-nonedeco text-red">

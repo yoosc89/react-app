@@ -1,4 +1,4 @@
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
 
 export const hosturl = "http://localhost:8000";
@@ -159,4 +159,29 @@ export const AxoisProductDetail = (id) => {
   }, [id]);
 
   return data;
+};
+
+export const AxiosProductCreate = (e, callback) => {
+  const url = `${hosturl}/api/shopping/product/create`;
+  const params = {
+    item_name: e.target.item_name.value,
+    item_content: e.target.item_content.value,
+    cache: Number(e.target.cache.value),
+    discount: Number(e.target.discount.value),
+    shipping_fee: Number(e.target.shipping_fee.value),
+  };
+  const headers = {
+    accept: "application/json",
+    Authorization: "Bearer " + localStorage.getItem("access_token"),
+    "Content-Type": "application/json",
+  };
+  axios({
+    method: "post",
+    url: url,
+    data: params,
+    headers: headers,
+  })
+    .then((res) => callback(res.data))
+    .catch((err) => {})
+    .finally(() => callback());
 };

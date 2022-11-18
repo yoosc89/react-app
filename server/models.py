@@ -121,20 +121,22 @@ class ProductFile(Base):
         'file_products', cascade='all, delete'))
 
 
-class PurchaseList(Base):
-    __tablename__ = 'purchaselist'
+class Purchase(Base):
+    __tablename__ = 'purchase'
 
     id = Column(Integer, primary_key=True)
-    purchase_number = Column(Integer, primary_key=True)
-    count = Column(Integer, primary_key=True)
+    purchase_number = Column(String(100), nullable=False, unique=True)
+    count = Column(Integer, nullable=False)
+    cache = Column(Integer, nullable=False)
     create_date = Column(DateTime, nullable=False)
     name = Column(String(20), nullable=False)
+    shipping_fee = Column(Integer, nullable=False)
     phone_number = Column(String(20), nullable=False)
     address1 = Column(String(50), nullable=False)
     address2 = Column(String(50), nullable=False)
-    cunsumer_id = Column(Integer, ForeignKey(
+    consumer_id = Column(Integer, ForeignKey(
         'consumer.id', ondelete='CASCADE'))
-    cunsumer = relationship('Consumer', backref=backref(
+    consumer = relationship('Consumer', backref=backref(
         'pruchase_consumer', cascade='all, delete'))
     product_id = Column(Integer, ForeignKey(
         'product.id', ondelete='CASCADE'))
@@ -142,14 +144,14 @@ class PurchaseList(Base):
         'purchase_product', cascade='all, delete'))
 
 
-class SaleList(Base):
-    __tablename__ = 'salelist'
+class Sale(Base):
+    __tablename__ = 'sale'
 
     id = Column(Integer, primary_key=True)
-    purchaselist_id = Column(Integer, ForeignKey(
-        'purchaselist.id', ondelete="CASCADE"))
-    purchaselist = relationship('PurchaseList', backref=backref(
-        'sale_purchaselist', cascade='all, delete'))
+    purchase_id = Column(Integer, ForeignKey(
+        'purchase.id', ondelete="CASCADE"))
+    purchase = relationship('Purchase', backref=backref(
+        'sale_purchase', cascade='all, delete'))
     product_id = Column(Integer, ForeignKey(
         'product.id', ondelete="CASCADE"))
     product = relationship('Product', backref=backref(

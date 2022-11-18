@@ -9,6 +9,7 @@ from files import file_router
 from shopping.consumer import consumer_router
 from shopping.seller import seller_router
 from shopping.product import product_router
+from shopping.purchase import purchase_router
 
 
 app = FastAPI()
@@ -30,3 +31,4 @@ app.include_router(file_router.router)
 app.include_router(consumer_router.router)
 app.include_router(seller_router.router)
 app.include_router(product_router.router)
+app.include_router(purchase_router.router)

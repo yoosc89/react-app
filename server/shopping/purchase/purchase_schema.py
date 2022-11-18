@@ -1,0 +1,64 @@
+import datetime
+from pydantic import BaseModel, validator
+from shopping.product.product_schema import Product
+from shopping.consumer.consumer_schema import Consumer
+
+
+class Purchase(BaseModel):
+    id: int
+    purchase_number: int
+    count: int
+    cache: int
+    create_date: datetime.datetime
+    phone_number: str
+    address1: str
+    address2: str
+    shipping_fee: int
+    product: Product
+    cunsumer: Consumer
+
+    class Config:
+        orm_mode: True
+
+
+class PurchaseCreate(BaseModel):
+    count: int
+    cache: int
+    create_date: datetime.datetime
+    name: str
+    phone_number: str
+    address1: str
+    address2: str
+    shipping_fee: int
+    
+    
+
+    
+    class Config:
+        orm_mode = True
+    
+    @validator('phone_number', 'address1', 'address2', 'name')
+    def not_empty(cls, v):
+        if not v or not v.strip():
+            raise ValueError('빈 값은 허용되지 않습니다')
+        return v
+
+class PurchaseList(BaseModel):
+    purchase_number: str
+    count: int
+    cache: int
+    create_date: datetime.datetime
+    name: str
+    product : Product
+    
+    class Config:
+        orm_mode:True
+
+class PurchaseLists(BaseModel):
+    total : int
+    purchase_list : list[PurchaseList] = []
+    
+    class Config:
+        orm_mode:True
+    
+    

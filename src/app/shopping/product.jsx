@@ -27,10 +27,10 @@ const Product = (props) => {
           </div>
           <div class=" width130px border-right-1px text-large ms-3">
             <div class="text-medium-bold">
-              {data.discount !== 0 ? discount : cache}
+              {data.discount !== 0 ? "￦" + discount : "￦" + cache}
             </div>
             <div class="text-small">
-              <a class="text-small-cancel">{cache}</a>
+              <a class="text-small-cancel">￦{cache}</a>
               <a class="text-small-red">
                 할인{((data.cache - data.discount) * 100) / data.cache}%
               </a>
@@ -38,7 +38,7 @@ const Product = (props) => {
               <p>&nbsp;</p>
               <p class="text-small">
                 <a>배송비 : </a>
-                <a>{data.shipping_fee !== 0 ? shipping_fee : "무료"}</a>
+                <a>{data.shipping_fee !== 0 ? "￦" + shipping_fee : "무료"}</a>
               </p>
             </div>
           </div>

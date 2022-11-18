@@ -1,6 +1,6 @@
 import datetime
 from pydantic import BaseModel, validator
-from shopping.seller.seller_schema import Seller, ProductListSeller, ProductDetailSeller
+from shopping.seller.seller_schema import ProductListSeller, ProductDetailSeller
 
 
 class Product(BaseModel):

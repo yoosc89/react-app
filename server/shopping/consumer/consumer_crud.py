@@ -7,8 +7,8 @@ from sqlalchemy.orm import Session
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
 
 
-def get_consumer(db: Session, user_id: str):
-    consumer = db.query(Consumer).filter(Consumer.user_id == user_id).first()
+def get_consumer(db: Session, consumer_id: str):
+    consumer = db.query(Consumer).filter(Consumer.user_id == consumer_id).first()
     return consumer
 
 
