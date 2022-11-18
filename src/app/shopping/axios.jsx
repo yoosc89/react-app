@@ -95,9 +95,7 @@ export const Loginfastapi = (e, mode, callback) => {
     password: e.target.password.value,
   };
 
-  const url = !mode
-    ? `${hosturl}/api/shopping/consumer/login`
-    : `${hosturl}/api/shopping/seller/login`;
+  const url = !mode ? `${hosturl}/api/shopping/consumer/login` : `${hosturl}/api/shopping/seller/login`;
 
   const headers = {
     accept: "application/json",
@@ -184,4 +182,22 @@ export const AxiosProductCreate = (e, callback) => {
     .then((res) => callback(res.data))
     .catch((err) => {})
     .finally(() => callback());
+};
+
+export const AxoisOrderConsumer = () => {
+  const [data, setData] = useState([]);
+  const url = `${hosturl}/api/shopping/consumer/getaccount`;
+  const headers = { accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") };
+  useEffect(() => {
+    axios({ method: "get", url: url, headers: headers })
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        alert("로그인이 만료되었습니다");
+        window.location.replace("./product_list");
+      })
+      .finally(() => {});
+  }, []);
+  return data;
 };

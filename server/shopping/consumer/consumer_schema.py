@@ -56,3 +56,17 @@ class Existing(BaseModel):
 
 class Exist(BaseModel):
     exist: bool
+
+class ConsumerOrder(BaseModel):
+    user_id: str
+    user_name: str
+    email: str
+    point: int
+    cache: int
+    phone_number : str
+    address1: str
+    address2 : str
+    
+    class Config:
+        orm_mode=True
+    

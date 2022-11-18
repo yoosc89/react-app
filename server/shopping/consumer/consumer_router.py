@@ -59,6 +59,7 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     }
 
 
+@router.get('/getaccount', response_model=consumer_schema.ConsumerOrder)
 def get_current_consumer(token: str = Depends(oauth2_cheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED, detail='인증되지 않은 사용자 입니다', headers={'WWW-Authenticate': "Bearer"})
