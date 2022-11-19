@@ -21,6 +21,9 @@ import "./app/shopping/scss/app.scss";
 import NewProduct from "./app/shopping/new_product";
 import ProductDetail from "./app/shopping/product_datail";
 import NewPurchase from "./app/shopping/new_purchase";
+import PurchaseLists from "./app/shopping/purchase_list";
+import ConsumerInfo from "./app/shopping/consumer_info";
+import PurchaseDetail from "./app/shopping/purchase_detail";
 
 function App() {
   return (
@@ -43,7 +46,7 @@ function App() {
             <Route caseSensitive exact path="/" element={<MainPage />}></Route>
           </Routes>
           <Routes>
-            <Route path="/shopping">
+            <Route path="shopping">
               <Route caseSensitive path="createuser" element={<CreateUser />}></Route>
               <Route caseSensitive path="login" element={<Login />}></Route>
               <Route caseSensitive path="product_list" element={<ProductList />}>
@@ -51,6 +54,10 @@ function App() {
               </Route>
               <Route caseSensitive path="new_product" element={<NewProduct />}></Route>
               <Route caseSensitive path="new_purchase" element={<NewPurchase />}></Route>
+            </Route>
+            <Route caseSensitive path="consumerinfo" element={<ConsumerInfo />}>
+              <Route caseSensitive path="purchasedetail" element={<PurchaseDetail />}></Route>
+              <Route caseSensitive path="purchaselists" element={<PurchaseLists />}></Route>
             </Route>
           </Routes>
         </div>

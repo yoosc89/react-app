@@ -30,9 +30,7 @@ export const MenuItems = () => {
           <a class="navbar-brand">
             <Link to="/" class="text-decoration-none text-bg-primary">
               {localStorage.getItem("islogin") && true
-                ? `${localStorage.getItem("user_id")}(${localStorage.getItem(
-                    "mode"
-                  )})`
+                ? `${localStorage.getItem("user_id")}(${localStorage.getItem("mode")})`
                 : "(끄덕)"}
             </Link>
           </a>
@@ -43,20 +41,14 @@ export const MenuItems = () => {
                 <>
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page">
-                      <Link
-                        to="/newaccount"
-                        class="text-decoration-none text-bg-primary"
-                      >
+                      <Link to="/newaccount" class="text-decoration-none text-bg-primary">
                         회원가입
                       </Link>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page">
-                      <Link
-                        to="/searchaccoute"
-                        class="text-decoration-none text-bg-primary"
-                      >
+                      <Link to="/searchaccoute" class="text-decoration-none text-bg-primary">
                         계정찾기
                       </Link>
                     </a>
@@ -77,10 +69,7 @@ export const MenuItems = () => {
                       로그아웃
                     </Link>
                   ) : (
-                    <Link
-                      to="/login"
-                      class="text-decoration-none text-bg-primary"
-                    >
+                    <Link to="/login" class="text-decoration-none text-bg-primary">
                       로그인
                     </Link>
                   )}
@@ -88,34 +77,22 @@ export const MenuItems = () => {
               </li>
               <li class="nav-item">
                 <a class="nav-link active  text-bg-primary" aria-current="page">
-                  <Link
-                    to="/contents/0"
-                    class="text-decoration-none text-bg-primary"
-                  >
+                  <Link to="/contents/0" class="text-decoration-none text-bg-primary">
                     게시판
                   </Link>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active  text-bg-primary" aria-current="page">
-                  <Link
-                    to="/shopping/createuser"
-                    class="text-decoration-none text-bg-primary"
-                  >
+                  <Link to="/shopping/createuser" class="text-decoration-none text-bg-primary">
                     쇼핑회원가입
                   </Link>
                 </a>
               </li>
               {!localStorage.getItem("islogin") ? (
                 <li class="nav-item">
-                  <a
-                    class="nav-link active  text-bg-primary"
-                    aria-current="page"
-                  >
-                    <Link
-                      to="/shopping/login"
-                      class="text-decoration-none text-bg-primary"
-                    >
+                  <a class="nav-link active  text-bg-primary" aria-current="page">
+                    <Link to="/shopping/login" class="text-decoration-none text-bg-primary">
                       쇼핑로그인
                     </Link>
                   </a>
@@ -123,15 +100,18 @@ export const MenuItems = () => {
               ) : null}
               {localStorage.getItem("islogin") ? (
                 <li class="nav-item">
-                  <a
-                    class="nav-link active  text-bg-primary"
-                    aria-current="page"
-                  >
-                    <Link
-                      to="/shopping/product_list"
-                      class="text-decoration-none text-bg-primary"
-                    >
+                  <a class="nav-link active  text-bg-primary" aria-current="page">
+                    <Link to="/shopping/product_list" class="text-decoration-none text-bg-primary">
                       제품판매
+                    </Link>
+                  </a>
+                </li>
+              ) : null}
+              {localStorage.getItem("islogin") ? (
+                <li class="nav-item">
+                  <a class="nav-link active  text-bg-primary" aria-current="page">
+                    <Link to="consumerinfo" class="text-decoration-none text-bg-primary">
+                      회원 정보
                     </Link>
                   </a>
                 </li>

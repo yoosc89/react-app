@@ -1,7 +1,7 @@
 import datetime
 from pydantic import BaseModel, validator
-from shopping.product.product_schema import Product
-from shopping.consumer.consumer_schema import Consumer
+from shopping.product.product_schema import Product,ProductPurchase
+from shopping.consumer.consumer_schema import Consumer,ConsumerOrder
 
 
 class Purchase(BaseModel):
@@ -24,7 +24,6 @@ class Purchase(BaseModel):
 class PurchaseCreate(BaseModel):
     count: int
     cache: int
-    create_date: datetime.datetime
     name: str
     phone_number: str
     address1: str
@@ -44,21 +43,26 @@ class PurchaseCreate(BaseModel):
         return v
 
 class PurchaseList(BaseModel):
+    id : int
     purchase_number: str
     count: int
     cache: int
+    shipping_fee : int
     create_date: datetime.datetime
     name: str
-    product : Product
+    phone_number: str
+    address1: str
+    address2: str
+    product : ProductPurchase
     
     class Config:
-        orm_mode:True
+        orm_mode=True
 
 class PurchaseLists(BaseModel):
     total : int
-    purchase_list : list[PurchaseList] = []
+    purchase_list : list[PurchaseList] | None
     
     class Config:
-        orm_mode:True
+        orm_mode=True
     
     

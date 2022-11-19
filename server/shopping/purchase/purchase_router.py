@@ -8,16 +8,15 @@ from shopping.product.product_router import get_current_product
 from shopping.purchase import purchase_crud, purchase_schema
 
 
-
 router = APIRouter(
     prefix='/api/shopping/purchase'
 )
 
 
 @router.get('/list', response_model=purchase_schema.PurchaseLists)
-def get_purchase_list(db: Session = Depends(get_db), page: int = 0, size: int = 10):
+def get_purchase_list(db: Session = Depends(get_db),current_consumer: Consumer = Depends(get_current_consumer), page: int = 0, size: int = 10):
     total, _purchase_list = purchase_crud.get_purchase_list(
-        db, skip=page*size, limit=size)
+        db, skip=page*size, limit=size, consumer=current_consumer)
 
     return {'total': total, 'purchase_list': _purchase_list}
 

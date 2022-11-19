@@ -1,5 +1,5 @@
 import "./scss/new_purchase.scss";
-import { AxoisOrderConsumer, AxoisProductDetail } from "./axios";
+import { AxoisOrderConsumer, AxoisProductDetail, AxiosOrderCreate } from "./axios";
 import { useState } from "react";
 
 const ItemRow = (props) => {
@@ -15,6 +15,7 @@ const ItemRow = (props) => {
               }`}
               readOnly={props.readOnly}
               value={props.value}
+              name={props.name}
             />
           ) : (
             <input
@@ -23,6 +24,7 @@ const ItemRow = (props) => {
               }`}
               readOnly={props.readOnly}
               defaultValue={props.defaultValue}
+              name={props.name}
             />
           )}
         </div>
@@ -51,9 +53,9 @@ const BuyerInfo = (props) => {
         <div class="row p-4">
           <div class="new_purchase-text-bold new_purchase-text-23px">구매자</div>
           <div class="ps-4 pt-3 ">
-            <ItemRow label="이름" defaultValue={data.user_name} readOnly={modify} />
-            <ItemRow label="연락처" defaultValue={data.phone_number} readOnly={modify} />
-            <ItemRow label="E-mail" defaultValue={data.email} readOnly={modify} />
+            <ItemRow label="이름" name="name" defaultValue={data.user_name} readOnly={modify} />
+            <ItemRow label="연락처" name="phone_number" defaultValue={data.phone_number} readOnly={modify} />
+            <ItemRow label="E-mail" name="email" defaultValue={data.email} readOnly={modify} />
           </div>
           <div class="text-center pt-2 pb-2">
             <button
@@ -82,10 +84,10 @@ const RecipientInfo = (props) => {
         <div class="row p-4">
           <div class="new_purchase-text-bold new_purchase-text-23px">받는사람</div>
           <div class="ps-4 pt-3 ">
-            <ItemRow label="이름" defaultValue={data.user_name} readOnly={modify} />
-            <ItemRow label="연락처" defaultValue={data.phone_number} readOnly={modify} />
-            <ItemRow label="주소" defaultValue={data.address1} readOnly={modify} />
-            <ItemRow label="상세주소" defaultValue={data.address2} readOnly={modify} />
+            <ItemRow label="이름" name="recipt_name" defaultValue={data.user_name} readOnly={modify} />
+            <ItemRow label="연락처" name="recipt_phone_number" defaultValue={data.phone_number} readOnly={modify} />
+            <ItemRow label="주소" name="recipt_address1" defaultValue={data.address1} readOnly={modify} />
+            <ItemRow label="상세주소" name="recipt_address2" defaultValue={data.address2} readOnly={modify} />
             <input class="new_purchase-input-readonly" />
             <div class="text-center pt-2 pb-2">
               <button
@@ -111,8 +113,11 @@ const OrderInfo = (props) => {
   const count = Number(localStorage.getItem("order_count"));
   const discount = Number(data.discount);
   const cache = Number(data.cache);
-  const product_price = (discount !== 0 ? discount : cache).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  const price = (discount !== 0 ? discount * count : cache * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const shippingFee = Number(data.shipping_fee);
+  const product_price = discount !== 0 ? discount : cache;
+  const price = discount !== 0 ? discount * count : cache * count;
+  const viewprice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const viewproduct_price = product_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
     <>
@@ -120,9 +125,10 @@ const OrderInfo = (props) => {
         <div class="row p-4">
           <div class="new_purchase-text-bold new_purchase-text-23px new_purchase-main-width">주문정보</div>
           <div class="ps-4 pt-3 ">
-            <ItemRow label="수량" defaultValue={count} readOnly={true} />
-            <ItemRow label="상품금액" value={product_price} readOnly={true} />
-            <ItemRow label="결제금액" value={price} readOnly={true} />
+            <ItemRow label="수량" name="count" defaultValue={count} readOnly={true} />
+            <ItemRow label="상품금액" name="product_price" value={product_price} readOnly={true} />
+            <ItemRow label="배송비" name="shipping_fee" value={shippingFee} readOnly={true} />
+            <ItemRow label="결제금액" name="price" value={price} readOnly={true} />
           </div>
         </div>
       </div>
@@ -135,7 +141,15 @@ const NewPurchase = (props) => {
   return (
     <div class="new_purchase-main ">
       <div class="shadow m-3 rounded-2 bg-white ">주문상품</div>
-      <form type="submit">
+      <form
+        type="submit"
+        method="post"
+        onSubmit={(e) =>
+          AxiosOrderCreate(e, localStorage.getItem("product_id"), (callback) => {
+            window.location.replace("./");
+          })
+        }
+      >
         <Purchase />
         <BuyerInfo data={consumerdata} />
         <RecipientInfo data={consumerdata} />

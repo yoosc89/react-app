@@ -1,17 +1,13 @@
 //new_purchase
 
 div {
+  /* border: 1px solid red; */
 }
+
 .new_purchase-main {
   display: grid;
   place-content: center;
 }
-
-.new_purchase-main-width {
-  max-width: 700px;
-  min-width: 300px;
-}
-
 .new_purchase-text-30px {
   font-size: 30px;
 }
