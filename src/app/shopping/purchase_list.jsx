@@ -31,7 +31,16 @@ const PurchaseItem = (props) => {
             </div>
             <div class="col-3 row ms-0 purchase-list-width150px text-center align-items-center purchase-list-button-border-left">
               <div>
-                <button class="purchase-list-button w-100">상세정보</button>
+                <button
+                  class="purchase-list-button w-100"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    props.setpurchase(data.id);
+                    window.scrollTo(1, 1);
+                  }}
+                >
+                  상세정보
+                </button>
               </div>
               <div>
                 <button class="purchase-list-button w-100">택배조회</button>
@@ -49,12 +58,13 @@ const PurchaseItem = (props) => {
 
 const PurchaseLists = (props) => {
   const data = AxoisOrderList(props.page, props.size, (callback) => {});
-  const total = data.total;
   const purchase_list = data.purchase_list;
 
   return (
     <>
-      <div>{purchase_list && purchase_list.map((item) => <PurchaseItem data={item} />)}</div>
+      <div>
+        {purchase_list && purchase_list.map((item) => <PurchaseItem data={item} setpurchase={props.setpurchase} />)}
+      </div>
     </>
   );
 };

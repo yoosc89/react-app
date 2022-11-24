@@ -14,7 +14,7 @@ router = APIRouter(
 
 
 @router.get('/list', response_model=purchase_schema.PurchaseLists)
-def get_purchase_list(db: Session = Depends(get_db),current_consumer: Consumer = Depends(get_current_consumer), page: int = 0, size: int = 10):
+def get_purchase_list(db: Session = Depends(get_db), current_consumer: Consumer = Depends(get_current_consumer), page: int = 0, size: int = 10):
     total, _purchase_list = purchase_crud.get_purchase_list(
         db, skip=page*size, limit=size, consumer=current_consumer)
 
@@ -22,7 +22,13 @@ def get_purchase_list(db: Session = Depends(get_db),current_consumer: Consumer =
 
 
 @router.get("/list/detail/{purchase_id}", response_model=purchase_schema.PurchaseCreate)
-def purchase_detail(purchase_id: int , db: Session = Depends(get_db)):
+def purchase_detail(purchase_id: int, db: Session = Depends(get_db)):
+    purchase = purchase_crud.get_purchase(db, purchase_id=purchase_id)
+    return purchase
+
+
+@router.get("/detail/{purchase_id}", response_model=purchase_schema.PurchaseDetail)
+def purchase_detail(purchase_id: int, db: Session = Depends(get_db)):
     purchase = purchase_crud.get_purchase(db, purchase_id=purchase_id)
     return purchase
 

@@ -1,3 +1,4 @@
+import { SellOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
@@ -266,5 +267,23 @@ export const GetConsumer = (callback) => {
       .catch((err) => {})
       .finally(callback());
   }, []);
+  return output;
+};
+
+export const GetPurchaseDetail = (id) => {
+  const [output, setoutput] = useState([]);
+
+  const url = `${hosturl}/api/shopping/purchase/detail/${id}`;
+  const headers = { accept: "application/json" };
+
+  useEffect(() => {
+    axios({
+      url: url,
+      method: "get",
+      headers: headers,
+    })
+      .then((res) => setoutput(res.data))
+      .catch((err) => console.log(err));
+  }, [id]);
   return output;
 };

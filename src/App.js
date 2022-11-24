@@ -24,7 +24,7 @@ import NewPurchase from "./app/shopping/new_purchase";
 import PurchaseLists from "./app/shopping/purchase_list";
 import ConsumerInfo from "./app/shopping/consumer_info";
 import PurchaseDetail from "./app/shopping/purchase_detail";
-
+import CalendarPage from "./app/shopping/calendar";
 function App() {
   return (
     <>
@@ -38,7 +38,7 @@ function App() {
             <Route caseSensitive path="/login" element={<LoginPage />}></Route>
             <Route exact caseSensitive path="/newaccount" element={<NewAccount />}></Route>
             <Route exact caseSensitive path="/searchaccoute" element={<SearchAccoute />}></Route>
-
+            <Route exact caseSensitive path="/calendar" element={<CalendarPage />}></Route>
             <Route path={"contents"}>
               <Route path={`:contents/*`} element={<ContentsPage />}></Route>
             </Route>

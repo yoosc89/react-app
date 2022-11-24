@@ -54,8 +54,9 @@ class ProductCreate(BaseModel):
 class ProductUpdate(ProductCreate):
     product_id: int
 
+
 class ProductPurchase(BaseModel):
-    item_name : str
-    
+    item_name: str
+
     class Config:
-        orm_mode=True
+        orm_mode = True

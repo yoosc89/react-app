@@ -7,7 +7,7 @@ import PurchaseDetail from "./purchase_detail";
 const ConsumerItem = (prop) => {
   const [more, setMore] = useState(true);
   const data = GetConsumer(() => {});
-  console.log(data);
+
   return (
     <>
       <div class="consumer-info-main-position">
@@ -50,11 +50,13 @@ const ConsumerItem = (prop) => {
 };
 
 const ConsumerInfo = () => {
+  const [purchase, setpurchase] = useState(0);
+
   return (
     <>
       <ConsumerItem />
-      <PurchaseDetail />
-      <PurchaseLists />
+      {purchase > 0 ? <PurchaseDetail purchase={purchase} /> : null}
+      <PurchaseLists setpurchase={setpurchase} />
     </>
   );
 };

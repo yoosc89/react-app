@@ -15,12 +15,12 @@ from shopping.purchase import purchase_router
 app = FastAPI()
 
 origins = [
-    'http://localhost:8000', 'http://localhost:3000', 'http://localhost', 'http://tysct.kr', 'https://tysct.kr',
+    'http://localhost:8000', 'http://localhost:3000', 'http://localhost', 'http://tysct.kr', 'https://tysct.kr', 'http://127.0.0.1'
 
 ]
 
 app.add_middleware(CORSMiddleware, allow_origins=origins,
-                   allow_credentials=True, allow_methods=['*'], allow_headers=['*'],)
+                   allow_credentials=False, allow_methods=['*'], allow_headers=['*'])
 
 
 app.include_router(question_router.router)
