@@ -2,7 +2,7 @@ import { SellOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export const hosturl = "http://localhost:8000";
+export const hosturl = "http://127.0.0.1:8000";
 
 export const CreateConsumer = (e, callback) => {
   e.preventDefault();
